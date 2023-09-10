@@ -7,7 +7,7 @@ import { UsersFacade } from '@facades/users.facade';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  todayIs: any;
+  todayIs = new Date();
   isHome = window.location.pathname === '/' ? true : false;
   userName = '';
 

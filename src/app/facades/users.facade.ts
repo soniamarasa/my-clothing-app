@@ -1,63 +1,59 @@
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  combineLatest,
-  distinctUntilChanged,
-  interval,
-  map,
-  shareReplay,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs';
-
-import { IGetUsersParams, UsersService } from '@services/users.service';
+import { BehaviorSubject, distinctUntilChanged, shareReplay, tap } from 'rxjs';
 
 import { UsersStore } from '@stores/users.store';
-
+import { AuthStore } from '@stores/auth.store';
 import { IUser } from '@root/src/app/interfaces/user';
 
-const REFRESH_INTERVAL = 600000;
+import { ILoginBody, UsersService } from '@services/users.service';
+import { LocalStorageService } from '../services/local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersFacade {
-  private readonly autoRefresh$ = interval(REFRESH_INTERVAL).pipe(startWith(0));
   private readonly _refresh = new BehaviorSubject(undefined);
 
   private readonly _filter = new BehaviorSubject<any>({});
   readonly filter$ = this._filter.asObservable().pipe(distinctUntilChanged());
 
-  private readonly handleRequest$ = combineLatest([
-    this.filter$,
-    this.autoRefresh$,
-    this._refresh.asObservable(),
-  ]).pipe(switchMap(() => this.getUsers({ ...this._filter.value })));
-
-  readonly usersState$ = combineLatest([
-    this.usersStore.usersState$,
-    this.handleRequest$,
-  ]).pipe(
-    map(([state]) => state),
-    shareReplay({ refCount: true })
-  );
+  readonly authState$ = this.authStore.authState$;
+  user = this.localStorageService.get('auth')?.user;
 
   constructor(
     private usersService: UsersService,
-    private usersStore: UsersStore
+    private localStorageService: LocalStorageService,
+    private usersStore: UsersStore,
+    private authStore: AuthStore
   ) {}
 
-  getUsers(queryParams?: IGetUsersParams) {
+  login({ email, password }: ILoginBody) {
     return this.usersService
-      .getUsers(queryParams)
-      .pipe(tap((users) => this.usersStore.updateUsers(users)));
+      .login({ email, password })
+      .pipe(tap((user) => this.authStore.login({ user })));
+  }
+
+  retrievePassword(email: IUser['email'], host: string) {
+    return this.usersService.retrievePassword(email, host);
+  }
+
+  resetPassword(password: IUser['password'], token: IUser['token']) {
+    return this.usersService.resetPassword(password, token);
+  }
+
+  logout() {
+    return this.usersService
+      .logout(this.localStorageService.get('idUser'))
+      .pipe(
+        shareReplay(),
+        tap(() => this.authStore.logout())
+      );
   }
 
   getUserById(id: IUser['_id']) {
     return this.usersService
-      .getUserById(id)
-      .pipe(tap((user) => this.usersStore.updateUser(user)));
+      .getUser(id)
+      .pipe(tap((user: IUser) => this.usersStore.updateUser(user)));
   }
 
   newUser(user: IUser) {
@@ -66,18 +62,10 @@ export class UsersFacade {
       .pipe(tap((user) => this.usersStore.updateUser(user)));
   }
 
-  updateUser(id: IUser['_id'], body: IUser) {
+  updateUser(user: IUser) {
     return this.usersService
-      .updateUser(id, body)
+      .updateUser(user)
       .pipe(tap((user) => this.usersStore.updateUser(user)));
-  }
-
-  updatePassword(password: IUser['password'], token: IUser['token']) {
-    return this.usersService.updatePassword(password, token);
-  }
-
-  filterUsers(filter: IGetUsersParams) {
-    this._filter.next({ ...this._filter.value, ...filter });
   }
 
   refresh() {

@@ -4,7 +4,7 @@ export interface IUser {
   username?: string;
   email?: string;
   gender?: string | any;
-  birthdate?: Date | string;
+  birthdate: Date;
   password?: string;
   passwordConfirm?: string;
   imgUrl?: string;

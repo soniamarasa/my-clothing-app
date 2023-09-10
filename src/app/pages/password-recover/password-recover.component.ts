@@ -9,8 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { SubSink } from 'subsink';
 
-import { CustomvalidationService } from 'src/app/services/customvalidation.service';
-import { UserFacade } from 'src/app/facades/user.facades';
+import { CustomValidationService } from '@root/src/app/services/customValidation.service';
+import { UsersFacade } from 'src/app/facades/users.facade';
 
 @Component({
   selector: 'app-password-recover',
@@ -27,12 +27,12 @@ export class PasswordRecoverComponent implements OnInit {
     private _router: Router,
     public _formBuilder: UntypedFormBuilder,
     private _messageService: MessageService,
-    private customValidator: CustomvalidationService,
-    private facade: UserFacade
+    private customValidator: CustomValidationService,
+    private facade: UsersFacade
   ) {
     this.subs.add(
       this.facade.authState$.subscribe(
-        ({ isAuthenticated }) => isAuthenticated && this._router.navigate(['/'])
+        ({ isAuthenticated }: boolean | any) => isAuthenticated && this._router.navigate(['/'])
       )
     );
 
@@ -71,7 +71,7 @@ export class PasswordRecoverComponent implements OnInit {
       this.facade
         .resetPassword(this.form.value.password, this.token)
         .subscribe({
-          next: (res) => {
+          next: (res: any) => {
             this._messageService.add({
               key: 'notification',
               severity: 'success',
@@ -83,7 +83,7 @@ export class PasswordRecoverComponent implements OnInit {
             setTimeout(() => this._router.navigate(['/auth']), 1000);
           },
 
-          error: (error) => {
+          error: (error: any) => {
             this._messageService.add({
               key: 'notification',
               severity: 'error',

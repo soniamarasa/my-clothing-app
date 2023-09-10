@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Dropdown } from 'src/app/models/dropdown';
+import { Dropdown } from '@interfaces/dropdown';
 import {
   FormGroup,
   Validators,
@@ -12,8 +12,9 @@ import { finalize } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { SubSink } from 'subsink';
 
-import { CustomvalidationService } from 'src/app/services/customvalidation.service';
-import { UserFacade } from 'src/app/facades/user.facades';
+import { CustomValidationService } from '@services/customValidation.service'
+import { UsersFacade } from '@facades/users.facade';
+import { IUser } from '../../interfaces/user';
 
 @Component({
   selector: 'app-registration',
@@ -31,12 +32,12 @@ export class RegistrationComponent implements OnInit {
     public _formBuilder: UntypedFormBuilder,
     private _messageService: MessageService,
     private _router: Router,
-    private customValidator: CustomvalidationService,
-    private facade: UserFacade
+    private customValidator: CustomValidationService,
+    private facade: UsersFacade
   ) {
     this.subs.add(
       this.facade.authState$.subscribe(
-        ({ isAuthenticated }) => isAuthenticated && this._router.navigate(['/'])
+        ({ isAuthenticated }: any) => isAuthenticated && this._router.navigate(['/'])
       )
     );
 
@@ -88,7 +89,7 @@ export class RegistrationComponent implements OnInit {
         .newUser(this.form.value)
         .pipe(finalize(() => (this.isSubmitting = false)))
         .subscribe({
-          next: (res) => {
+          next: (res: IUser) => {
             this._messageService.add({
               key: 'notification',
               severity: 'success',
@@ -98,7 +99,7 @@ export class RegistrationComponent implements OnInit {
             }),
               setTimeout(() => this._router.navigate(['/auth']), 1500);
           },
-          error: (error) =>
+          error: (error: any) =>
             this._messageService.add({
               key: 'notification',
               severity: 'error',

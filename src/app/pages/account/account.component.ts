@@ -9,10 +9,10 @@ import { finalize, tap } from 'rxjs';
 import { SubSink } from 'subsink';
 import { MessageService } from 'primeng/api';
 
-import { CustomvalidationService } from 'src/app/services/customvalidation.service';
-import { UserFacade } from 'src/app/facades/user.facades';
-import { Dropdown } from 'src/app/models/dropdown';
-import { User } from 'src/app/models/user';
+import { CustomValidationService } from '@services/customValidation.service';
+import { UsersFacade } from '@facades/users.facade';
+import { Dropdown } from '@interfaces/dropdown';
+import { IUser } from '@interfaces/user';
 
 @Component({
   selector: 'app-account',
@@ -25,7 +25,7 @@ export class AccountComponent implements OnInit {
   formData!: FormGroup;
   formPassword!: FormGroup;
   gender: Dropdown[];
-  user!: User;
+  user!: IUser;
 
   showBtnForm: boolean = false;
   showBtnFormPass: boolean = false;
@@ -36,8 +36,8 @@ export class AccountComponent implements OnInit {
   constructor(
     public _formBuilder: UntypedFormBuilder,
     private _messageService: MessageService,
-    private customValidator: CustomvalidationService,
-    private facade: UserFacade
+    private customValidator: CustomValidationService,
+    private facade: UsersFacade
   ) {
     this.gender = [
       { name: 'Female', code: 'female' },
@@ -47,7 +47,7 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.subs.add(
-      this.facade.getUser().subscribe((user) => {
+      this.facade.getUserById(this.user._id).subscribe((user) => {
         this.user = user;
         this.setForms(this.user);
         this.formData.statusChanges.subscribe(() => (this.showBtnForm = true));
@@ -58,13 +58,13 @@ export class AccountComponent implements OnInit {
     );
   }
 
-  setForms(user: User) {
+  setForms(user: IUser) {
     this.createForm(user);
     this.createFormPassword(user);
     this.isLoaded = true;
   }
 
-  createForm(user: User): any {
+  createForm(user: IUser): any {
     this.formData = this._formBuilder.group({
       name: [user.name, Validators.required],
       gender: [user.gender, Validators.required],
@@ -73,7 +73,7 @@ export class AccountComponent implements OnInit {
     });
   }
 
-  createFormPassword(user: User): any {
+  createFormPassword(user: IUser): any {
     this.formPassword = this._formBuilder.group(
       {
         oldPassword: ['', [Validators.required]],
@@ -112,7 +112,7 @@ export class AccountComponent implements OnInit {
   submit(form: number) {
     this.isSubmitting = true;
 
-    let data: User = this.formData.value;
+    let data: IUser = this.formData.value;
 
     if (form === 1) {
       this.subs.add(
