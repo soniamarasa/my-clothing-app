@@ -42,8 +42,9 @@ export class UsersFacade {
   }
 
   logout() {
+
     return this.usersService
-      .logout(this.localStorageService.get('idUser'))
+      .logout()
       .pipe(
         shareReplay(),
         tap(() => this.authStore.logout())

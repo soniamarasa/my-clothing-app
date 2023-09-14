@@ -9,6 +9,6 @@ export class UserImgComponent implements OnInit {
   constructor() {}
 
   @Input() gender!: any;
-
+  @Input() email!: any;
   ngOnInit(): void {}
 }

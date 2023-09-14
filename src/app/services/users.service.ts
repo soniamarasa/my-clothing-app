@@ -47,8 +47,8 @@ export class UsersService {
     );
   }
 
-  logout(_id: IUser['_id']) {
-    return this._http.post(`${environment.url}/logout`, { _id });
+  logout() {
+    return this._http.post(`${environment.url}/logout`, {});
   }
 
   newUser(user: IUser) {
@@ -60,6 +60,9 @@ export class UsersService {
   }
 
   updateUser(user: IUser) {
-    return this._http.put<IUser>(`${environment.url}/updateUser/${user._id}`, user);
+    return this._http.put<IUser>(
+      `${environment.url}/updateUser/${user._id}`,
+      user
+    );
   }
 }

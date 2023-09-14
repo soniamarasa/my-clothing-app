@@ -1,18 +1,26 @@
+@import '../../styles/variables.scss';
+
 :host {
   & ::ng-deep {
-    div {
-      padding: 1rem;
-      // color: #a78120;
+    .user__default {
+      background-color: $senary-color;
+      width: 6rem;
+      height: 6rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     img {
-      padding: 1rem;
+      width: 6rem !important;
+      height: 6rem !important;
       min-width: 6rem;
       -moz-box-sizing: content-box;
     }
 
     i {
-      color: #000;
+      color: $quinary-color;
       font-size: 3.5rem;
     }
   }

@@ -24,6 +24,7 @@ import { IUser } from '../../interfaces/user';
 export class RegistrationComponent implements OnInit {
   form!: FormGroup;
   gender: Dropdown[];
+  email: string = '';
   private subs = new SubSink();
 
   isSubmitting = false;
@@ -79,6 +80,11 @@ export class RegistrationComponent implements OnInit {
         ],
       } as AbstractControlOptions
     );
+  }
+
+  getAvatar(e:any){
+   console.log(e.target.value)
+   this.email = e.target.value;
   }
 
   submit() {

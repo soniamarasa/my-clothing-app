@@ -21,23 +21,29 @@ import { ToastModule } from 'primeng/toast';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ChartModule } from 'primeng/chart';
+import { MenuModule } from 'primeng/menu';
+import { GravatarModule } from 'ngx-gravatar';
+import { MenubarModule } from 'primeng/menubar';
 
 import { UsersFacade } from '@facades/users.facade';
 
+//Paginas
 import { PagesComponent } from './pages.component';
 import { PagesRoutingModule } from './pages-routing.module';
-
 import { AuthComponent } from './auth/auth.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { HomeComponent } from './home/home.component';
-import { PasswordRecoverComponent } from './password-recover/password-recover.component';
 import { AccountComponent } from './account/account.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
+//Componentes
+import { PasswordRecoverComponent } from './password-recover/password-recover.component';
 import { HeaderComponent } from '../components/header/header.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import { UserImgComponent } from '../components/user-img/user-img.component';
+import { MenuComponent } from '../components/menu/menu.component';
 
+//Dialogs
 import { RecoverDialogComponent } from './auth/recover-dialog/recover-dialog.component';
 
 
@@ -51,11 +57,10 @@ import { RecoverDialogComponent } from './auth/recover-dialog/recover-dialog.com
     PasswordRecoverComponent,
     AccountComponent,
     NotFoundComponent,
-
     HeaderComponent,
     FooterComponent,
-
     UserImgComponent,
+    MenuComponent,
   ],
   imports: [
     CommonModule,
@@ -79,10 +84,12 @@ import { RecoverDialogComponent } from './auth/recover-dialog/recover-dialog.com
     MessageModule,
     MessagesModule,
     ChartModule,
-
+    MenuModule,
+    MenubarModule,
+    GravatarModule,
     PagesRoutingModule,
   ],
-  providers: [DialogService, ConfirmationService, MessageService, UsersFacade],
+  providers: [DialogService, ConfirmationService, MessageService],
   bootstrap: [PagesComponent],
 })
 export class PagesModule {}

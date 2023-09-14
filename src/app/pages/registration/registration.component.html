@@ -7,7 +7,7 @@
     <p-card class="col-12">
       <div class="card-body">
         <div class="user">
-          <app-user-img [gender]="formControl.gender.value"> </app-user-img>
+          <app-user-img [email]="email"> </app-user-img>
         </div>
 
         <form [formGroup]="form">
@@ -25,10 +25,10 @@
             <small
               class="p-error"
               *ngIf="
-                formControl.name.touched && formControl.name.errors?.required
+                formControl['name'].touched && formControl['name'].errors?.['required']
               "
             >
-              Name is required
+              Name é obrigatório!
             </small>
           </div>
 
@@ -46,11 +46,11 @@
                 <small
                   class="p-error"
                   *ngIf="
-                    formControl.gender.touched &&
-                    formControl.gender.errors?.required
+                    formControl['gender'].touched &&
+                    formControl['gender'].errors?.['required']
                   "
                 >
-                  Gender is required
+                  Gender é obrigatório!
                 </small>
               </div>
             </div>
@@ -68,11 +68,11 @@
                 <small
                   class="p-error"
                   *ngIf="
-                    formControl.birthdate.touched &&
-                    formControl.birthdate.errors?.required
+                    formControl['birthdate'].touched &&
+                    formControl['birthdate'].errors?.['required']
                   "
                 >
-                  Birthdate is required
+                  Birthdate é obrigatório!
                 </small>
               </div>
             </div>
@@ -89,21 +89,22 @@
                   class="p-inputtext p-inputtext-md"
                   formControlName="email"
                   placeholder="Type your e-mail"
+                  (blur)="getAvatar($event)"
                 />
                 <small
                   class="p-error"
                   *ngIf="
-                    formControl.email.touched &&
-                    formControl.email.errors?.required
+                    formControl['email'].touched &&
+                    formControl['email'].errors?.['required']
                   "
                 >
-                  E-mail is required
+                  E-mail é obrigatório!
                 </small>
 
                 <small
                   class="p-error"
                   *ngIf="
-                    formControl.email.touched && formControl.email.errors?.email
+                    formControl['email'].touched && formControl['email'].errors?.['email']
                   "
                 >
                   Enter a valid email address
@@ -125,18 +126,18 @@
                 <small
                   class="p-error"
                   *ngIf="
-                    formControl.confirmEmail.touched &&
-                    formControl.confirmEmail.errors?.required
+                    formControl['confirmEmail'].touched &&
+                    formControl['confirmEmail'].errors?.['required']
                   "
                 >
-                  E-mail is required
+                  E-mail é obrigatório!
                 </small>
 
                 <small
                   class="p-error"
                   *ngIf="
-                    formControl.confirmEmail.touched &&
-                    formControl.confirmEmail.errors?.emailMismatch
+                    formControl['confirmEmail'].touched &&
+                    formControl['confirmEmail'].errors?.['emailMismatch']
                   "
                 >
                   Email doesn't match
@@ -173,11 +174,11 @@
                 <small
                   class="p-error"
                   *ngIf="
-                    formControl.password.touched &&
-                    formControl.password.errors?.required
+                    formControl['password'].touched &&
+                    formControl['password'].errors?.['required']
                   "
                 >
-                  Password is required
+                  Password é obrigatório!
                 </small>
               </div>
             </div>
@@ -200,18 +201,18 @@
                 <small
                   class="p-error"
                   *ngIf="
-                    formControl.confirmPassword.touched &&
-                    formControl.confirmPassword.errors?.required
+                    formControl['confirmPassword'].touched &&
+                    formControl['confirmPassword'].errors?.['required']
                   "
                 >
-                  Password is required
+                  Password é obrigatório!
                 </small>
 
                 <small
                   class="p-error"
                   *ngIf="
-                    formControl.confirmPassword.touched &&
-                    formControl.confirmPassword.errors?.passwordMismatch
+                    formControl['confirmPassword'].touched &&
+                    formControl['confirmPassword'].errors?.['passwordMismatch']
                   "
                 >
                   Passwords don't match
@@ -234,7 +235,7 @@
     </p-card>
 
     <div class="logo" [routerLink]="['/']">
-      <h3>Weekly Planner</h3>
+      <h3>Meu Vestuário</h3>
     </div>
   </div>
 </div>

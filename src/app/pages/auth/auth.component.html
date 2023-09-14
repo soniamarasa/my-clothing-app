@@ -1,18 +1,14 @@
 <p-toast key="notification" position="top-right" styleClass="default"></p-toast>
 
 <div class="container-auth">
-  <h1>Weekly Planner</h1>
+  <h1>Meu Vestuário</h1>
 
   <div class="grid">
     <div class="col-12 sm:col-12 md:col-6 lg:col-8 container-img">
       <div class="img">
-        <img src="../../../assets/weekly-planner.png" alt="" />
-        <h2>Plan your entire life in one place.</h2>
+        <img src="../../../assets/undraw_web_shopping_re_owap.svg" alt="" />
+        <h2>Combine peças de roupas, monte e organize seus looks!</h2>
       </div>
-      <p>
-        Organize your work, your studies, personal tasks and all the other
-        duties you want.
-      </p>
     </div>
 
     <div class="col-12 sm:col-12 md:col-6 lg:col-4 container-login">
@@ -29,35 +25,35 @@
                 required
                 class="p-inputtext p-inputtext-md"
                 formControlName="email"
-                placeholder="Type your e-mail"
+                placeholder="Digite seu e-mail"
               />
               <small
                 class="p-error"
                 *ngIf="
-                  formControl.email.touched &&
-                  formControl.email.errors?.required
+                  formControl['email'].touched &&
+                  formControl['email'].errors?.['required']
                 "
               >
-                E-mail is required
+                E-mail é obrigatório!
               </small>
 
               <small
                 class="p-error"
                 *ngIf="
-                  formControl.email.touched && formControl.email.errors?.email
+                  formControl['email'].touched && formControl['email'].errors?.['email']
                 "
               >
-                Enter a valid email address
+               Digite um e-mail válido!
               </small>
             </div>
 
             <div class="field">
-              <label for="password" class="block">Password</label>
+              <label for="password" class="block">Senha</label>
 
               <p-password
                 required
                 formControlName="password"
-                placeholder="Type your password"
+                placeholder="Digite a sua senha"
                 [feedback]="false"
                 [toggleMask]="true"
                 styleClass="p-password p-component p-inputwrapper p-input-icon-right"
@@ -65,11 +61,11 @@
               <small
                 class="p-error"
                 *ngIf="
-                  formControl.password.touched &&
-                  formControl.password.errors?.required
+                  formControl['password'].touched &&
+                  formControl['password'].errors?.['required']
                 "
               >
-                Password is required
+                Senha é obrigatória!
               </small>
             </div>
 
@@ -79,18 +75,18 @@
                 type="submit"
                 (keydown.enter)="login()"
                 (onClick)="login()"
-                label="Sign in"
+                label="Entrar"
               ></p-button>
             </div>
           </form>
 
-          <span (click)="openDialogRecover()">Forgot password?</span>
+          <span (click)="openDialogRecover()">Esqueceu sua senha?</span>
         </div>
 
         <div class="footer">
-          <p>Don't have an account?</p>
-          <p-button routerLink="/signup" styleClass=" p-button-sm"
-            >Sign up</p-button
+          <p>Ainda não tem uma conta?</p>
+          <p-button routerLink="/signup" styleClass=" p-button-sm btn__secundary"
+            >Cadastre-se</p-button
           >
         </div>
       </p-card>

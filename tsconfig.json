@@ -37,7 +37,8 @@
 			"@services/*": ["./src/app/services/*"],
 			"@stores/*": ["./src/app/stores/*"],
 			"@utils/*": ["./src/app/utils/*"],
-			"@environments/*": ["./src/environments/*"]
+			"@environments/*": ["./src/environments/*"],
+      "@styles/*": ["./src/app/styles/*"]
 		}
   },
   "angularCompilerOptions": {

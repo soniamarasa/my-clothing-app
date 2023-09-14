@@ -1,5 +1,9 @@
 :host {
   & ::ng-deep {
     min-width: 500px;
+
+    & .pages {
+      min-height: calc(100vh - 190px);
+    }
   }
 }

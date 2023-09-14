@@ -1,37 +1,50 @@
 :host {
   & ::ng-deep {
-    min-width: 500px;
-    div {
+    & .home {
+      min-width: 500px;
       text-align: center;
-    }
 
-    h1,
-    #date {
-      margin: 0;
-    }
+      & h1,
+      #date {
+        margin: 0;
+      }
 
-    h1 {
-      padding-top: 20px;
-    }
+      & h1 {
+        padding-top: 20px;
+      }
 
-    #home,
-    h4 {
-      position: absolute;
-      right: 2rem;
-      top: 1.5rem;
-      cursor: pointer;
-      margin: 0;
-    }
+      & #home,
+      h4 {
+        position: absolute;
+        right: 2rem;
+        top: 1.5rem;
+        cursor: pointer;
+        margin: 0;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+      }
 
-    #home {
-      top: 21px;
-      font-size: 1.5rem;
-    }
+      & #username img {
+        width: 2rem !important;
+        height: 2rem !important;
+        min-width: 2rem !important;
+      }
 
-    i:hover {
-      opacity: 0.7;
-    }
+      & #home {
+        top: 21px;
+        font-size: 1.5rem;
+      }
 
+      & i:hover {
+        opacity: 0.7;
+      }
+
+      & .menu__pages {
+        display: flex !important;
+        justify-content: center !important;
+      }
+    }
     @media (max-width: 768px) {
       h4 {
         display: none;

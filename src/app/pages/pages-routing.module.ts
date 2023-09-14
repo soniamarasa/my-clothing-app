@@ -14,7 +14,7 @@ const routes: Routes = [
     path: '',
     component: PagesComponent,
     canActivate: [AuthGuard],
-    title: 'Weekly Planner',
+    title: 'Meu Vestuário',
     children: [
       {
         path: '',
@@ -22,8 +22,68 @@ const routes: Routes = [
         component: HomeComponent,
       },
       {
-        path: 'account',
-        title: 'Weekly Planner | My account',
+        path: 'accessories',
+        title: 'Acessórios',
+        component: AccountComponent,
+      },
+      {
+        path: 'clothes',
+        title: 'Roupas',
+        component: AccountComponent,
+      },
+      {
+        path: 'shoes',
+        title: 'Sapatos',
+        component: AccountComponent,
+      },
+      {
+        path: 'bandanas',
+        title: 'Bandanas',
+        component: AccountComponent,
+      },
+      {
+        path: 'handbags',
+        title: 'Bolsas',
+        component: AccountComponent,
+      },
+      {
+        path: 'categories',
+        title: 'Categorias',
+        component: AccountComponent,
+      },
+      {
+        path: 'tags',
+        title: 'Tags',
+        component: AccountComponent,
+      },
+      {
+        path: 'places',
+        title: 'Locais',
+        component: AccountComponent,
+      },
+      {
+        path: 'looks',
+        title: 'Looks',
+        component: AccountComponent,
+      },
+      {
+        path: 'planned-looks',
+        title: 'Looks Planejados',
+        component: AccountComponent,
+      },
+      {
+        path: 'used-looks',
+        title: 'Looks Usados',
+        component: AccountComponent,
+      },
+      {
+        path: 'gym',
+        title: 'Academia',
+        component: AccountComponent,
+      },
+      {
+        path: 'specials',
+        title: 'Especiais',
         component: AccountComponent,
       },
     ],
@@ -35,12 +95,12 @@ const routes: Routes = [
   },
   {
     path: 'password-reset/:token',
-    title: 'Weekly Planner | Password',
+    title: 'Password',
     component: PasswordRecoverComponent,
   },
   {
     path: 'signup',
-    title: 'Weekly Planner | Sign up',
+    title: 'Sign up',
     component: RegistrationComponent,
   },
   {

@@ -1,5 +1,8 @@
-<div>
-  <img *ngIf="gender == 'female'" src="assets/woman-hair-svg.svg" />
-  <img *ngIf="gender == 'male'" src="assets/man-hair-svg.svg" />
-  <i *ngIf="gender === ''" class="fa-solid fa-user"></i>
-</div>
+<ng-container *ngIf="!email.length; else gravatar">
+  <div class="user__default">
+    <i *ngIf="gender === ''" class="fa-solid fa-user"></i>
+  </div>
+</ng-container>
+<ng-template #gravatar>
+  <img ngxGravatar [email]="email" [size]="100" />
+</ng-template>
