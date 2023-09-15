@@ -22,8 +22,11 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ChartModule } from 'primeng/chart';
 import { MenuModule } from 'primeng/menu';
-import { GravatarModule } from 'ngx-gravatar';
 import { MenubarModule } from 'primeng/menubar';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+
+import { GravatarModule } from 'ngx-gravatar';
 
 import { UsersFacade } from '@facades/users.facade';
 
@@ -35,6 +38,8 @@ import { RegistrationComponent } from './registration/registration.component';
 import { HomeComponent } from './home/home.component';
 import { AccountComponent } from './account/account.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ClothesComponent } from './clothes/clothes.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 //Componentes
 import { PasswordRecoverComponent } from './password-recover/password-recover.component';
@@ -45,7 +50,7 @@ import { MenuComponent } from '../components/menu/menu.component';
 
 //Dialogs
 import { RecoverDialogComponent } from './auth/recover-dialog/recover-dialog.component';
-
+import { ItemDialog } from '../components/dialogs/item-dialog/item-dialog.component';
 
 @NgModule({
   declarations: [
@@ -53,10 +58,14 @@ import { RecoverDialogComponent } from './auth/recover-dialog/recover-dialog.com
     AuthComponent,
     HomeComponent,
     RecoverDialogComponent,
+    ItemDialog,
     RegistrationComponent,
     PasswordRecoverComponent,
     AccountComponent,
     NotFoundComponent,
+    ClothesComponent,
+    CategoriesComponent,
+
     HeaderComponent,
     FooterComponent,
     UserImgComponent,
@@ -86,6 +95,9 @@ import { RecoverDialogComponent } from './auth/recover-dialog/recover-dialog.com
     ChartModule,
     MenuModule,
     MenubarModule,
+    TableModule,
+    TagModule,
+
     GravatarModule,
     PagesRoutingModule,
   ],

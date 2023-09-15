@@ -1,0 +1,108 @@
+
+
+<form class="p-dialog-content-wrapper" [formGroup]="itemForm">
+  <div class="formgrid grid">
+    <div class="field col-6">
+      <label for="name">Nome</label>
+      <input formControlName="name" id="name" type="text" pInputText />
+      <ng-container *ngIf="itemForm.get('name')?.touched">
+        <small class="p-error" *ngIf="itemForm.get('name')?.errors">
+          Digite o nome.
+        </small>
+      </ng-container>
+    </div>
+
+    <div class="field col-6">//COLOR</div>
+  </div>
+
+  <div class="formgrid grid">
+    <div class="field col-6">
+      <ng-container>
+        <p-dropdown
+          formControlName="category"
+          inputId="category"
+          name="category"
+          [options]="categories"
+          placeholder="Selecione a categoria"
+          optionValue="name"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+      </ng-container>
+      <ng-container *ngIf="itemForm.get('type')?.touched">
+        <small class="p-error" *ngIf="itemForm.get('type')?.errors">
+          Selecione a categoria.
+        </small>
+      </ng-container>
+    </div>
+
+    <div class="field col-6">
+      <ng-container>
+        <p-dropdown
+          formControlName="tag"
+          inputId="tag"
+          name="tag"
+          [options]="tags"
+          placeholder="Selecione a tag"
+          optionValue="name"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+      </ng-container>
+      <ng-container *ngIf="itemForm.get('tag')?.touched">
+        <small class="p-error" *ngIf="itemForm.get('tag')?.errors">
+          Selecione a tag.
+        </small>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="formgrid grid">
+    <div class="field col">
+      <ng-container>
+        <p-dropdown
+          formControlName="type"
+          inputId="type"
+          name="type"
+          [options]="types"
+          placeholder="Selecione o tipo"
+          optionValue="name"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+      </ng-container>
+      <ng-container *ngIf="itemForm.get('type')?.touched">
+        <small class="p-error" *ngIf="itemForm.get('type')?.errors">
+          Selecione o tipo.
+        </small>
+      </ng-container>
+    </div>
+
+    <div class="field col">//icones</div>
+
+    <div class="field field-checkbox col">
+      <p-checkbox
+        formControlName="inactive"
+        inputId="inactive"
+        [binary]="true"
+      ></p-checkbox>
+      <label for="inactive">Inativar</label>
+    </div>
+  </div>
+
+
+</form>
+
+<div class="p-dialog-footer">
+  <p-button
+    label="Cancelar"
+    styleClass="p-button-text p-button-plain"
+    (onClick)="onClose()"
+  ></p-button>
+
+  <p-button
+    label="Salvar"
+    [disabled]="disabled"
+    (onClick)="onClose(true)"
+  ></p-button>
+</div>

@@ -1,0 +1,9 @@
+:host {
+  & ::ng-deep {
+    & .p-dialog-content-wrapper {
+      & button[type="submit"] {
+        // @include styleclass('hidden');
+      }
+    }
+  }
+}

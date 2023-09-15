@@ -1,0 +1,6 @@
+:host {
+  & ::ng-deep {
+    & .categories__container {
+    }
+  }
+}

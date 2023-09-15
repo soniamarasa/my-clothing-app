@@ -8,6 +8,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { PagesComponent } from './pages.component';
 import { PasswordRecoverComponent } from './password-recover/password-recover.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { ClothesComponent } from './clothes/clothes.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 const routes: Routes = [
   {
@@ -29,7 +31,7 @@ const routes: Routes = [
       {
         path: 'clothes',
         title: 'Roupas',
-        component: AccountComponent,
+        component: ClothesComponent,
       },
       {
         path: 'shoes',
@@ -49,7 +51,7 @@ const routes: Routes = [
       {
         path: 'categories',
         title: 'Categorias',
-        component: AccountComponent,
+        component: CategoriesComponent,
       },
       {
         path: 'tags',

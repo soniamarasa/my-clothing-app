@@ -1,0 +1,30 @@
+<div class="categories__container">
+  <h1>Minhas Roupas</h1>
+
+  <div class="categories__grid">
+    <div>
+      <p-table [value]="categories" [tableStyle]="{ 'min-width': '60rem' }">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="code" style="width: 20%">
+              Id <p-sortIcon field="_id"></p-sortIcon>
+            </th>
+            <th pSortableColumn="name" style="width: 20%">
+              Nome <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="category" style="width: 20%">
+              Tipo <p-sortIcon field="type"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+          <tr>
+            <td>{{ product._id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.type }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { IClothing } from '@interfaces/clothing';
+import { environment } from './../../environments/environment';
 
 export interface IGetClothesParams {
   createdAfter?: Date;
@@ -12,25 +13,32 @@ export interface IGetClothesParams {
 @Injectable({
   providedIn: 'root',
 })
-
 export class ClothesService {
   constructor(private readonly _http: HttpClient) {}
 
   getClothes(queryParams?: IGetClothesParams) {
-    return this._http.get<IClothing[]>('clothes', {
+    return this._http.get<IClothing[]>(`${environment.url}/clothes`, {
       params: (<unknown>queryParams) as HttpParams,
     });
   }
 
   getClothingById(id: IClothing['_id']) {
-    return this._http.get<IClothing>(`clothes/${id}`);
+    return this._http.get<IClothing>(`${environment.url}/clothes/${id}`);
   }
 
   newClothing(clothing: IClothing) {
-    return this._http.post<IClothing>('clothes', clothing);
+    return this._http.post<IClothing>(`${environment.url}/clothes`, clothing);
   }
 
   updateClothing(id: IClothing['_id'], body: IClothing) {
-    return this._http.put<IClothing>(`clothes/${id}`, body);
+    return this._http.put<IClothing>(`${environment.url}clothes/${id}`, body);
+  }
+
+  activate(id: IClothing['_id']) {
+    return this._http.put<IClothing>(`${environment.url}clothes/active/${id}`, {});
+  }
+
+  inactivate(id: IClothing['_id']) {
+    return this._http.put<IClothing>(`${environment.url}clothes/inactive${id}`, {});
   }
 }

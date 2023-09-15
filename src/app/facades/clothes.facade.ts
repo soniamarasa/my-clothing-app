@@ -72,6 +72,18 @@ export class ClothesFacade {
       .pipe(tap((clothing) => this.clothesStore.updateClothing(clothing)));
   }
 
+  activate(id: IClothing['_id']) {
+    return this.clothesService
+      .activate(id)
+      .pipe(tap((clothing) => this.clothesStore.updateClothing(clothing)));
+  }
+
+  inactivate(id: IClothing['_id']) {
+    return this.clothesService
+      .inactivate(id)
+      .pipe(tap((clothing) => this.clothesStore.updateClothing(clothing)));
+  }
+
   filterClothes(filter: IGetClothesParams) {
     this._filter.next({ ...this._filter.value, ...filter });
   }
