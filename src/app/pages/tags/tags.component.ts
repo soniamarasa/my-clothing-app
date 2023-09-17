@@ -4,74 +4,72 @@ import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
-import { CategoriesFacade } from '@facades/categories.facade';
-import { categoryTypes } from '@utils/valueTypes';
-import { ICategory } from '@interfaces/category';
+import { TagsFacade } from '@facades/tags.facade';
+import { ITag } from '@interfaces/tag';
 
 import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.component';
 
 @Component({
-  selector: 'app-categories',
-  templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.scss'],
+  selector: 'app-tags',
+  templateUrl: './tags.component.html',
+  styleUrls: ['./tags.component.scss'],
   providers: [DialogService, ConfirmationService],
 })
-export class CategoriesComponent implements OnInit, OnDestroy {
+export class TagsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   ref?: DynamicDialogRef;
 
-  categories: ICategory[] = [];
+  tags: ITag[] = [];
 
   loading: boolean = true;
 
-  readonly categories$ = this.categoriesFacade.categoriesState$.pipe(
-    map((categories: ICategory[]) => {
-      return categories;
+  readonly tags$ = this.tagsFacade.tagsState$.pipe(
+    map((tags: ITag[]) => {
+      return tags;
     })
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private categoriesFacade: CategoriesFacade
+    private tagsFacade: TagsFacade
   ) {}
 
   ngOnInit(): void {
     this.subs.add(
-      this.categories$.subscribe((categories: ICategory[]) => {
-        this.categories = categories;
+      this.tags$.subscribe((tags: ITag[]) => {
+       
+        this.tags = tags;
         this.loading = false;
       })
     );
   }
 
-  openDialog(category?: ICategory) {
+  openDialog(tag?: ITag) {
     const ref = this._dialogService.open(ItemDialog, {
-      header: category ? ' Editar' : 'Nova' + ' categoria',
+      header: tag ? ' Editar' : 'Nova' + ' tag',
       width: '400px',
-      data: { type: 'category', item: category, types: categoryTypes },
+      data: { type: 'tag', item: tag, types: [] },
       appendTo: 'body',
     });
 
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((categoryObj) => {
-        if (categoryObj) {
-          categoryObj._id
-            ? this.updateCategory(categoryObj)
-            : this.newCategory(categoryObj);
+      (ref as DynamicDialogRef).onClose.subscribe((tagObj) => {
+        if (tagObj) {
+          tagObj._id ? this.updateTag(tagObj) : this.newTag(tagObj);
         }
       })
     );
   }
 
-  newCategory(category: ICategory) {
+  newTag(tag: ITag) {
     this.subs.add(
-      this.categoriesFacade.newCategory(category).subscribe({
-        next: (category) => {
+      this.tagsFacade.newTag(tag).subscribe({
+        next: (tag) => {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Categoria criada com sucesso!',
+            summary: 'Tag criada com sucesso!',
             icon: 'fa-solid fa-check',
           });
         },
@@ -81,7 +79,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível criar essa categoria. Tente novamente mais tarde.',
+              'Não foi possível criar essa tag. Tente novamente mais tarde.',
             icon: 'fa-solid fa-exclamation-circle',
           });
         },
@@ -89,14 +87,14 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     );
   }
 
-  updateCategory(category: ICategory) {
+  updateTag(tag: ITag) {
     this.subs.add(
-      this.categoriesFacade.updateCategory(category).subscribe({
-        next: (category) => {
+      this.tagsFacade.updateTag(tag).subscribe({
+        next: (tag) => {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Categoria atualizada com sucesso!',
+            summary: 'Tag atualizada com sucesso!',
             icon: 'fa-solid fa-check',
           });
         },
@@ -106,14 +104,13 @@ export class CategoriesComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível atualizar essa categoria. Tente novamente mais tarde.',
+              'Não foi possível atualizar essa tag. Tente novamente mais tarde.',
             icon: 'fa-solid fa-exclamation-circle',
           });
         },
       })
     );
   }
-
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

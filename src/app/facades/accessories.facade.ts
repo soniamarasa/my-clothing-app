@@ -77,9 +77,9 @@ export class AccessoriesFacade {
       );
   }
 
-  updateAccessory(id: IAccessory['_id'], body: IAccessory) {
+  updateAccessory(accessory: IAccessory) {
     return this.accessoriesService
-      .updateAccessory(id, body)
+      .updateAccessory(accessory)
       .pipe(
         tap((accessory) => this.accessoriesStore.updateAccessory(accessory))
       );

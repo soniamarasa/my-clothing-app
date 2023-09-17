@@ -83,7 +83,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   getAvatar(e:any){
-   console.log(e.target.value)
+
    this.email = e.target.value;
   }
 

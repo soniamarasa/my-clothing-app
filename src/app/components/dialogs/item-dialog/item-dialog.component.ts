@@ -21,15 +21,16 @@ export class ItemDialog implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   types: any[] = [];
+  showRow2 = false;
+  showIcon = false;
+  showType = false;
   categories: ICategory[] = [];
   tags: ITag[] = [];
 
   formHasChanged = false;
   ref?: DynamicDialogRef;
 
-  disabled = true;
-
-  get dialogData() {
+  get dialogData(): any {
     return this._config.data;
   }
 
@@ -48,6 +49,7 @@ export class ItemDialog implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.unboxItemForm();
+    this.types = this.dialogData.types;
   }
 
   get formValue() {
@@ -56,8 +58,10 @@ export class ItemDialog implements OnInit, OnDestroy {
 
   private unboxItemForm() {
     return new Promise<void>((resolve) => {
+  
       if (this.dialogData) {
-        if (this._config.data.type === 'clothing') {
+        if (this.dialogData.type === 'clothing') {
+          this.showRow2 = true;
           this.itemForm.addControl(
             'category',
             this._fb.control(null, [Validators.required])
@@ -68,18 +72,16 @@ export class ItemDialog implements OnInit, OnDestroy {
             this._fb.control(null, [Validators.required])
           );
 
-          this.itemForm.addControl(
-            'inactive',
-            this._fb.control(false, [Validators.required])
-          );
+          this.itemForm.addControl('inactive', this._fb.control(false));
         }
 
         if (
-          this._config.data.type === 'accessory' &&
-          this._config.data.type === 'category' &&
-          this._config.data.type === 'clothing' &&
-          this._config.data.type === 'shoe'
+          this.dialogData.type === 'accessory' ||
+          this.dialogData.type === 'category' ||
+          this.dialogData.type === 'clothing' ||
+          this.dialogData.type === 'shoe'
         ) {
+          this.showType = true;
           this.itemForm.addControl(
             'type',
             this._fb.control(null, [Validators.required])
@@ -87,16 +89,17 @@ export class ItemDialog implements OnInit, OnDestroy {
         }
 
         if (
-          this._config.data.type === 'accessory' &&
-          this._config.data.type === 'tag'
+          this.dialogData.type === 'accessory' ||
+          this.dialogData.type === 'tag'
         ) {
+          this.showIcon = true;
           this.itemForm.addControl(
             'icon',
             this._fb.control(null, [Validators.required])
           );
         }
 
-        if (this.dialogData.item._id) {
+        if (this.dialogData?.item?._id) {
           this.itemForm.addControl(
             '_id',
             this._fb.control(this.dialogData.item._id, [Validators.required])
@@ -118,6 +121,10 @@ export class ItemDialog implements OnInit, OnDestroy {
 
       this._ref.close(data);
     }
+  }
+
+  emoji(e: any) {
+   this.itemForm.controls['icon'].setValue(e);
   }
 
   ngOnDestroy(): void {

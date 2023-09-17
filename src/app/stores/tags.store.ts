@@ -14,12 +14,9 @@ export class TagsStore {
   constructor() {}
 
   updateTags(tags: ITag[]) {
-    const state = this._tagsState.value;
+    let data = [];
 
-    const data = {
-      ...state,
-      ...tags,
-    };
+    data.push(...tags);
 
     this._tagsState.next(data);
 

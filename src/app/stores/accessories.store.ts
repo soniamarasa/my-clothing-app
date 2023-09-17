@@ -16,10 +16,7 @@ export class AccessoriesStore {
   updateAccessories(accessories: IAccessory[]) {
     const state = this._accessoriesState.value;
 
-    const data = {
-      ...state,
-      ...accessories,
-    };
+    const data = [...state, ...accessories];
 
     this._accessoriesState.next(data);
 

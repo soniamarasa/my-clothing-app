@@ -4,74 +4,71 @@ import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
-import { CategoriesFacade } from '@facades/categories.facade';
-import { categoryTypes } from '@utils/valueTypes';
-import { ICategory } from '@interfaces/category';
+import { PlacesFacade } from '@facades/places.facade';
+import { IPlace } from '@interfaces/place';
 
 import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.component';
 
 @Component({
-  selector: 'app-categories',
-  templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.scss'],
+  selector: 'app-places',
+  templateUrl: './places.component.html',
+  styleUrls: ['./places.component.scss'],
   providers: [DialogService, ConfirmationService],
 })
-export class CategoriesComponent implements OnInit, OnDestroy {
+export class PlacesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   ref?: DynamicDialogRef;
 
-  categories: ICategory[] = [];
+  places: IPlace[] = [];
 
   loading: boolean = true;
 
-  readonly categories$ = this.categoriesFacade.categoriesState$.pipe(
-    map((categories: ICategory[]) => {
-      return categories;
+  readonly places$ = this.placesFacade.placesState$.pipe(
+    map((places: IPlace[]) => {
+      return places;
     })
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private categoriesFacade: CategoriesFacade
+    private placesFacade: PlacesFacade
   ) {}
 
   ngOnInit(): void {
     this.subs.add(
-      this.categories$.subscribe((categories: ICategory[]) => {
-        this.categories = categories;
+      this.places$.subscribe((places: IPlace[]) => {
+        this.places = places;
         this.loading = false;
       })
     );
   }
 
-  openDialog(category?: ICategory) {
+  openDialog(place?: IPlace) {
     const ref = this._dialogService.open(ItemDialog, {
-      header: category ? ' Editar' : 'Nova' + ' categoria',
+      header: place ? ' Editar' : 'Novo' + ' Local',
       width: '400px',
-      data: { type: 'category', item: category, types: categoryTypes },
+      data: { type: 'place', item: place, types: [] },
       appendTo: 'body',
     });
 
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((categoryObj) => {
-        if (categoryObj) {
-          categoryObj._id
-            ? this.updateCategory(categoryObj)
-            : this.newCategory(categoryObj);
+      (ref as DynamicDialogRef).onClose.subscribe((placeObj) => {
+        if (placeObj) {
+          placeObj._id ? this.updatePlace(placeObj) : this.newPlace(placeObj);
         }
       })
     );
   }
 
-  newCategory(category: ICategory) {
+  newPlace(place: IPlace) {
     this.subs.add(
-      this.categoriesFacade.newCategory(category).subscribe({
-        next: (category) => {
+      this.placesFacade.newPlace(place).subscribe({
+        next: (place) => {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Categoria criada com sucesso!',
+            summary: 'Local criado com sucesso!',
             icon: 'fa-solid fa-check',
           });
         },
@@ -81,7 +78,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível criar essa categoria. Tente novamente mais tarde.',
+              'Não foi possível criar esse Local. Tente novamente mais tarde.',
             icon: 'fa-solid fa-exclamation-circle',
           });
         },
@@ -89,14 +86,14 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     );
   }
 
-  updateCategory(category: ICategory) {
+  updatePlace(place: IPlace) {
     this.subs.add(
-      this.categoriesFacade.updateCategory(category).subscribe({
-        next: (category) => {
+      this.placesFacade.updatePlace(place).subscribe({
+        next: (place) => {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Categoria atualizada com sucesso!',
+            summary: 'Local atualizado com sucesso!',
             icon: 'fa-solid fa-check',
           });
         },
@@ -106,14 +103,13 @@ export class CategoriesComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível atualizar essa categoria. Tente novamente mais tarde.',
+              'Não foi possível atualizar esse Local. Tente novamente mais tarde.',
             icon: 'fa-solid fa-exclamation-circle',
           });
         },
       })
     );
   }
-
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

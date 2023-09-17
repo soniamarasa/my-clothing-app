@@ -4,15 +4,34 @@
 @import "../src/app/styles/theme.css";
 @import "../src/app/styles/variables.scss";
 @import "primeng/resources/primeng.css";
+@import "@ctrl/ngx-emoji-mart/picker";
 
 * {
   margin: 0;
 }
 
+body,
 .theme-butterfly {
   background-color: $tertiary-color;
   color: $senary-color !important;
-  font-family: "DM Mono", monospace;
+  font-family: "DM Mono", monospace !important;
+
+  //Scroll
+  scrollbar-width: thin;
+  scrollbar-color: $quinary-color $quaternary-color;
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: $quaternary-color;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: $quinary-color;
+    border-radius: 6px;
+  }
+}
+
+.p-button {
+  font-family: "DM Mono", monospace !important;
 }
 
 h1,
@@ -34,4 +53,40 @@ h4 {
     border-color: $quaternary-color;
     color: tertiary-color;
   }
+}
+
+//EMOJI
+.emoji-mart-dark {
+  font-family: "DM Mono", monospace !important;
+  color: #2f2e41;
+  border-color: $quinary-color;
+  background-color: $quaternary-color;
+}
+
+.emoji-mart-anchor {
+  color: #201f2c;
+}
+
+.emoji-mart-dark .emoji-mart-category-label span {
+  background-color: $quinary-color;
+  color: #fff;
+  border-radius: 0.6rem;
+}
+
+.emoji-mart-dark .emoji-mart-search input {
+  color: #fff;
+  border-color: #c2956e9c;
+  background-color: #c2956e9c;
+  margin-bottom: 1rem;
+  font-family: "DM Mono", monospace !important;
+}
+
+.emoji-mart-dark .emoji-mart-anchor:hover,
+.emoji-mart-dark .emoji-mart-anchor:focus,
+.emoji-mart-dark .emoji-mart-anchor-selected {
+  color: $primary-color;
+}
+
+.emoji-mart-search-icon {
+  top: 6px;
 }

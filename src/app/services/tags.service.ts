@@ -30,7 +30,7 @@ export class TagsService {
     return this._http.post<ITag>(`${environment.url}/tags`, tag);
   }
 
-  updateTag(id: ITag['_id'], body: ITag) {
-    return this._http.put<ITag>(`${environment.url}/tags/${id}`, body);
+  updateTag(tag: ITag) {
+    return this._http.put<ITag>(`${environment.url}/tags/${tag._id}`, tag);
   }
 }

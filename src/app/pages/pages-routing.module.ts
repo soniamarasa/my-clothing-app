@@ -10,6 +10,8 @@ import { PasswordRecoverComponent } from './password-recover/password-recover.co
 import { RegistrationComponent } from './registration/registration.component';
 import { ClothesComponent } from './clothes/clothes.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { TagsComponent } from './tags/tags.component';
+import { PlacesComponent } from './places/places.component';
 
 const routes: Routes = [
   {
@@ -56,12 +58,12 @@ const routes: Routes = [
       {
         path: 'tags',
         title: 'Tags',
-        component: AccountComponent,
+        component: TagsComponent,
       },
       {
         path: 'places',
         title: 'Locais',
-        component: AccountComponent,
+        component: PlacesComponent,
       },
       {
         path: 'looks',

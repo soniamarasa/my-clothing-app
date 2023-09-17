@@ -4,6 +4,9 @@
 
     & .pages {
       min-height: calc(100vh - 190px);
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 1rem;
     }
   }
 }

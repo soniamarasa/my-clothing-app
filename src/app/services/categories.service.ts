@@ -27,10 +27,16 @@ export class CategoriesService {
   }
 
   newCategory(category: ICategory) {
-    return this._http.post<ICategory>(`${environment.url}/categories`, category);
+    return this._http.post<ICategory>(
+      `${environment.url}/categories`,
+      category
+    );
   }
 
-  updateCategory(id: ICategory['_id'], body: ICategory) {
-    return this._http.put<ICategory>(`${environment.url}/categories/${id}`, body);
+  updateCategory(category: ICategory) {
+    return this._http.put<ICategory>(
+      `${environment.url}/categories/${category._id}`,
+      category
+    );
   }
 }

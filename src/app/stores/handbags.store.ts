@@ -15,12 +15,9 @@ export class HandbagsStore {
   constructor() {}
 
   updateHandbags(handbags: IHandbag[]) {
-    const state = this._handbagsState.value;
+    let data = [];
 
-    const data = {
-      ...state,
-      ...handbags,
-    };
+    data.push(...handbags);
 
     this._handbagsState.next(data);
 

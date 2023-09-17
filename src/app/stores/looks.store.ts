@@ -14,12 +14,9 @@ export class LooksStore {
   constructor() {}
 
   updateLooks(looks: ILook[]) {
-    const state = this._looksState.value;
+    let data = [];
 
-    const data = {
-      ...state,
-      ...looks,
-    };
+    data.push(...looks);
 
     this._looksState.next(data);
 

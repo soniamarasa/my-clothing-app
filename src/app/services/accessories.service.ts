@@ -31,7 +31,7 @@ export class AccessoriesService {
     return this._http.post<IAccessory>(`${environment.url}/accessories`, accessory);
   }
 
-  updateAccessory(id: IAccessory['_id'], body: IAccessory) {
-    return this._http.put<IAccessory>(`${environment.url}/accessories/${id}`, body);
+  updateAccessory(accessory: IAccessory) {
+    return this._http.put<IAccessory>(`${environment.url}/accessories/${accessory._id}`, accessory);
   }
 }

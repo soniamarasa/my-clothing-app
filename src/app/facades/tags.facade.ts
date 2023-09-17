@@ -63,9 +63,9 @@ export class TagsFacade {
       .pipe(tap((tag) => this.tagsStore.updateTag(tag)));
   }
 
-  updateTag(id: ITag['_id'], body: ITag) {
+  updateTag(tag: ITag) {
     return this.tagsService
-      .updateTag(id, body)
+      .updateTag(tag)
       .pipe(tap((tag) => this.tagsStore.updateTag(tag)));
   }
 

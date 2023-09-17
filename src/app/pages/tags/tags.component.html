@@ -1,0 +1,61 @@
+<div class="tags__container">
+  <h2>
+    <strong><i class="fa-solid fa-tag"></i> Tags </strong>
+
+    <p-button
+      label="Nova Tag"
+      icon="pi pi-plus"
+      (onClick)="openDialog()"
+    ></p-button>
+  </h2>
+
+  <div class="tags__grid">
+    <div>
+      <p-table
+        [paginator]="true"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[5, 15, 30]"
+        [value]="tags"
+        [tableStyle]="{ 'min-width': '30rem' }"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name">
+              Nome <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th style="width: 15%">Icone</th>
+            <th style="width: 15%">Ação</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-tag>
+          <tr>
+            <td>
+              <i [style.color]="tag.color" class="fa-solid fa-tag"></i>
+
+              {{ tag.name }}
+            </td>
+            <td>{{ tag.icon }}</td>
+            <td class="table__actions">
+              <p-button
+                icon="fa-solid fa-pen-to-square"
+                styleClass="p-button-rounded p-button-text"
+                (onClick)="openDialog(tag)"
+              ></p-button>
+              <!-- <p-button icon="pi pi-times"
+                styleClass="p-button-rounded p-button-danger p-button-text"></p-button> </td> -->
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="8">Nenhum resultado encontrado.</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          Total: {{ tags.length }}
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

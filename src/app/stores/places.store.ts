@@ -14,12 +14,9 @@ export class PlacesStore {
   constructor() {}
 
   updatePlaces(places: IPlace[]) {
-    const state = this._placesState.value;
+    let data = [];
 
-    const data = {
-      ...state,
-      ...places,
-    };
+    data.push(...places);
 
     this._placesState.next(data);
 

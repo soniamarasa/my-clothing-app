@@ -25,8 +25,12 @@ import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { FocusTrapModule } from 'primeng/focustrap';
 
 import { GravatarModule } from 'ngx-gravatar';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
 import { UsersFacade } from '@facades/users.facade';
 
@@ -40,6 +44,8 @@ import { AccountComponent } from './account/account.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ClothesComponent } from './clothes/clothes.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { TagsComponent } from './tags/tags.component';
+import { PlacesComponent } from './places/places.component';
 
 //Componentes
 import { PasswordRecoverComponent } from './password-recover/password-recover.component';
@@ -47,6 +53,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import { UserImgComponent } from '../components/user-img/user-img.component';
 import { MenuComponent } from '../components/menu/menu.component';
+import { EmojiComponent } from '../components/emoji/emoji.component';
 
 //Dialogs
 import { RecoverDialogComponent } from './auth/recover-dialog/recover-dialog.component';
@@ -65,7 +72,9 @@ import { ItemDialog } from '../components/dialogs/item-dialog/item-dialog.compon
     NotFoundComponent,
     ClothesComponent,
     CategoriesComponent,
-
+    TagsComponent,
+    PlacesComponent,
+    EmojiComponent,
     HeaderComponent,
     FooterComponent,
     UserImgComponent,
@@ -97,8 +106,13 @@ import { ItemDialog } from '../components/dialogs/item-dialog/item-dialog.compon
     MenubarModule,
     TableModule,
     TagModule,
+    ColorPickerModule,
+    OverlayPanelModule,
+    FocusTrapModule,
 
     GravatarModule,
+    PickerComponent,
+
     PagesRoutingModule,
   ],
   providers: [DialogService, ConfirmationService, MessageService],

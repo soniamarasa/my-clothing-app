@@ -66,9 +66,9 @@ export class PlacesFacade {
       .pipe(tap((place) => this.placesStore.updatePlace(place)));
   }
 
-  updatePlace(id: IPlace['_id'], body: IPlace) {
+  updatePlace(place: IPlace) {
     return this.placesService
-      .updatePlace(id, body)
+      .updatePlace(place)
       .pipe(tap((place) => this.placesStore.updatePlace(place)));
   }
 

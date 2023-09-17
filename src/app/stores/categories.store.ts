@@ -16,12 +16,9 @@ export class CategoriesStore {
   constructor() {}
 
   updateCategories(categories: ICategory[]) {
-    const state = this._categoriesState.value;
+    let data = [];
 
-    const data = {
-      ...state,
-      ...categories,
-    };
+    data.push(...categories);
 
     this._categoriesState.next(data);
 

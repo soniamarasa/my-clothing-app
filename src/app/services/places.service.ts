@@ -30,7 +30,10 @@ export class PlacesService {
     return this._http.post<IPlace>(`${environment.url}/places`, place);
   }
 
-  updatePlace(id: IPlace['_id'], body: IPlace) {
-    return this._http.put<IPlace>(`${environment.url}/places/${id}`, body);
+  updatePlace(place: IPlace) {
+    return this._http.put<IPlace>(
+      `${environment.url}/places/${place._id}`,
+      place
+    );
   }
 }

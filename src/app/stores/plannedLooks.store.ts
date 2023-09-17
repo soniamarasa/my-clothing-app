@@ -16,12 +16,9 @@ export class PlannedLooksStore {
   constructor() {}
 
   updatePlannedLooks(plannedLooks: IPlannedLook[]) {
-    const state = this._plannedLooksState.value;
+    let data = [];
 
-    const data = {
-      ...state,
-      ...plannedLooks,
-    };
+    data.push(...plannedLooks);
 
     this._plannedLooksState.next(data);
 

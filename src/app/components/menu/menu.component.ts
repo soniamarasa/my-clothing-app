@@ -20,7 +20,7 @@ export class MenuComponent implements OnInit {
         items: [
           {
             label: 'Acessórios',
-            icon: 'fa-solid fa-socks',
+            icon: 'fa-solid fa-glasses',
             routerLink: '/accessories',
           },
           {
@@ -41,7 +41,7 @@ export class MenuComponent implements OnInit {
           },
           {
             label: 'Sapatos',
-            icon: 'fa-solid fa-socks',
+            icon: 'fa-solid fa-shoe-prints',
             routerLink: '/shoes',
           },
         ],
@@ -64,7 +64,7 @@ export class MenuComponent implements OnInit {
       },
       {
         label: 'Lugares',
-        icon: 'fa-solid fa-location-pin',
+        icon: 'fa-solid fa-tree-city',
         routerLink: '/places',
       },
       {

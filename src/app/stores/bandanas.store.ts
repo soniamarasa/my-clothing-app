@@ -16,12 +16,9 @@ export class BandanasStore {
   constructor() {}
 
   updateBandanas(bandanas: IBandana[]) {
-    const state = this._bandanasState.value;
+    let data = [];
 
-    const data = {
-      ...state,
-      ...bandanas,
-    };
+    data.push(...bandanas);
 
     this._bandanasState.next(data);
 

@@ -5,5 +5,40 @@
         // @include styleclass('hidden');
       }
     }
+
+    & .p-dropdown {
+      width: 100%;
+    }
+
+    .p-inputtext {
+      margin: 0;
+      width: 100%;
+    }
+
+    & .field__color {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 50px;
+    }
+    & .field__emoji {
+      display: flex;
+      gap: 1rem;
+      width: 100%;
+
+      #current__emoji {
+        font-size: 2rem;
+      }
+    }
+
+    & .p-colorpicker-preview {
+      cursor: pointer;
+      border: 1px solid #dd8e58;
+      width: 2.2rem;
+      height: 2.2rem;
+    }
+
+   
+  
   }
 }

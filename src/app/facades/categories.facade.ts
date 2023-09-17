@@ -67,9 +67,9 @@ export class CategoriesFacade {
       .pipe(tap((category) => this.categoriesStore.updateCategory(category)));
   }
 
-  updateCategory(id: ICategory['_id'], body: ICategory) {
+  updateCategory(category: ICategory) {
     return this.categoriesService
-      .updateCategory(id, body)
+      .updateCategory(category)
       .pipe(tap((category) => this.categoriesStore.updateCategory(category)));
   }
 
