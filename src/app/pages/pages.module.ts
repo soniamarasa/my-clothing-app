@@ -46,6 +46,10 @@ import { ClothesComponent } from './clothes/clothes.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { TagsComponent } from './tags/tags.component';
 import { PlacesComponent } from './places/places.component';
+import { AccessoriesComponent } from './accessories/accessories.component';
+import { HandbagsComponent } from './handbags/handbags.component';
+import { BandanasComponent } from './bandanas/bandanas.component';
+import { ShoesComponent } from './shoes/shoes.component';
 
 //Componentes
 import { PasswordRecoverComponent } from './password-recover/password-recover.component';
@@ -54,7 +58,7 @@ import { FooterComponent } from '../components/footer/footer.component';
 import { UserImgComponent } from '../components/user-img/user-img.component';
 import { MenuComponent } from '../components/menu/menu.component';
 import { EmojiComponent } from '../components/emoji/emoji.component';
-
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 //Dialogs
 import { RecoverDialogComponent } from './auth/recover-dialog/recover-dialog.component';
 import { ItemDialog } from '../components/dialogs/item-dialog/item-dialog.component';
@@ -74,6 +78,11 @@ import { ItemDialog } from '../components/dialogs/item-dialog/item-dialog.compon
     CategoriesComponent,
     TagsComponent,
     PlacesComponent,
+    AccessoriesComponent,
+    HandbagsComponent,
+    BandanasComponent,
+    ShoesComponent,
+
     EmojiComponent,
     HeaderComponent,
     FooterComponent,
@@ -112,7 +121,7 @@ import { ItemDialog } from '../components/dialogs/item-dialog/item-dialog.compon
 
     GravatarModule,
     PickerComponent,
-
+    EmojiModule,
     PagesRoutingModule,
   ],
   providers: [DialogService, ConfirmationService, MessageService],

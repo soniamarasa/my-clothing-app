@@ -30,8 +30,8 @@ export class ClothesService {
     return this._http.post<IClothing>(`${environment.url}/clothes`, clothing);
   }
 
-  updateClothing(id: IClothing['_id'], body: IClothing) {
-    return this._http.put<IClothing>(`${environment.url}clothes/${id}`, body);
+  updateClothing(clothing: IClothing) {
+    return this._http.put<IClothing>(`${environment.url}clothes/${clothing._id}`, clothing);
   }
 
   activate(id: IClothing['_id']) {

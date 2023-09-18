@@ -31,7 +31,7 @@ export class BandanasService {
     return this._http.post<IBandana>(`${environment.url}/bandanas`, bandana);
   }
 
-  updateBandana(id: IBandana['_id'], body: IBandana) {
-    return this._http.put<IBandana>(`${environment.url}/bandanas/${id}`, body);
+  updateBandana(bandana: IBandana) {
+    return this._http.put<IBandana>(`${environment.url}/bandanas/${bandana._id}`, bandana);
   }
 }

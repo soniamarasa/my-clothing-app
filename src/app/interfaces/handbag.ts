@@ -3,5 +3,4 @@ export interface IHandbag {
   userId?: string;
   name?: string;
   color?: string;
-  icon?: string | any;
 }

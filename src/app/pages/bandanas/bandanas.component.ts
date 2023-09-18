@@ -4,71 +4,73 @@ import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
-import { PlacesFacade } from '@facades/places.facade';
-import { IPlace } from '@interfaces/place';
+import { BandanasFacade } from '@facades/bandanas.facade';
+import { IBandana } from '@interfaces/bandana';
 
 import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.component';
 
 @Component({
-  selector: 'app-places',
-  templateUrl: './places.component.html',
-  styleUrls: ['./places.component.scss'],
+  selector: 'app-bandanas',
+  templateUrl: './bandanas.component.html',
+  styleUrls: ['./bandanas.component.scss'],
   providers: [DialogService, ConfirmationService],
 })
-export class PlacesComponent implements OnInit, OnDestroy {
+export class BandanasComponent implements OnInit, OnDestroy {
+  total: number = 0;
   private subs = new SubSink();
   ref?: DynamicDialogRef;
-  total: number = 0;
-  places: IPlace[] = [];
+  bandanas: IBandana[] = [];
   loading: boolean = true;
 
-  readonly places$ = this.placesFacade.placesState$.pipe(
-    map((places: IPlace[]) => {
-      return places;
+  readonly bandanas$ = this.bandanasFacade.bandanasState$.pipe(
+    map((bandanas: IBandana[]) => {
+      return bandanas;
     })
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private placesFacade: PlacesFacade
+    private bandanasFacade: BandanasFacade
   ) {}
 
   ngOnInit(): void {
     this.subs.add(
-      this.places$.subscribe((places: IPlace[]) => {
-        this.places = places;
+      this.bandanas$.subscribe((bandanas: IBandana[]) => {
+        this.bandanas = bandanas;
         this.loading = false;
-        this.total = places.length;
+        this.total = bandanas.length;
       })
     );
   }
 
-  openDialog(place?: IPlace) {
+  openDialog(bandana?: IBandana) {
     const ref = this._dialogService.open(ItemDialog, {
-      header: place ? ' Editar' : 'Novo' + ' Local',
+      header: bandana ? ' Editar' : 'Nova' + ' bandana',
       width: '450px',
-      data: { type: 'place', item: place, types: [] },
+      data: { type: 'bandana', item: bandana },
       appendTo: 'body',
     });
 
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((placeObj) => {
-        if (placeObj) {
-          placeObj._id ? this.updatePlace(placeObj) : this.newPlace(placeObj);
+      (ref as DynamicDialogRef).onClose.subscribe((bandanaObj) => {
+        if (bandanaObj) {
+          bandanaObj._id
+            ? this.updateBandana(bandanaObj)
+            : this.newBandana(bandanaObj);
         }
       })
     );
   }
 
-  newPlace(place: IPlace) {
+  newBandana(bandana: IBandana) {
     this.subs.add(
-      this.placesFacade.newPlace(place).subscribe({
-        next: (place) => {
+      this.bandanasFacade.newBandana(bandana).subscribe({
+        next: (bandana) => {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Local criado com sucesso!',
+            summary: 'Bandana criada com sucesso!',
             icon: 'fa-solid fa-check',
           });
         },
@@ -78,7 +80,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível criar esse Local. Tente novamente mais tarde.',
+              'Não foi possível criar essa bandana. Tente novamente mais tarde.',
             icon: 'fa-solid fa-exclamation-circle',
           });
         },
@@ -86,14 +88,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
     );
   }
 
-  updatePlace(place: IPlace) {
+  updateBandana(bandana: IBandana) {
     this.subs.add(
-      this.placesFacade.updatePlace(place).subscribe({
-        next: (place) => {
+      this.bandanasFacade.updateBandana(bandana).subscribe({
+        next: (bandana) => {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Local atualizado com sucesso!',
+            summary: 'Bandana atualizada com sucesso!',
             icon: 'fa-solid fa-check',
           });
         },
@@ -103,13 +105,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível atualizar esse Local. Tente novamente mais tarde.',
+              'Não foi possível atualizar essa bandana. Tente novamente mais tarde.',
             icon: 'fa-solid fa-exclamation-circle',
           });
         },
       })
     );
   }
+
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

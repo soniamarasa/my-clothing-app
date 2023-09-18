@@ -1,53 +1,49 @@
-<div class="tags__container">
+<div class="bandanas__container">
   <h2>
-    <strong><i class="fa-solid fa-tag"></i> Tags </strong>
+    <strong><i class="fa-solid fa-hat-wizard"></i> Bandanas </strong>
 
     <p-button
-      label="Nova Tag"
+      label="Nova Bandana"
       icon="pi pi-plus"
       (onClick)="openDialog()"
     ></p-button>
   </h2>
 
-  <div class="tags__grid">
+  <div class="bandanas__grid">
     <div>
       <p-table
-        #table
         [paginator]="true"
-        [rows]="10"
+        [rows]="5"
+        [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[5, 10, 15, 30]"
         [totalRecords]="total"
-        [value]="tags"
+        [value]="bandanas"
         [tableStyle]="{ 'min-width': '30rem' }"
-        [loading]="loading"
       >
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name">
               Nome <p-sortIcon field="name"></p-sortIcon>
             </th>
-            <th pSortableColumn="type">
-              Tipo <p-sortIcon field="type"></p-sortIcon>
-            </th>
-            <th style="width: 15%">Ação</th>
+
+            <th style="width: 10%">Ação</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-tag>
+        <ng-template pTemplate="body" let-bandana>
           <tr>
             <td>
-              <span class="badge" [style.background]="tag.color + '5c'"
-                >{{ tag.icon }} {{ tag.name }}
-              </span>
-            </td>
-            <td>
-              <i class="fa-solid fa-tag"></i>
-              {{ tag.type }}
+              <i
+                [style.color]="bandana.color"
+                class="fa-solid fa-hat-wizard"
+              ></i>
+
+              {{ bandana.name }}
             </td>
             <td class="table__actions">
               <p-button
                 icon="fa-solid fa-pen-to-square"
                 styleClass="p-button-rounded p-button-text"
-                (onClick)="openDialog(tag)"
+                (onClick)="openDialog(bandana)"
               ></p-button>
               <!-- <p-button icon="pi pi-times"
                 styleClass="p-button-rounded p-button-danger p-button-text"></p-button> </td> -->
@@ -60,7 +56,7 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="summary">
-          Total: {{ tags.length }}
+          Total: {{ bandanas.length }}
         </ng-template>
       </p-table>
     </div>

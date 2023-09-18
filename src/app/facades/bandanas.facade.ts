@@ -67,9 +67,9 @@ export class BandanasFacade {
       .pipe(tap((bandana) => this.bandanasStore.updateBandana(bandana)));
   }
 
-  updateBandana(id: IBandana['_id'], body: IBandana) {
+  updateBandana(bandana: IBandana) {
     return this.bandanasService
-      .updateBandana(id, body)
+      .updateBandana(bandana)
       .pipe(tap((bandana) => this.bandanasStore.updateBandana(bandana)));
   }
 

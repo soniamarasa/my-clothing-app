@@ -41,3 +41,10 @@ export const categoryTypes = [
   { name: 'Sapato' },
   { name: 'Acessório' },
 ];
+
+export const tagTypes = [
+  { name: 'Roupa' },
+  { name: 'Usos' },
+];
+
+

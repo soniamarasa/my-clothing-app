@@ -66,9 +66,9 @@ export class ShoesFacade {
       .pipe(tap((shoe) => this.shoesStore.updateShoe(shoe)));
   }
 
-  updateShoe(id: IShoe['_id'], body: IShoe) {
+  updateShoe(shoe: IShoe) {
     return this.shoesService
-      .updateShoe(id, body)
+      .updateShoe(shoe)
       .pipe(tap((shoe) => this.shoesStore.updateShoe(shoe)));
   }
 

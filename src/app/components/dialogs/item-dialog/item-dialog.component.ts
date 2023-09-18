@@ -9,6 +9,7 @@ import {
 } from 'primeng/dynamicdialog';
 
 import { CategoriesFacade } from '@facades/categories.facade';
+import { TagsFacade } from '@facades/tags.facade';
 import { ICategory } from '@root/src/app/interfaces/category';
 import { ITag } from '@root/src/app/interfaces/tag';
 
@@ -21,9 +22,10 @@ export class ItemDialog implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   types: any[] = [];
-  showRow2 = false;
+  showC1 = false;
   showIcon = false;
   showType = false;
+  showCategory = false;
   categories: ICategory[] = [];
   tags: ITag[] = [];
 
@@ -44,12 +46,13 @@ export class ItemDialog implements OnInit, OnDestroy {
     public _config: DynamicDialogConfig,
     public _dialogService: DialogService,
     private _fb: UntypedFormBuilder,
-    public categoriesFacade: CategoriesFacade
+    public categoriesFacade: CategoriesFacade,
+    public tagsFacade: TagsFacade
   ) {}
 
   ngOnInit(): void {
     this.unboxItemForm();
-    this.types = this.dialogData.types;
+    this.types = this.dialogData.types || [];
   }
 
   get formValue() {
@@ -58,13 +61,18 @@ export class ItemDialog implements OnInit, OnDestroy {
 
   private unboxItemForm() {
     return new Promise<void>((resolve) => {
-  
       if (this.dialogData) {
         if (this.dialogData.type === 'clothing') {
-          this.showRow2 = true;
-          this.itemForm.addControl(
-            'category',
-            this._fb.control(null, [Validators.required])
+          this.showC1 = true;
+
+          this.subs.add(
+            this.tagsFacade
+              .getTags()
+              .subscribe((tags: ITag[]) => {
+                this.tags = tags.filter(
+                  (obj) => obj.type === this.dialogData.category
+                );
+              })
           );
 
           this.itemForm.addControl(
@@ -76,10 +84,30 @@ export class ItemDialog implements OnInit, OnDestroy {
         }
 
         if (
-          this.dialogData.type === 'accessory' ||
-          this.dialogData.type === 'category' ||
           this.dialogData.type === 'clothing' ||
+          this.dialogData.type === 'accessory' ||
           this.dialogData.type === 'shoe'
+        ) {
+          this.subs.add(
+            this.categoriesFacade
+              .getCategories()
+              .subscribe((categories: ICategory[]) => {
+                this.categories = categories.filter(
+                  (obj) => obj.type === this.dialogData.category
+                );
+              })
+          );
+
+          this.showCategory = true;
+          this.itemForm.addControl(
+            'category',
+            this._fb.control(null, [Validators.required])
+          );
+        }
+
+        if (
+          this.dialogData.type === 'category' ||
+          this.dialogData.type === 'tag'
         ) {
           this.showType = true;
           this.itemForm.addControl(
@@ -89,7 +117,8 @@ export class ItemDialog implements OnInit, OnDestroy {
         }
 
         if (
-          this.dialogData.type === 'accessory' ||
+          this.dialogData.type === 'category' ||
+          this.dialogData.type === 'place' ||
           this.dialogData.type === 'tag'
         ) {
           this.showIcon = true;
@@ -124,7 +153,7 @@ export class ItemDialog implements OnInit, OnDestroy {
   }
 
   emoji(e: any) {
-   this.itemForm.controls['icon'].setValue(e);
+    this.itemForm.controls['icon'].setValue(e);
   }
 
   ngOnDestroy(): void {

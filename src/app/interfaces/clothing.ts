@@ -7,7 +7,6 @@ export interface IClothing {
   name?: string;
   color?: string;
   inactive: Boolean;
-  type: any,
   category: ICategory,
   tag: ITag,
 }

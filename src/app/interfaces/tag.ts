@@ -4,4 +4,5 @@ export interface ITag {
   name?: string;
   color?: string;
   icon?: string | any;
+  type?: string;
 }

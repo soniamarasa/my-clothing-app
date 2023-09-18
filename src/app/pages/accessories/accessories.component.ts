@@ -4,71 +4,73 @@ import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
-import { PlacesFacade } from '@facades/places.facade';
-import { IPlace } from '@interfaces/place';
+import { AccessoriesFacade } from '@facades/accessories.facade';
+import { IAccessory } from '@interfaces/accessory';
 
 import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.component';
 
 @Component({
-  selector: 'app-places',
-  templateUrl: './places.component.html',
-  styleUrls: ['./places.component.scss'],
+  selector: 'app-accessories',
+  templateUrl: './accessories.component.html',
+  styleUrls: ['./accessories.component.scss'],
   providers: [DialogService, ConfirmationService],
 })
-export class PlacesComponent implements OnInit, OnDestroy {
+export class AccessoriesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   ref?: DynamicDialogRef;
   total: number = 0;
-  places: IPlace[] = [];
+  accessories: IAccessory[] = [];
   loading: boolean = true;
 
-  readonly places$ = this.placesFacade.placesState$.pipe(
-    map((places: IPlace[]) => {
-      return places;
+  readonly accessories$ = this.accessoriesFacade.accessoriesState$.pipe(
+    map((accessories: IAccessory[]) => {
+      return accessories;
     })
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private placesFacade: PlacesFacade
+    private accessoriesFacade: AccessoriesFacade
   ) {}
 
   ngOnInit(): void {
     this.subs.add(
-      this.places$.subscribe((places: IPlace[]) => {
-        this.places = places;
+      this.accessories$.subscribe((accessories: IAccessory[]) => {
+        this.accessories = accessories;
         this.loading = false;
-        this.total = places.length;
+        this.total = accessories.length;
       })
     );
   }
 
-  openDialog(place?: IPlace) {
+  openDialog(accessory?: IAccessory) {
     const ref = this._dialogService.open(ItemDialog, {
-      header: place ? ' Editar' : 'Novo' + ' Local',
+      header: accessory ? ' Editar' : 'Novo' + ' acessório',
       width: '450px',
-      data: { type: 'place', item: place, types: [] },
+      data: { type: 'accessory', item: accessory, category: 'Acessório' },
       appendTo: 'body',
     });
 
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((placeObj) => {
-        if (placeObj) {
-          placeObj._id ? this.updatePlace(placeObj) : this.newPlace(placeObj);
+      (ref as DynamicDialogRef).onClose.subscribe((accessoryObj) => {
+        if (accessoryObj) {
+          accessoryObj._id
+            ? this.updateAceIAccessory(accessoryObj)
+            : this.newAceIAccessory(accessoryObj);
         }
       })
     );
   }
 
-  newPlace(place: IPlace) {
+  newAceIAccessory(accessory: IAccessory) {
     this.subs.add(
-      this.placesFacade.newPlace(place).subscribe({
-        next: (place) => {
+      this.accessoriesFacade.newAccessory(accessory).subscribe({
+        next: (accessory) => {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Local criado com sucesso!',
+            summary: 'Acessório criado com sucesso!',
             icon: 'fa-solid fa-check',
           });
         },
@@ -78,7 +80,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível criar esse Local. Tente novamente mais tarde.',
+              'Não foi possível criar esse acessório. Tente novamente mais tarde.',
             icon: 'fa-solid fa-exclamation-circle',
           });
         },
@@ -86,14 +88,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
     );
   }
 
-  updatePlace(place: IPlace) {
+  updateAceIAccessory(accessory: IAccessory) {
     this.subs.add(
-      this.placesFacade.updatePlace(place).subscribe({
-        next: (place) => {
+      this.accessoriesFacade.updateAccessory(accessory).subscribe({
+        next: (accessory) => {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Local atualizado com sucesso!',
+            summary: 'Acessório atualizado com sucesso!',
             icon: 'fa-solid fa-check',
           });
         },
@@ -103,13 +105,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível atualizar esse Local. Tente novamente mais tarde.',
+              'Não foi possível atualizar esse acessório. Tente novamente mais tarde.',
             icon: 'fa-solid fa-exclamation-circle',
           });
         },
       })
     );
   }
+
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

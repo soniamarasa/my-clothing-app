@@ -4,71 +4,75 @@ import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
-import { PlacesFacade } from '@facades/places.facade';
-import { IPlace } from '@interfaces/place';
+import { HandbagsFacade } from '@facades/handbags.facade';
+import { IHandbag } from '@interfaces/handbag';
 
 import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.component';
 
 @Component({
-  selector: 'app-places',
-  templateUrl: './places.component.html',
-  styleUrls: ['./places.component.scss'],
+  selector: 'app-handbags',
+  templateUrl: './handbags.component.html',
+  styleUrls: ['./handbags.component.scss'],
   providers: [DialogService, ConfirmationService],
 })
-export class PlacesComponent implements OnInit, OnDestroy {
+export class HandbagsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
-  ref?: DynamicDialogRef;
   total: number = 0;
-  places: IPlace[] = [];
+  ref?: DynamicDialogRef;
+
+  handbags: IHandbag[] = [];
+
   loading: boolean = true;
 
-  readonly places$ = this.placesFacade.placesState$.pipe(
-    map((places: IPlace[]) => {
-      return places;
+  readonly handbags$ = this.handbagsFacade.handbagsState$.pipe(
+    map((handbags: IHandbag[]) => {
+      return handbags;
     })
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private placesFacade: PlacesFacade
+    private handbagsFacade: HandbagsFacade
   ) {}
 
   ngOnInit(): void {
     this.subs.add(
-      this.places$.subscribe((places: IPlace[]) => {
-        this.places = places;
+      this.handbags$.subscribe((handbags: IHandbag[]) => {
+        this.handbags = handbags;
         this.loading = false;
-        this.total = places.length;
+        this.total = handbags.length;
       })
     );
   }
 
-  openDialog(place?: IPlace) {
+  openDialog(handbags?: IHandbag) {
     const ref = this._dialogService.open(ItemDialog, {
-      header: place ? ' Editar' : 'Novo' + ' Local',
+      header: handbags ? ' Editar' : 'Nova' + ' bolsa',
       width: '450px',
-      data: { type: 'place', item: place, types: [] },
+      data: { type: 'handbags', item: handbags},
       appendTo: 'body',
     });
 
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((placeObj) => {
-        if (placeObj) {
-          placeObj._id ? this.updatePlace(placeObj) : this.newPlace(placeObj);
+      (ref as DynamicDialogRef).onClose.subscribe((handbagsObj) => {
+        if (handbagsObj) {
+          handbagsObj._id
+            ? this.updateHandbag(handbagsObj)
+            : this.newHandbag(handbagsObj);
         }
       })
     );
   }
 
-  newPlace(place: IPlace) {
+  newHandbag(handbags: IHandbag) {
     this.subs.add(
-      this.placesFacade.newPlace(place).subscribe({
-        next: (place) => {
+      this.handbagsFacade.newHandbag(handbags).subscribe({
+        next: (handbags) => {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Local criado com sucesso!',
+            summary: 'Bolsa criada com sucesso!',
             icon: 'fa-solid fa-check',
           });
         },
@@ -78,7 +82,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível criar esse Local. Tente novamente mais tarde.',
+              'Não foi possível criar essa bolsa. Tente novamente mais tarde.',
             icon: 'fa-solid fa-exclamation-circle',
           });
         },
@@ -86,14 +90,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
     );
   }
 
-  updatePlace(place: IPlace) {
+  updateHandbag(handbags: IHandbag) {
     this.subs.add(
-      this.placesFacade.updatePlace(place).subscribe({
-        next: (place) => {
+      this.handbagsFacade.updateHandbag(handbags).subscribe({
+        next: (handbags) => {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Local atualizado com sucesso!',
+            summary: 'Bolsa atualizada com sucesso!',
             icon: 'fa-solid fa-check',
           });
         },
@@ -103,13 +107,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível atualizar esse Local. Tente novamente mais tarde.',
+              'Não foi possível atualizar essa bolsa. Tente novamente mais tarde.',
             icon: 'fa-solid fa-exclamation-circle',
           });
         },
       })
     );
   }
+
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

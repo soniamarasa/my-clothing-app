@@ -31,7 +31,7 @@ export class ShoesService {
     return this._http.post<IShoe>(`${environment.url}/shoes`, shoe);
   }
 
-  updateShoe(id: IShoe['_id'], body: IShoe) {
-    return this._http.put<IShoe>(`${environment.url}/shoes/${id}`, body);
+  updateShoe(shoe: IShoe) {
+    return this._http.put<IShoe>(`${environment.url}/shoes/${shoe._id}`, shoe);
   }
 }

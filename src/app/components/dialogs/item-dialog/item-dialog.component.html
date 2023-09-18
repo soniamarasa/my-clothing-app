@@ -13,16 +13,27 @@
 
       <div class="field col field__color">
         <label for="color">Cor</label>
-        <p-colorPicker appendTo="body" formControlName="color" id="color"></p-colorPicker>
+        <p-colorPicker
+          appendTo="body"
+          formControlName="color"
+          id="color"
+        ></p-colorPicker>
       </div>
     </div>
 
-    <div *ngIf="showRow2" class="formgrid grid">
-      <div class="field col-6">
-        <ng-container>
-          <p-dropdown formControlName="category" inputId="category" name="category" [options]="categories"
-            placeholder="Selecione a categoria" optionValue="name" optionLabel="name" appendTo="body"></p-dropdown>
-        </ng-container>
+    <div lass="formgrid grid">
+      <div *ngIf="showCategory" [class.col-6]="dialogData.type === 'clothing'" [class.col]]="dialogData.type !== 'clothing'" class="field">
+        <label for="category">Categoria</label>
+        <p-dropdown
+          formControlName="category"
+          inputId="category"
+          name="category"
+          [options]="categories"
+          placeholder="Selecione a categoria"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+
         <ng-container *ngIf="itemForm.get('type')?.touched">
           <small class="p-error" *ngIf="itemForm.get('type')?.errors">
             Selecione a categoria.
@@ -30,11 +41,18 @@
         </ng-container>
       </div>
 
-      <div class="field col-6">
-        <ng-container>
-          <p-dropdown formControlName="tag" inputId="tag" name="tag" [options]="tags" placeholder="Selecione a tag"
-            optionValue="name" optionLabel="name" appendTo="body"></p-dropdown>
-        </ng-container>
+      <div *ngIf="showC1" class="field col-6">
+        <label for="tag">Tag</label>
+        <p-dropdown
+          formControlName="tag"
+          inputId="tag"
+          name="tag"
+          [options]="tags"
+          placeholder="Selecione a tag"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+
         <ng-container *ngIf="itemForm.get('tag')?.touched">
           <small class="p-error" *ngIf="itemForm.get('tag')?.errors">
             Selecione a tag.
@@ -46,8 +64,16 @@
     <div class="formgrid grid">
       <div *ngIf="showType" class="field col">
         <ng-container>
-          <p-dropdown formControlName="type" inputId="type" name="type" [options]="types" placeholder="Selecione o tipo"
-            optionValue="name" optionLabel="name" appendTo="body"></p-dropdown>
+          <p-dropdown
+            formControlName="type"
+            inputId="type"
+            name="type"
+            [options]="types"
+            placeholder="Selecione o tipo"
+            optionValue="name"
+            optionLabel="name"
+            appendTo="body"
+          ></p-dropdown>
         </ng-container>
         <ng-container *ngIf="itemForm.get('type')?.touched">
           <small class="p-error" *ngIf="itemForm.get('type')?.errors">
@@ -56,28 +82,46 @@
         </ng-container>
       </div>
 
-      <div *ngIf="showIcon" class="col field__emoji">
-        <p-button (click)="op.toggle($event)" styleClass="p-button-rounded" icon="fa-solid fa-icons"
-          label="Escolha um emoji"></p-button>
+      <div *ngIf="showIcon" class="field col field__emoji">
+        <p-button
+          (click)="op.toggle($event)"
+          styleClass="p-button-rounded"
+          icon="fa-solid fa-icons"
+          label="Emoji"
+        ></p-button>
         <span id="current__emoji" (click)="op.toggle($event)">{{
           itemForm.get("icon")?.value
-          }}</span>
+        }}</span>
+        <p-overlayPanel appendTo="body" #op>
+          <app-emoji (currentEmoji)="emoji($event)"></app-emoji>
+        </p-overlayPanel>
       </div>
+    </div>
 
-      <div *ngIf="showRow2" class="field field-checkbox col">
-        <p-checkbox formControlName="inactive" inputId="inactive" [binary]="true"></p-checkbox>
+    <div lass="formgrid grid">
+      <div *ngIf="showC1 && dialogData?.item" class="field field-checkbox col-12">
+        <p-checkbox
+          formControlName="inactive"
+          inputId="inactive"
+          [binary]="true"
+        ></p-checkbox>
         <label for="inactive">Inativar</label>
       </div>
     </div>
   </form>
 
   <div class="p-dialog-footer">
-    <p-button label="Cancelar" styleClass="p-button-text p-button-plain" (onClick)="onClose()"></p-button>
+    <p-button
+      label="Cancelar"
+      styleClass="p-button-text p-button-plain"
+      (onClick)="onClose()"
+    ></p-button>
 
-    <p-button pFocusTrap label="Salvar" [disabled]="itemForm.invalid" (onClick)="onClose(true)"></p-button>
+    <p-button
+      pFocusTrap
+      label="Salvar"
+      [disabled]="itemForm.invalid"
+      (onClick)="onClose(true)"
+    ></p-button>
   </div>
 </div>
-
-<p-overlayPanel appendTo="body" #op>
-  <app-emoji (currentEmoji)="emoji($event)"></app-emoji>
-</p-overlayPanel>

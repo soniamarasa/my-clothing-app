@@ -30,7 +30,7 @@ export class HandbagsService {
     return this._http.post<IHandbag>(`${environment.url}/handbags`, handbag);
   }
 
-  updateHandbag(id: IHandbag['_id'], body: IHandbag) {
-    return this._http.put<IHandbag>(`${environment.url}/handbags/${id}`, body);
+  updateHandbag(handbag: IHandbag) {
+    return this._http.put<IHandbag>(`${environment.url}/handbags/${handbag._id}`, handbag);
   }
 }

@@ -12,6 +12,10 @@ import { ClothesComponent } from './clothes/clothes.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { TagsComponent } from './tags/tags.component';
 import { PlacesComponent } from './places/places.component';
+import { AccessoriesComponent } from './accessories/accessories.component';
+import { ShoesComponent } from './shoes/shoes.component';
+import { BandanasComponent } from './bandanas/bandanas.component';
+import { HandbagsComponent } from './handbags/handbags.component';
 
 const routes: Routes = [
   {
@@ -28,7 +32,7 @@ const routes: Routes = [
       {
         path: 'accessories',
         title: 'Acessórios',
-        component: AccountComponent,
+        component: AccessoriesComponent,
       },
       {
         path: 'clothes',
@@ -38,17 +42,17 @@ const routes: Routes = [
       {
         path: 'shoes',
         title: 'Sapatos',
-        component: AccountComponent,
+        component: ShoesComponent,
       },
       {
         path: 'bandanas',
         title: 'Bandanas',
-        component: AccountComponent,
+        component: BandanasComponent,
       },
       {
         path: 'handbags',
         title: 'Bolsas',
-        component: AccountComponent,
+        component: HandbagsComponent,
       },
       {
         path: 'categories',

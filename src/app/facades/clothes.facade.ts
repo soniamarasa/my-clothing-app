@@ -66,9 +66,9 @@ export class ClothesFacade {
       .pipe(tap((clothing) => this.clothesStore.updateClothing(clothing)));
   }
 
-  updateClothing(id: IClothing['_id'], body: IClothing) {
+  updateClothing(clothing: IClothing) {
     return this.clothesService
-      .updateClothing(id, body)
+      .updateClothing(clothing)
       .pipe(tap((clothing) => this.clothesStore.updateClothing(clothing)));
   }
 

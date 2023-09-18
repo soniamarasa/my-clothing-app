@@ -66,9 +66,9 @@ export class HandbagsFacade {
       .pipe(tap((handbag) => this.handbagsStore.updateHandbag(handbag)));
   }
 
-  updateHandbag(id: IHandbag['_id'], body: IHandbag) {
+  updateHandbag(handbag: IHandbag) {
     return this.handbagsService
-      .updateHandbag(id, body)
+      .updateHandbag(handbag)
       .pipe(tap((handbag) => this.handbagsStore.updateHandbag(handbag)));
   }
 

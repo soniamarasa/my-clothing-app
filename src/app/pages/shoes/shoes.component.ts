@@ -4,71 +4,73 @@ import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
-import { PlacesFacade } from '@facades/places.facade';
-import { IPlace } from '@interfaces/place';
+import { ShoesFacade } from '@facades/shoes.facade';
+import { IShoe } from '@interfaces/shoe';
 
 import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.component';
 
 @Component({
-  selector: 'app-places',
-  templateUrl: './places.component.html',
-  styleUrls: ['./places.component.scss'],
+  selector: 'app-shoes',
+  templateUrl: './shoes.component.html',
+  styleUrls: ['./shoes.component.scss'],
   providers: [DialogService, ConfirmationService],
 })
-export class PlacesComponent implements OnInit, OnDestroy {
+export class ShoesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
-  ref?: DynamicDialogRef;
   total: number = 0;
-  places: IPlace[] = [];
+  ref?: DynamicDialogRef;
+  shoes: IShoe[] = [];
   loading: boolean = true;
 
-  readonly places$ = this.placesFacade.placesState$.pipe(
-    map((places: IPlace[]) => {
-      return places;
+  readonly shoes$ = this.shoesFacade.shoesState$.pipe(
+    map((shoes: IShoe[]) => {
+      return shoes;
     })
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private placesFacade: PlacesFacade
+    private shoesFacade: ShoesFacade
   ) {}
 
   ngOnInit(): void {
     this.subs.add(
-      this.places$.subscribe((places: IPlace[]) => {
-        this.places = places;
+      this.shoes$.subscribe((shoes: IShoe[]) => {
+        this.shoes = shoes;
         this.loading = false;
-        this.total = places.length;
+        this.total = shoes.length;
       })
     );
   }
 
-  openDialog(place?: IPlace) {
+  openDialog(shoe?: IShoe) {
     const ref = this._dialogService.open(ItemDialog, {
-      header: place ? ' Editar' : 'Novo' + ' Local',
+      header: shoe ? ' Editar' : 'Novo' + ' sapato',
       width: '450px',
-      data: { type: 'place', item: place, types: [] },
+      data: { type: 'shoe', item: shoe, category: 'Sapato' },
       appendTo: 'body',
     });
 
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((placeObj) => {
-        if (placeObj) {
-          placeObj._id ? this.updatePlace(placeObj) : this.newPlace(placeObj);
+      (ref as DynamicDialogRef).onClose.subscribe((shoeObj) => {
+        if (shoeObj) {
+          shoeObj._id
+            ? this.updateShoe(shoeObj)
+            : this.newShoe(shoeObj);
         }
       })
     );
   }
 
-  newPlace(place: IPlace) {
+  newShoe(shoe: IShoe) {
     this.subs.add(
-      this.placesFacade.newPlace(place).subscribe({
-        next: (place) => {
+      this.shoesFacade.newShoe(shoe).subscribe({
+        next: (shoe) => {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Local criado com sucesso!',
+            summary: 'Sapato criado com sucesso!',
             icon: 'fa-solid fa-check',
           });
         },
@@ -78,7 +80,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível criar esse Local. Tente novamente mais tarde.',
+              'Não foi possível criar esse sapato. Tente novamente mais tarde.',
             icon: 'fa-solid fa-exclamation-circle',
           });
         },
@@ -86,14 +88,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
     );
   }
 
-  updatePlace(place: IPlace) {
+  updateShoe(shoe: IShoe) {
     this.subs.add(
-      this.placesFacade.updatePlace(place).subscribe({
-        next: (place) => {
+      this.shoesFacade.updateShoe(shoe).subscribe({
+        next: (shoe) => {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Local atualizado com sucesso!',
+            summary: 'Sapato atualizado com sucesso!',
             icon: 'fa-solid fa-check',
           });
         },
@@ -103,13 +105,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível atualizar esse Local. Tente novamente mais tarde.',
+              'Não foi possível atualizar esse sapato. Tente novamente mais tarde.',
             icon: 'fa-solid fa-exclamation-circle',
           });
         },
       })
     );
   }
+
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

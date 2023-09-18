@@ -19,9 +19,8 @@ import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.com
 export class CategoriesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   ref?: DynamicDialogRef;
-
+  total: number = 0;
   categories: ICategory[] = [];
-
   loading: boolean = true;
 
   readonly categories$ = this.categoriesFacade.categoriesState$.pipe(
@@ -41,6 +40,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
       this.categories$.subscribe((categories: ICategory[]) => {
         this.categories = categories;
         this.loading = false;
+        this.total = categories.length;
       })
     );
   }
@@ -48,7 +48,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   openDialog(category?: ICategory) {
     const ref = this._dialogService.open(ItemDialog, {
       header: category ? ' Editar' : 'Nova' + ' categoria',
-      width: '400px',
+      width: '450px',
       data: { type: 'category', item: category, types: categoryTypes },
       appendTo: 'body',
     });
