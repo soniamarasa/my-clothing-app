@@ -30,7 +30,7 @@ export class PlannedLooksService {
     return this._http.post<IPlannedLook>(`${environment.url}/plannedLooks`, plannedLook);
   }
 
-  updatePlannedLook(id: IPlannedLook['_id'], body: IPlannedLook) {
-    return this._http.put<IPlannedLook>(`${environment.url}/plannedLooks/${id}`, body);
+  updatePlannedLook(plannedLook: IPlannedLook) {
+    return this._http.put<IPlannedLook>(`${environment.url}/plannedLooks/${plannedLook._id}`, plannedLook);
   }
 }

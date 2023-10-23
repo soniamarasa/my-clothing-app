@@ -1,4 +1,5 @@
 import { IAccessory } from "./accessory";
+import { IBandana } from "./bandana";
 import { IClothing } from "./clothing";
 import { IShoe } from "./shoe";
 
@@ -8,9 +9,7 @@ export interface ILook {
   top: IClothing | null;
   bottom: IClothing | null;
   dress: IClothing | null;
-  coat: IClothing | null;
   shoe: IShoe | null;
-  accessory: IAccessory | null;
-  handbag: IAccessory | null;
-  bandana: IAccessory | null;
+  accessories: IAccessory[];
+  bandana: IBandana | null;
 }

@@ -19,9 +19,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   total: number = 0;
   ref?: DynamicDialogRef;
-
   handbags: IHandbag[] = [];
-
   loading: boolean = true;
 
   readonly handbags$ = this.handbagsFacade.handbagsState$.pipe(

@@ -66,9 +66,9 @@ export class LooksFacade {
       .pipe(tap((look) => this.looksStore.updateLook(look)));
   }
 
-  updateLook(id: ILook['_id'], body: ILook) {
+  updateLook(look: ILook) {
     return this.looksService
-      .updateLook(id, body)
+      .updateLook(look)
       .pipe(tap((look) => this.looksStore.updateLook(look)));
   }
 

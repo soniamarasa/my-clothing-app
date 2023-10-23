@@ -20,19 +20,14 @@
       [loading]="loading"
       [paginator]="true"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      [globalFilterFields]="[
-        'name',
-        'country.name',
-        'representative.name',
-        'status'
-      ]"
+      [globalFilterFields]="['name', 'category.name', 'tag.name', 'inactive']"
     >
       <ng-template pTemplate="caption">
         <div class="flex">
           <button
             pButton
-            label="Clear"
-            class="p-button-outlined"
+            label="Limpar"
+            class="p-button-outlined p-button-secondary"
             icon="pi pi-filter-slash"
             (click)="clear(dt1)"
           ></button>
@@ -42,16 +37,16 @@
               pInputText
               type="text"
               (input)="dt1.filterGlobal($event.target, 'contains')"
-              placeholder="Search keyword"
+              placeholder="Pesquisar..."
             />
           </span>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th style="min-width: 15rem">
+          <th style="min-width: 25rem">
             <div class="flex align-items-center">
-              Name
+              Roupa
               <p-columnFilter
                 type="text"
                 field="name"
@@ -59,21 +54,12 @@
               ></p-columnFilter>
             </div>
           </th>
-          <th style="min-width: 15rem">
+
+          <th style="min-width: 10rem">
             <div class="flex align-items-center">
-              Country
+              Categoria
               <p-columnFilter
-                type="text"
-                field="country.name"
-                display="menu"
-              ></p-columnFilter>
-            </div>
-          </th>
-          <th style="min-width: 15rem">
-            <div class="flex align-items-center">
-              Agent
-              <p-columnFilter
-                field="representative"
+                field="category"
                 matchMode="in"
                 display="menu"
                 [showMatchModes]="false"
@@ -82,7 +68,7 @@
               >
                 <ng-template pTemplate="header">
                   <div class="px-3 pt-3 pb-0">
-                    <span class="font-bold">Agent Picker</span>
+                    <span class="font-bold">Categorias</span>
                   </div>
                 </ng-template>
                 <ng-template
@@ -93,20 +79,12 @@
                   <p-multiSelect
                     [ngModel]="value"
                     [options]="categories"
-                    placeholder="Any"
+                    placeholder="Selecione"
                     (onChange)="filter($event.value)"
                     optionLabel="name"
                   >
                     <ng-template let-option pTemplate="item">
                       <div class="inline-block vertical-align-middle">
-                        <img
-                          [alt]="option.label"
-                          src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{
-                            option.image
-                          }}"
-                          width="24"
-                          class="vertical-align-middle"
-                        />
                         <span class="ml-1 mt-1">{{ option.name }}</span>
                       </div>
                     </ng-template>
@@ -115,101 +93,135 @@
               </p-columnFilter>
             </div>
           </th>
+
           <th style="min-width: 10rem">
             <div class="flex align-items-center">
-              Date
+              Tag
               <p-columnFilter
-                type="date"
-                field="date"
+                field="tag"
+                matchMode="in"
                 display="menu"
-              ></p-columnFilter>
-            </div>
-          </th>
-          <th style="min-width: 10rem">
-            <div class="flex align-items-center">
-              Balance
-              <p-columnFilter
-                type="numeric"
-                field="balance"
-                display="menu"
-                currency="USD"
-              ></p-columnFilter>
-            </div>
-          </th>
-          <th style="min-width: 10rem">
-            <div class="flex align-items-center">
-              Status
-              <p-columnFilter field="status" matchMode="equals" display="menu">
+                [showMatchModes]="false"
+                [showOperator]="false"
+                [showAddButton]="false"
+              >
+                <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                    <span class="font-bold">Tags</span>
+                  </div>
+                </ng-template>
                 <ng-template
                   pTemplate="filter"
                   let-value
                   let-filter="filterCallback"
                 >
-                  <p-dropdown
+                  <p-multiSelect
                     [ngModel]="value"
-                    [options]="status"
+                    [options]="tags"
+                    placeholder="Selecione"
                     (onChange)="filter($event.value)"
-                    placeholder="Any"
+                    optionLabel="name"
                   >
                     <ng-template let-option pTemplate="item">
-                      <p-tag
-                        [value]="option.value"
-                        [severity]="getSeverity(option.label)"
-                      ></p-tag>
+                      <div class="inline-block vertical-align-middle">
+                        <span class="ml-1 mt-1">{{ option.name }}</span>
+                      </div>
                     </ng-template>
-                  </p-dropdown>
+                  </p-multiSelect>
                 </ng-template>
               </p-columnFilter>
             </div>
           </th>
+
+          <th style="min-width: 10rem">
+            <div class="flex align-items-center">
+              Status
+              <p-columnFilter
+                field="inactive"
+                matchMode="in"
+                display="menu"
+                [showMatchModes]="false"
+                [showOperator]="false"
+                [showAddButton]="false"
+              >
+                <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                    <span class="font-bold">Status</span>
+                  </div>
+                </ng-template>
+                <ng-template
+                  pTemplate="filter"
+                  let-value
+                  let-filter="filterCallback"
+                >
+                  <p-multiSelect
+                    [showHeader]="false"
+                    [filter]="false"
+                    [ngModel]="value"
+                    [options]="status"
+                    placeholder="Selecione"
+                    (onChange)="filter($event.value)"
+                    optionLabel=""
+                  >
+                    <ng-template let-option pTemplate="item">
+                      <div class="inline-block vertical-align-middle">
+                        <p-tag
+                          [value]="option.value ? 'Inativo' : 'Ativo'"
+                          [severity]="getSeverity(option.value)"
+                        ></p-tag>
+                      </div>
+                    </ng-template>
+                  </p-multiSelect>
+                </ng-template>
+              </p-columnFilter>
+            </div>
+          </th>
+
+          <th style="width: 10%">Ação</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-clothing>
         <tr>
           <td>
-            {{ clothing.name }}
+            <span class="badge" [style.background]="clothing.color + '5c'">
+              {{ clothing.category.icon }}
+              {{ clothing.name }}
+            </span>
           </td>
+
           <td>
-            <img
-              src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
-              [class]="'flag flag-' + clothing.country.code"
-              style="width: 20px"
-            />
-            <span class="ml-1 vertical-align-middle">{{
-              clothing.country.name
-            }}</span>
+            {{ clothing.category.name }}
           </td>
+
           <td>
-            <img
-              [alt]="clothing.representative.name"
-              src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{
-                clothing.representative.image
-              }}"
-              width="32"
-              style="vertical-align: middle"
-            />
-            <span class="ml-1 vertical-align-middle">{{
-              clothing.representative.name
-            }}</span>
+            {{ clothing.tag.name }}
           </td>
-          <td>
-            {{ clothing.date | date : "MM/dd/yyyy" }}
-          </td>
-          <td>
-            {{ clothing.balance | currency : "USD" : "symbol" }}
-          </td>
+
           <td>
             <p-tag
-              [value]="clothing.status"
-              [severity]="getSeverity(clothing.status)"
+              [value]="clothing.inactive ? 'Inativo' : 'Ativo'"
+              [severity]="getSeverity(clothing.inactive)"
             ></p-tag>
+          </td>
+
+          <td class="table__actions">
+            <p-button
+              icon="fa-solid fa-pen-to-square"
+              styleClass="p-button-rounded p-button-text"
+              (onClick)="openDialog(clothing)"
+            ></p-button>
+            <!-- <p-button icon="pi pi-times"
+                styleClass="p-button-rounded p-button-danger p-button-text"></p-button> </td> -->
           </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="7">No clothings found.</td>
+          <td colspan="8">Nenhum resultado encontrado.</td>
         </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        Total: {{ clothes.length }}
       </ng-template>
     </p-table>
   </div>

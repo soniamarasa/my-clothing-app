@@ -5,4 +5,5 @@ export interface ITag {
   color?: string;
   icon?: string | any;
   type?: string;
+  clothesType?: number;
 }

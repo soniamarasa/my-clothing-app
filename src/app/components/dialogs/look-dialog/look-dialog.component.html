@@ -1,0 +1,108 @@
+<div *ngIf="dialogData">
+  <form class="p-dialog-content-wrapper" [formGroup]="lookForm">
+    <div class="formgrid grid">
+      <div class="field col-6">
+        <label for="top">Parte de Cima</label>
+        <p-dropdown
+          formControlName="top"
+          inputId="top"
+          name="top"
+          [options]="tops"
+          placeholder="Selecione a parte superior"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+      </div>
+
+      <div class="field col-6">
+        <label for="bottom">Parte de baixo</label>
+        <p-dropdown
+          formControlName="bottom"
+          inputId="bottom"
+          name="bottom"
+          [options]="bottoms"
+          placeholder="Selecione a parte inferior"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+      </div>
+    </div>
+
+    <div class="formgrid grid">
+      <div class="field col-6">
+        <label for="garb">Traje</label>
+        <p-dropdown
+          formControlName="garb"
+          inputId="garb"
+          name="garb"
+          [options]="garbs"
+          placeholder="Selecione o traje"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+      </div>
+
+      <div class="field col-6">
+        <label for="shoe">Sapato</label>
+        <p-dropdown
+          formControlName="shoe"
+          inputId="shoe"
+          name="shoe"
+          [options]="shoes"
+          placeholder="Selecione o sapato"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+
+        <ng-container *ngIf="lookForm.get('shoe')?.touched">
+          <small class="p-error" *ngIf="lookForm.get('shoe')?.errors">
+            Selecione o sapato.
+          </small>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="formgrid grid">
+      <div class="field col-6">
+        <label for="bandana">Bandana</label>
+        <p-dropdown
+          formControlName="bandana"
+          inputId="bandana"
+          name="bandana"
+          [options]="bandanas"
+          placeholder="Selecione a bandana"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+      </div>
+
+      <div class="field col-6">
+        <label for="accessories">Acessórios</label>
+        <p-dropdown
+          formControlName="accessories"
+          inputId="accessories"
+          name="accessories"
+          [options]="accessories"
+          placeholder="Selecione o acessório"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+      </div>
+    </div>
+  </form>
+
+  <div class="p-dialog-footer">
+    <p-button
+      label="Cancelar"
+      styleClass="p-button-text p-button-plain"
+      (onClick)="onClose()"
+    ></p-button>
+
+    <p-button
+      pFocusTrap
+      label="Salvar"
+      [disabled]="lookForm.invalid"
+      (onClick)="onClose(true)"
+    ></p-button>
+  </div>
+</div>

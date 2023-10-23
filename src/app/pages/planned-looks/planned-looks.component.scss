@@ -47,5 +47,12 @@
       width: 2rem;
       height: 2rem;
     }
+
+    .badge {
+      font-weight: 800;
+      display: table-cell;
+      text-align: center;
+      padding: 0.3rem 0.5rem;
+    }
   }
 }

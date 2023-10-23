@@ -31,7 +31,7 @@ export class LooksService {
     return this._http.post<ILook>(`${environment.url}/looks`, look);
   }
 
-  updateLook(id: ILook['_id'], body: ILook) {
-    return this._http.put<ILook>(`${environment.url}/looks/${id}`, body);
+  updateLook(look: ILook) {
+    return this._http.put<ILook>(`${environment.url}/looks/${look._id}`, look);
   }
 }

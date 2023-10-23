@@ -81,9 +81,9 @@ export class PlannedLooksFacade {
       );
   }
 
-  updatePlannedLook(id: IPlannedLook['_id'], body: IPlannedLook) {
+  updatePlannedLook(plannedLook: IPlannedLook) {
     return this.plannedLooksService
-      .updatePlannedLook(id, body)
+      .updatePlannedLook(plannedLook)
       .pipe(
         tap((plannedLook) =>
           this.plannedLooksStore.updatePlannedLook(plannedLook)

@@ -21,26 +21,7 @@
       </div>
     </div>
 
-    <div lass="formgrid grid">
-      <div *ngIf="showCategory" [class.col-6]="dialogData.type === 'clothing'" [class.col]]="dialogData.type !== 'clothing'" class="field">
-        <label for="category">Categoria</label>
-        <p-dropdown
-          formControlName="category"
-          inputId="category"
-          name="category"
-          [options]="categories"
-          placeholder="Selecione a categoria"
-          optionLabel="name"
-          appendTo="body"
-        ></p-dropdown>
-
-        <ng-container *ngIf="itemForm.get('type')?.touched">
-          <small class="p-error" *ngIf="itemForm.get('type')?.errors">
-            Selecione a categoria.
-          </small>
-        </ng-container>
-      </div>
-
+    <div class="formgrid grid">
       <div *ngIf="showC1" class="field col-6">
         <label for="tag">Tag</label>
         <p-dropdown
@@ -59,6 +40,29 @@
           </small>
         </ng-container>
       </div>
+
+      <div
+        *ngIf="showCategory"
+        [ngClass]="dialogData.type === 'clothing' ? 'col-6' : 'col'"
+        class="field col"
+      >
+        <label for="category">Categoria</label>
+        <p-dropdown
+          formControlName="category"
+          inputId="category"
+          name="category"
+          [options]="categories"
+          placeholder="Selecione a categoria"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+
+        <ng-container *ngIf="itemForm.get('type')?.touched">
+          <small class="p-error" *ngIf="itemForm.get('type')?.errors">
+            Selecione a categoria.
+          </small>
+        </ng-container>
+      </div>
     </div>
 
     <div class="formgrid grid">
@@ -73,10 +77,31 @@
             optionValue="name"
             optionLabel="name"
             appendTo="body"
+            (onChange)="isClothing($event.value)"
           ></p-dropdown>
         </ng-container>
         <ng-container *ngIf="itemForm.get('type')?.touched">
           <small class="p-error" *ngIf="itemForm.get('type')?.errors">
+            Selecione o tipo.
+          </small>
+        </ng-container>
+      </div>
+
+      <div *ngIf="showClothesType" class="field col">
+        <ng-container>
+          <p-dropdown
+            formControlName="clothesType"
+            inputId="clothesType"
+            name="clothesType"
+            [options]="clothesTypes"
+            placeholder="Selecione o tipo"
+            optionValue="value"
+            optionLabel="name"
+            appendTo="body"
+          ></p-dropdown>
+        </ng-container>
+        <ng-container *ngIf="itemForm.get('clothesType')?.touched">
+          <small class="p-error" *ngIf="itemForm.get('clothesType')?.errors">
             Selecione o tipo.
           </small>
         </ng-container>
@@ -99,7 +124,10 @@
     </div>
 
     <div lass="formgrid grid">
-      <div *ngIf="showC1 && dialogData?.item" class="field field-checkbox col-12">
+      <div
+        *ngIf="showC1 && dialogData?.item"
+        class="field field-checkbox col-12"
+      >
         <p-checkbox
           formControlName="inactive"
           inputId="inactive"

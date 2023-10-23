@@ -1,0 +1,145 @@
+<div *ngIf="dialogData">
+  <form class="p-dialog-content-wrapper" [formGroup]="plannedLookForm">
+    <div class="field">
+      <p-dropdown
+        formControlName="look"
+        [options]="looks"
+        [filter]="true"
+        filterBy="top"
+        [showClear]="true"
+        placeholder="Selecione o look"
+      >
+        <ng-template pTemplate="selectedItem">
+          <div class="flex align-items-center gap-2" *ngIf="plannedLookForm.get('look')?.value">
+            <div>Look id: {{plannedLookForm.get('look')?.value._id }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-look pTemplate="item">
+          <div class="item__look ">
+            <small *ngIf="look.top" class="badge" [style.background]="look.top?.color + '5c'">
+              {{ look.top.name }}
+            </small>
+            <small *ngIf="look.bottom" class="badge" [style.background]="look.bottom?.color + '5c'">
+              {{ look.bottom.name }}
+            </small>
+            <small *ngIf="look.garb" class="badge" [style.background]="look.garb?.color + '5c'">
+              {{ look.garb.name }}
+            </small>
+            <small *ngIf="look.bottom" class="badge" [style.background]="look.shoe?.color + '5c'">
+              {{ look.shoe.name }}
+            </small>
+            <small *ngIf="look.bandana" class="badge" [style.background]="look.bandana?.color + '5c'">
+              {{ look.bandana.name }}
+            </small>
+          </div>
+        </ng-template>
+
+
+      </p-dropdown>
+    </div>
+
+    <div class="formgrid grid">
+      <div class="field col-6">
+        <label for="garb">Casaco?</label>
+        <p-dropdown
+          formControlName="coat"
+          inputId="coat"
+          name="coat"
+          [options]="coats"
+          placeholder="Selecione o casaco"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+      </div>
+
+      <div class="field col-6">
+        <label for="handbag">Bolsa</label>
+        <p-dropdown
+          formControlName="handbag"
+          inputId="handbag"
+          name="handbag"
+          [options]="handbags"
+          placeholder="Selecione o sapato"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+
+        <ng-container *ngIf="plannedLookForm.get('handbag')?.touched">
+          <small class="p-error" *ngIf="plannedLookForm.get('handbag')?.errors">
+            Selecione a bolsa.
+          </small>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="formgrid grid">
+      <div class="field col-6">
+        <label for="place">Local</label>
+        <p-dropdown
+          formControlName="place"
+          inputId="place"
+          name="place"
+          [options]="places"
+          placeholder="Selecione um Local"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+      </div>
+
+      <div class="field col-6">
+        <label for="date">Quando</label>
+        <p-calendar
+          formControlName="date"
+          inputId="date"
+          name="date"
+          appendTo="body"
+          [showIcon]="true"
+        ></p-calendar>
+      </div>
+    </div>
+
+    <div class="formgrid grid">
+      <div class="field col-6">
+        <label for="tag">Tag</label>
+        <p-dropdown
+          formControlName="tag"
+          inputId="tag"
+          name="tag"
+          [options]="tags"
+          placeholder="Selecione a tag"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+      </div>
+
+      <div *ngIf="status" class="field col-6">
+        <label for="status">Status</label>
+        <p-dropdown
+
+          formControlName="status"
+          inputId="status"
+          name="status"
+          [options]="status"
+          placeholder="Selecione o Status"
+          optionLabel="name"
+          appendTo="body"
+        ></p-dropdown>
+      </div>
+    </div>
+  </form>
+
+  <div class="p-dialog-footer">
+    <p-button
+      label="Cancelar"
+      styleClass="p-button-text p-button-plain"
+      (onClick)="onClose()"
+    ></p-button>
+
+    <p-button
+      pFocusTrap
+      label="Salvar"
+      [disabled]="plannedLookForm.invalid"
+      (onClick)="onClose(true)"
+    ></p-button>
+  </div>
+</div>

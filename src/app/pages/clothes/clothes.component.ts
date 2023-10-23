@@ -9,6 +9,10 @@ import { Table } from 'primeng/table';
 import { ClothesFacade } from '@facades/clothes.facade';
 import { IClothing } from '@interfaces/clothing';
 import { ItemDialog } from '@components/dialogs/item-dialog/item-dialog.component';
+import { CategoriesFacade } from '@facades/categories.facade';
+import { TagsFacade } from '@facades/tags.facade';
+import { ICategory } from '@interfaces/category';
+import { ITag } from '@interfaces/tag';
 
 @Component({
   selector: 'app-clothes',
@@ -19,13 +23,17 @@ import { ItemDialog } from '@components/dialogs/item-dialog/item-dialog.componen
 export class ClothesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   ref?: DynamicDialogRef;
-  total: number = 0;
-
-  clothes: IClothing[] = [];
-  status: string[] = ['saia', 'vestido'];
   loading: boolean = true;
+  total: number = 0;
+  clothes: IClothing[] = [];
+  categories: ICategory[] = [];
+  tags: ITag[] = [];
 
-  categories = [];
+  value: boolean[] = [false, true];
+  status = [
+    { label: 'Ativo', value: false },
+    { label: 'Inativo', value: true },
+  ];
 
   readonly clothes$ = this.clothesFacade.clothesState$.pipe(
     map((clothes: IClothing[]) => {
@@ -37,7 +45,9 @@ export class ClothesComponent implements OnInit, OnDestroy {
     public _dialogService: DialogService,
     private _messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private clothesFacade: ClothesFacade
+    private clothesFacade: ClothesFacade,
+    private categoriesFacade: CategoriesFacade,
+    private tagsFacade: TagsFacade
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +56,16 @@ export class ClothesComponent implements OnInit, OnDestroy {
         this.clothes = clothes;
         this.loading = false;
         this.total = clothes.length;
+      }),
+
+      this.categoriesFacade
+        .getCategories()
+        .subscribe((categories: ICategory[]) => {
+          this.categories = categories.filter((obj) => obj.type === 'Roupa');
+        }),
+
+      this.tagsFacade.getTags().subscribe((tags: ITag[]) => {
+        this.tags = tags.filter((obj) => obj.type === 'Roupa');
       })
     );
   }
@@ -108,12 +128,10 @@ export class ClothesComponent implements OnInit, OnDestroy {
     );
   }
 
-  getSeverity(status: string) {
-    if (status.toLowerCase()) return 'success';
-    else return 'warning';
+  getSeverity(status: boolean) {
+    if (status) return 'error';
+    else return 'success';
   }
-
-  onPageChange(e?: any) {}
 
   clear(table: Table) {
     table.clear();
@@ -121,9 +139,9 @@ export class ClothesComponent implements OnInit, OnDestroy {
 
   openDialog(clothing?: IClothing) {
     const ref = this._dialogService.open(ItemDialog, {
-      header: clothing ? ' Editar' : 'Nova' + ' roupa',
+      header: clothing ? ' Editar' : 'Nova' + 'Peça de Roupa',
       width: '450px',
-      data: { type: 'clothing', item: clothing, category:'Roupa' },
+      data: { type: 'clothing', item: clothing, category: 'Roupa' },
       appendTo: 'body',
     });
 
@@ -186,6 +204,11 @@ export class ClothesComponent implements OnInit, OnDestroy {
         },
       })
     );
+  }
+
+  filter(e: any) {
+    console.log(e);
+    return e;
   }
 
   ngOnDestroy(): void {

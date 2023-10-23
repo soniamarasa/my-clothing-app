@@ -91,6 +91,7 @@ export class TokenInterceptor implements HttpInterceptor {
             }
 
             return observer.error(error);
+            this._router.navigate(['/auth']);
           },
           complete: () => observer.complete(),
         });

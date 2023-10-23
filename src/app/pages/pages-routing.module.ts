@@ -16,6 +16,8 @@ import { AccessoriesComponent } from './accessories/accessories.component';
 import { ShoesComponent } from './shoes/shoes.component';
 import { BandanasComponent } from './bandanas/bandanas.component';
 import { HandbagsComponent } from './handbags/handbags.component';
+import { LooksComponent } from './looks/looks.component';
+import { PlannedLooksComponent } from './planned-looks/planned-looks.component';
 
 const routes: Routes = [
   {
@@ -72,27 +74,27 @@ const routes: Routes = [
       {
         path: 'looks',
         title: 'Looks',
-        component: AccountComponent,
+        component: LooksComponent,
       },
       {
         path: 'planned-looks',
         title: 'Looks Planejados',
-        component: AccountComponent,
+        component: PlannedLooksComponent,
       },
       {
         path: 'used-looks',
         title: 'Looks Usados',
-        component: AccountComponent,
+        component: PlannedLooksComponent,
       },
       {
         path: 'gym',
         title: 'Academia',
-        component: AccountComponent,
+        component: PlannedLooksComponent,
       },
       {
         path: 'specials',
         title: 'Especiais',
-        component: AccountComponent,
+        component: PlannedLooksComponent,
       },
     ],
   },

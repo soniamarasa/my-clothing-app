@@ -31,6 +31,7 @@ import { FocusTrapModule } from 'primeng/focustrap';
 
 import { GravatarModule } from 'ngx-gravatar';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 
 import { UsersFacade } from '@facades/users.facade';
 
@@ -50,18 +51,22 @@ import { AccessoriesComponent } from './accessories/accessories.component';
 import { HandbagsComponent } from './handbags/handbags.component';
 import { BandanasComponent } from './bandanas/bandanas.component';
 import { ShoesComponent } from './shoes/shoes.component';
+import { LooksComponent } from './looks/looks.component';
+import { PlannedLooksComponent } from './planned-looks/planned-looks.component';
 
 //Componentes
 import { PasswordRecoverComponent } from './password-recover/password-recover.component';
-import { HeaderComponent } from '../components/header/header.component';
-import { FooterComponent } from '../components/footer/footer.component';
-import { UserImgComponent } from '../components/user-img/user-img.component';
-import { MenuComponent } from '../components/menu/menu.component';
-import { EmojiComponent } from '../components/emoji/emoji.component';
-import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { HeaderComponent } from '@components/header/header.component';
+import { FooterComponent } from '@components/footer/footer.component';
+import { UserImgComponent } from '@components/user-img/user-img.component';
+import { MenuComponent } from '@components/menu/menu.component';
+import { EmojiComponent } from '@components/emoji/emoji.component';
+
 //Dialogs
 import { RecoverDialogComponent } from './auth/recover-dialog/recover-dialog.component';
-import { ItemDialog } from '../components/dialogs/item-dialog/item-dialog.component';
+import { ItemDialog } from '@components/dialogs/item-dialog/item-dialog.component';
+import { LookDialog } from '@components/dialogs/look-dialog/look-dialog.component';
+import { PlannedLookDialog } from '@components/dialogs/planned-look-dialog/planned-look-dialog.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +75,8 @@ import { ItemDialog } from '../components/dialogs/item-dialog/item-dialog.compon
     HomeComponent,
     RecoverDialogComponent,
     ItemDialog,
+    LookDialog,
+    PlannedLookDialog,
     RegistrationComponent,
     PasswordRecoverComponent,
     AccountComponent,
@@ -82,6 +89,8 @@ import { ItemDialog } from '../components/dialogs/item-dialog/item-dialog.compon
     HandbagsComponent,
     BandanasComponent,
     ShoesComponent,
+    LooksComponent,
+    PlannedLooksComponent,
 
     EmojiComponent,
     HeaderComponent,

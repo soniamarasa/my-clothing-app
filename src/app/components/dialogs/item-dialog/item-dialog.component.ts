@@ -13,6 +13,8 @@ import { TagsFacade } from '@facades/tags.facade';
 import { ICategory } from '@root/src/app/interfaces/category';
 import { ITag } from '@root/src/app/interfaces/tag';
 
+import { clothesTypes } from '@utils/valueTypes';
+
 @Component({
   selector: 'app-item-dialog',
   templateUrl: './item-dialog.component.html',
@@ -22,10 +24,12 @@ export class ItemDialog implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   types: any[] = [];
+  clothesTypes = clothesTypes;
   showC1 = false;
   showIcon = false;
   showType = false;
   showCategory = false;
+  showClothesType = false;
   categories: ICategory[] = [];
   tags: ITag[] = [];
 
@@ -66,13 +70,11 @@ export class ItemDialog implements OnInit, OnDestroy {
           this.showC1 = true;
 
           this.subs.add(
-            this.tagsFacade
-              .getTags()
-              .subscribe((tags: ITag[]) => {
-                this.tags = tags.filter(
-                  (obj) => obj.type === this.dialogData.category
-                );
-              })
+            this.tagsFacade.getTags().subscribe((tags: ITag[]) => {
+              this.tags = tags.filter(
+                (obj) => obj.type === this.dialogData.category
+              );
+            })
           );
 
           this.itemForm.addControl(
@@ -114,6 +116,13 @@ export class ItemDialog implements OnInit, OnDestroy {
             'type',
             this._fb.control(null, [Validators.required])
           );
+
+          if (this.dialogData.type === 'tag') {
+            this.itemForm.addControl(
+              'clothesType',
+              this._fb.control(null, [Validators.required])
+            );
+          }
         }
 
         if (
@@ -129,6 +138,7 @@ export class ItemDialog implements OnInit, OnDestroy {
         }
 
         if (this.dialogData?.item?._id) {
+          this.isClothing(this.dialogData.item.type);
           this.itemForm.addControl(
             '_id',
             this._fb.control(this.dialogData.item._id, [Validators.required])
@@ -141,12 +151,24 @@ export class ItemDialog implements OnInit, OnDestroy {
     });
   }
 
+  isClothing(value: any) {
+    if (value === 'Roupa') {
+      this.showClothesType = true;
+      this.itemForm.addControl(
+        'clothesType',
+        this._fb.control(null, [Validators.required])
+      );
+    } else {
+      this.showClothesType = false; 
+      this.itemForm.removeControl('clothesType');
+    }
+  }
+
   onClose(confirmed?: boolean) {
     if (!confirmed) {
       this._ref.close();
     } else {
       let data = this.itemForm.value;
-      delete data.isSubitem;
 
       this._ref.close(data);
     }
