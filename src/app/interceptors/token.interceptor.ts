@@ -24,8 +24,6 @@ import { Tokens } from '@interfaces/auth';
 
 const INITIAL_STATE = {
   token: null,
-  refreshToken: null,
-  refreshTokenExpiresAt: null,
 };
 
 @Injectable()
@@ -48,16 +46,17 @@ export class TokenInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const { token, refreshToken } = this.tokens;
+    const { token } = this.tokens;
 
-    if (!token && !refreshToken)
-      return this.interceptWithTimeout(request, next);
+    if (!token) return this.interceptWithTimeout(request, next);
 
     request = this.addTokenToHeader(request, token);
 
     return next.handle(request).pipe(
       catchError((error: any) => {
+
         if (error instanceof HttpErrorResponse) {
+          console.log(error);
           if (error.status === 401) {
             this.facade.logout().subscribe(() => {
               this._router.navigate(['/auth']);
@@ -83,15 +82,16 @@ export class TokenInterceptor implements HttpInterceptor {
         next.handle(request).subscribe({
           next: (event) => observer.next(event),
           error: (error) => {
+
             if (error instanceof HttpErrorResponse) {
+
               if (error.status === 401) {
                 this.facade.logout();
                 this._router.navigate(['/auth']);
               }
             }
-
+            // this._router.navigate(['/auth']);
             return observer.error(error);
-            this._router.navigate(['/auth']);
           },
           complete: () => observer.complete(),
         });

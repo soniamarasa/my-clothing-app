@@ -11,6 +11,7 @@
           placeholder="Selecione a parte superior"
           optionLabel="name"
           appendTo="body"
+          [showClear]="true"
         ></p-dropdown>
       </div>
 
@@ -24,6 +25,7 @@
           placeholder="Selecione a parte inferior"
           optionLabel="name"
           appendTo="body"
+          [showClear]="true"
         ></p-dropdown>
       </div>
     </div>
@@ -32,6 +34,7 @@
       <div class="field col-6">
         <label for="garb">Traje</label>
         <p-dropdown
+          [showClear]="true"
           formControlName="garb"
           inputId="garb"
           name="garb"
@@ -73,20 +76,25 @@
           placeholder="Selecione a bandana"
           optionLabel="name"
           appendTo="body"
-        ></p-dropdown>
+          [showClear]="true"
+        >
+          <option value="">Nenhuma</option>
+        </p-dropdown>
       </div>
 
       <div class="field col-6">
         <label for="accessories">Acessórios</label>
-        <p-dropdown
+
+        <p-multiSelect
           formControlName="accessories"
           inputId="accessories"
           name="accessories"
           [options]="accessories"
-          placeholder="Selecione o acessório"
+          placeholder="Selecione os acessórios"
           optionLabel="name"
           appendTo="body"
-        ></p-dropdown>
+        >
+        </p-multiSelect>
       </div>
     </div>
   </form>

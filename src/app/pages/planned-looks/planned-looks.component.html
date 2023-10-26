@@ -52,7 +52,7 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th style="min-width: 15rem">
+          <th style="min-width: 25rem">
             <div class="flex align-items-center">
               Look
               <p-columnFilter
@@ -91,7 +91,7 @@
             </div>
           </th>
 
-          <th style="min-width: 15rem">
+          <th style="min-width: 10rem">
             <div class="flex align-items-center">
               Bolsa
               <p-columnFilter
@@ -130,7 +130,7 @@
             </div>
           </th>
 
-          <th style="min-width: 20rem">
+          <th style="min-width: 10rem">
             <div class="flex align-items-center">
               Casaco
               <p-columnFilter
@@ -168,7 +168,7 @@
               </p-columnFilter>
             </div>
           </th>
-          <th style="min-width: 15rem">
+          <th style="min-width: 10rem">
             <div class="flex align-items-center">
               Local
               <p-columnFilter
@@ -306,85 +306,87 @@
                   let-value
                   let-filter="filterCallback"
                 >
-              
                 </ng-template>
               </p-columnFilter>
             </div>
           </th>
-
-          <th style="width: 10%">Ação</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-plannedLook>
-        <tr>
-          <td>
+        <tr (onClick)="openDialog(plannedLook)">
+          <td class="many__items">
             <small
+              *ngIf="plannedLook?.look.top"
               class="badge"
-              [style.background]="plannedLook.top?.color + '5c'"
+              [style.background]="plannedLook.look.top?.color + '80'"
             >
-              {{ plannedLook.look?.top }}
-              {{ plannedLook.look?.bottom }}
-              {{ plannedLook.look?.garb }}
+              {{ plannedLook.look.top.category.icon }}
+              {{ plannedLook.look.top.name }}
+            </small>
+            <small
+              *ngIf="plannedLook.look?.bottom"
+              class="badge"
+              [style.background]="plannedLook.look.bottom?.color + '80'"
+            >
+              {{ plannedLook.look.bottom.category.icon }}
+              {{ plannedLook.look.bottom.name }}
+            </small>
+            <small
+              *ngIf="plannedLook.look?.garb"
+              class="badge"
+              [style.background]="plannedLook.look.garb?.color + '80'"
+            >
+              {{ plannedLook.look.garb.category.icon }}
+              {{ plannedLook.look.garb.name }}
+            </small>
+            <small
+              *ngIf="plannedLook.look?.shoe"
+              class="badge"
+              [style.background]="plannedLook.look.shoe?.color + '80'"
+            >
+              {{ plannedLook.look.shoe.category.icon }}
+              {{ plannedLook.look.shoe.name }}
             </small>
           </td>
           <td>
             <small
               class="badge"
-              [style.background]="plannedLook.handbag?.color + '5c'"
+              [style.background]="plannedLook.handbag?.color + '80'"
             >
-              {{ plannedLook.handbag?.category.icon }}
+              <i
+                [style.color]="plannedLook.handbag?.color"
+                class="fa-solid fa-bag-shopping"
+              ></i>
+
               {{ plannedLook.handbag?.name }}
             </small>
           </td>
           <td>
-            <small
-              class="badge"
-              [style.background]="plannedLook.coat?.color + '5c'"
-            >
+            <small class="badge" [style.background]="plannedLook.coat?.color + '80'">
               {{ plannedLook.coat?.category.icon }}
               {{ plannedLook.coat?.name }}
             </small>
           </td>
           <td>
-            <small
-              class="badge"
-              [style.background]="plannedLook.place?.color + '5c'"
-            >
+            <small class="badge" [style.background]="plannedLook.place?.color + '80'">
               {{ plannedLook.place?.icon }}
               {{ plannedLook.place?.name }}
             </small>
           </td>
           <td>
-            <small
-              class="badge"
-              [style.background]="plannedLook.bandana?.color + '5c'"
-            >
-              <i
-                [style.color]="plannedLook.bandana?.color"
-                class="fa-solid fa-hat-wizard"
-              ></i>
+            <small class="badge">
               {{ plannedLook.status?.name }}
             </small>
           </td>
 
           <td>
-            <small class="badge" [style.background]="plannedLook.tag?.color + '5c'">
+            <small class="badge" [style.background]="plannedLook.tag?.color + '80'">
               {{ plannedLook.tag?.name }}
             </small>
           </td>
 
           <td>
-            {{ plannedLook.date }}
-          </td>
-
-          <td>
-            <p-button
-              icon="fa-solid fa-pen-to-square"
-              styleClass="p-button-rounded p-button-text"
-              (onClick)="openDialog(plannedLook)"
-            ></p-button>
-            <!-- <p-button icon="pi pi-times"
-                styleClass="p-button-rounded p-button-danger p-button-text"></p-button> </td> -->
+            {{ plannedLook.date | date }}
           </td>
         </tr>
       </ng-template>

@@ -53,6 +53,16 @@
       display: table-cell;
       text-align: center;
       padding: 0.3rem 0.5rem;
+      // white-space: nowrap;
+    }
+
+    .many__items {
+      display: flex;
+      gap: 0.5rem;
+      height: 100%;
+      flex-direction: row;
+      flex-wrap: wrap;
+      // max-width: 30rem;
     }
   }
 }

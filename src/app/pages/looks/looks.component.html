@@ -290,25 +290,25 @@
       <ng-template pTemplate="body" let-look>
         <tr>
           <td>
-            <small class="badge" [style.background]="look.top?.color + '5c'">
+            <small class="badge" [style.background]="look.top?.color + '80'">
               {{ look.top?.category.icon }}
               {{ look.top?.name }}
             </small>
           </td>
           <td>
-            <small class="badge" [style.background]="look.bottom?.color + '5c'">
+            <small class="badge" [style.background]="look.bottom?.color + '80'">
               {{ look.bottom?.category.icon }}
               {{ look.bottom?.name }}
             </small>
           </td>
           <td>
-            <small class="badge" [style.background]="look.garb?.color + '5c'">
+            <small class="badge" [style.background]="look.garb?.color + '80'">
               {{ look.garb?.category.icon }}
               {{ look.garb?.name }}
             </small>
           </td>
           <td>
-            <small class="badge" [style.background]="look.shoe?.color + '5c'">
+            <small class="badge" [style.background]="look.shoe?.color + '80'">
               {{ look.shoe?.category.icon }}
               {{ look.shoe?.name }}
             </small>
@@ -316,7 +316,7 @@
           <td>
             <small
               class="badge"
-              [style.background]="look.bandana?.color + '5c'"
+              [style.background]="look.bandana?.color + '80'"
             >
               <i
                 [style.color]="look.bandana?.color"
@@ -328,7 +328,7 @@
 
           <td>
             <ng-container *ngFor="let accessory of look?.accessories">
-              <small class="badge" [style.background]="accessory?.color + '5c'">
+              <small class="badge" [style.background]="accessory?.color + '80'">
                 {{ accessory?.category.icon }}
                 {{ accessory?.name }}
               </small>

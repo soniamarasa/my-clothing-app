@@ -71,7 +71,10 @@ export class LookDialog implements OnInit, OnDestroy {
         this.garbs = this.dialogData.clothes[2];
         this.shoes = this.dialogData.shoes;
         this.bandanas = this.dialogData.bandanas;
+
         this.accessories = this.dialogData.accessories;
+
+        console.log(this.accessories, this.dialogData.item);
 
         if (this.dialogData?.item) {
           this.lookForm.addControl(
@@ -79,7 +82,7 @@ export class LookDialog implements OnInit, OnDestroy {
             this._fb.control(this.dialogData.item._id, [Validators.required])
           );
 
-          this.lookForm.patchValue(this.dialogData.item);
+          this.lookForm.patchValue({ ...this.dialogData.item });
         }
       }
       resolve();
@@ -95,6 +98,10 @@ export class LookDialog implements OnInit, OnDestroy {
       this._ref.close(data);
     }
   }
+
+  compareIds(obj1: any, obj2: any) {
+		return obj1 && obj2 && obj1.id == obj2.id;
+	}
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
