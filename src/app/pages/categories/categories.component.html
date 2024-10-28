@@ -13,9 +13,9 @@
     <div>
       <p-table
         [paginator]="true"
-        [rows]="10"
+        [rows]="20"
         [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[5, 10, 15, 30]"
+        [rowsPerPageOptions]="[20, 35, 50]"
         [totalRecords]="total"
         [value]="categories"
         [tableStyle]="{ 'min-width': '30rem' }"
@@ -41,6 +41,7 @@
             <td>{{ category.type }}</td>
             <td class="table__actions">
               <p-button
+              [disabled]="!category.userId"
                 icon="fa-solid fa-pen-to-square"
                 styleClass="p-button-rounded p-button-text"
                 (onClick)="openDialog(category)"

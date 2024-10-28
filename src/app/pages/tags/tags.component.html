@@ -45,6 +45,7 @@
             </td>
             <td class="table__actions">
               <p-button
+                [disabled]="!tag.userId"
                 icon="fa-solid fa-pen-to-square"
                 styleClass="p-button-rounded p-button-text"
                 (onClick)="openDialog(tag)"

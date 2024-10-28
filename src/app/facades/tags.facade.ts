@@ -9,6 +9,7 @@ import {
   startWith,
   switchMap,
   tap,
+  of,
 } from 'rxjs';
 
 import { IGetTagsParams, TagsService } from '@services/tags.service';
@@ -16,6 +17,8 @@ import { IGetTagsParams, TagsService } from '@services/tags.service';
 import { TagsStore } from '@stores/tags.store';
 
 import { ITag } from '@root/src/app/interfaces/tag';
+
+import { fixedTags } from '@root/src/app/utils/valueTypes';
 
 const REFRESH_INTERVAL = 600000;
 
@@ -46,9 +49,10 @@ export class TagsFacade {
   constructor(private tagsService: TagsService, private tagsStore: TagsStore) {}
 
   getTags(queryParams?: IGetTagsParams) {
-    return this.tagsService
-      .getTags(queryParams)
-      .pipe(tap((tags) => this.tagsStore.updateTags(tags)));
+    return this.tagsService.getTags(queryParams).pipe(
+      map((tags) => [...fixedTags, ...tags]),
+      tap((combinedTags) => this.tagsStore.updateTags(combinedTags))
+    );
   }
 
   getTagById(id: ITag['_id']) {

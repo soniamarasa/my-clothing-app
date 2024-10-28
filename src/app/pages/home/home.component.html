@@ -1,7 +1,67 @@
-<div class="home">
+<div *ngIf="dashboard" class="home">
+  <div class="grid">
+    <p-card
+      header="Looks Usados"
+      class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+      >{{dashboard.totalLooks.total}}</p-card
+    >
+    <p-card
+      header="Total Vestidos"
+      class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+      >{{dashboard.garbs.total}}</p-card
+    >
+    <p-card
+      header="Total Tops"
+      class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+      >{{dashboard.tops.total}}</p-card
+    >
+    <p-card
+      header="Total Bottons"
+      class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+      >{{dashboard.bottoms.total}}</p-card
+    >
+    <p-card
+      header="Total Bolsas"
+      class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+      >{{dashboard.handbags.total}}</p-card
+    >
+    <p-card
+      header="Total Sapatos"
+      class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+      >{{dashboard.shoes.total}}</p-card
+    >
+  </div>
 
-
-
-
-  
+  <div class="grid charts-grid">
+    <p-card
+      header="Looks Mais Usados"
+      class="indicadores col-12 lg:col-6"
+      >g</p-card
+    >
+    <p-card
+      header="Vestidos"
+      class="indicadores col-12 lg:col-6"
+      >g</p-card
+    >
+    <p-card
+      header="Tops"
+      class="indicadores col-12 lg:col-6"
+      >g</p-card
+    >
+    <p-card
+      header="Bottons"
+      class="indicadores col-12 lg:col-6"
+      >g</p-card
+    >
+    <p-card
+      header="Bolsas"
+      class="indicadores col-12 lg:col-6"
+      >g</p-card
+    >
+    <p-card
+      header="Sapatos"
+      class="indicadores col-12 lg:col-6"
+      >g</p-card
+    >
+  </div>
 </div>

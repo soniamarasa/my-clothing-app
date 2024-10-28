@@ -11,18 +11,22 @@ import {
   tap,
 } from 'rxjs';
 
-import { IGetCategoriesParams, CategoriesService } from '@services/categories.service';
+import {
+  IGetCategoriesParams,
+  CategoriesService,
+} from '@services/categories.service';
 
 import { CategoriesStore } from '@stores/categories.store';
 
 import { ICategory } from '@root/src/app/interfaces/category';
+
+import { fixedCategories } from '@root/src/app/utils/valueTypes';
 
 const REFRESH_INTERVAL = 600000;
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class CategoriesFacade {
   private readonly autoRefresh$ = interval(REFRESH_INTERVAL).pipe(startWith(0));
   private readonly _refresh = new BehaviorSubject(undefined);
@@ -50,9 +54,12 @@ export class CategoriesFacade {
   ) {}
 
   getCategories(queryParams?: IGetCategoriesParams) {
-    return this.categoriesService
-      .getCategories(queryParams)
-      .pipe(tap((categories) => this.categoriesStore.updateCategories(categories)));
+    return this.categoriesService.getCategories(queryParams).pipe(
+      map((categories) => [...fixedCategories, ...categories]),
+      tap((combinedCategories) =>
+        this.categoriesStore.updateCategories(combinedCategories)
+      )
+    );
   }
 
   getCategoryById(id: ICategory['_id']) {
