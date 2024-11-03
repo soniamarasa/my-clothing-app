@@ -1,5 +1,7 @@
 <div class="home">
   <ng-container>
+    <p-calendar (ngModelChange)="setYear($event)" styleClass="year_select" [(ngModel)]="year" [readonlyInput]="true" [yearNavigator]="true" view="year"
+      dateFormat="yy" [showIcon]="true" inputId="icondisplay" />
     <h1 [routerLink]="['/']">Meu Vestuário</h1>
     <h4 id="username" (click)="menu.toggle($event)">
       <app-user-img [email]="user.email"> </app-user-img> Hello,

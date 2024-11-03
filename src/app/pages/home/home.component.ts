@@ -17,16 +17,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   loading: boolean = false;
 
   readonly dashboard$ = this.dashboardFacade.dashboardState$.pipe(
-    tap(() => this.loading = true),
+    tap(() => (this.loading = true)),
     map((dashboard: IDashboard) => {
       return dashboard;
     })
   );
 
   ngOnInit(): void {
+    this.dashboardFacade.filter({ year: new Date().getFullYear().toString() });
+
     this.subs.add(
       this.dashboard$.subscribe((dashboard: IDashboard) => {
-        this.dashboard = dashboard
+        this.dashboard = dashboard;
         this.loading = false;
       })
     );

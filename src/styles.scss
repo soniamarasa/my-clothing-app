@@ -33,7 +33,9 @@ body::-webkit-scrollbar-thumb {
   border-radius: 1rem;
 }
 
-
+.p-password, .p-multiselect {
+width: 100% !important;
+}
 
 .p-card-title {
   color: $primary-color !important;

@@ -37,7 +37,11 @@ export class DashboardFacade {
     this.autoRefresh$,
     this._refresh.asObservable(),
   ]).pipe(
-    switchMap(() => this.getDashboard({ ...this._filter.value, year: '2024' }))
+    switchMap(() =>
+      this.getDashboard({
+        ...this._filter.value,
+      })
+    )
   );
 
   readonly dashboardState$ = combineLatest([

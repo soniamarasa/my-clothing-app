@@ -355,7 +355,7 @@ p-calendar.ng-dirty.ng-invalid > .p-calendar > .p-inputtext {
 }
 .p-datepicker .p-datepicker-header {
   padding: 0.5rem;
-  color: #D4BE98;
+  color: #212728;
   background: #fff;
   font-weight: 500;
   margin: 0;
@@ -1280,6 +1280,7 @@ p-inputswitch.ng-dirty.ng-invalid > .p-inputswitch {
 .p-input-icon-right > .p-icon-wrapper,
 .p-input-icon-right > i:last-of-type {
   right: 1rem;
+  top: 0.8rem;
   color: rgb(120 120 120 / 60%);
 }
 .p-input-icon-right > .p-inputtext {
