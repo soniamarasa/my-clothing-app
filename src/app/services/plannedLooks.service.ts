@@ -4,10 +4,7 @@ import { IPlannedLook } from '@interfaces/plannedLook';
 import { environment } from './../../environments/environment';
 
 export interface IGetPlannedLooksParams {
-  createdAfter?: Date;
-  inactivated?: boolean;
-  page?: number;
-  pageLimit?: number;
+ status: number;
 }
 
 @Injectable({

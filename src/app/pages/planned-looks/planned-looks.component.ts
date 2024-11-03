@@ -23,8 +23,11 @@ import { IHandbag } from '@interfaces/handbag';
 import { IPlace } from '@interfaces/place';
 import { IPlannedLook } from '../../interfaces/plannedLook';
 import { ITag } from '@interfaces/tag';
-
-
+import { AccessoriesFacade } from '../../facades/accessories.facade';
+import { BandanasFacade } from '../../facades/bandanas.facade';
+import { IBandana } from '../../interfaces/bandana';
+import { IAccessory } from '../../interfaces/accessory';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-planned-looks',
@@ -37,15 +40,19 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
   ref?: DynamicDialogRef;
   loading: boolean = true;
   total: number = 0;
+  statusId: number = 1;
 
   plannedLooksOriginal: IPlannedLook[] = [];
   plannedLooks: IPlannedLook[] = [];
 
-  coats: IClothing[] = []
+  filterAccessories = [];
+
+  coats: IClothing[] = [];
   status = statusLook;
   places: IPlace[] = [];
   handbags: IHandbag[] = [];
-  tags: ITag[] = [];
+  accessories: IAccessory[] = [];
+  bandanas: IBandana[] = [];
   looks: ILook[] = [];
 
   filterPlaces = [];
@@ -61,16 +68,28 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
+    private _router: Router,
+    private _route: ActivatedRoute,
     private confirmationService: ConfirmationService,
     private plannedLooksFacade: PlannedLooksFacade,
     private looksFacade: LooksFacade,
     private clothesFacade: ClothesFacade,
     private placesFacade: PlacesFacade,
-    private tagsFacade: TagsFacade,
+    private accessoriesFacade: AccessoriesFacade,
+    private bandanasFacade: BandanasFacade,
     private handbagsFacade: HandbagsFacade
   ) {}
 
   ngOnInit(): void {
+    const currentRoute = this._router.url;
+    if (currentRoute.includes('/planned-looks')) {
+      this.statusId = 1;
+    } else if (currentRoute.includes('/used-looks')) {
+      this.statusId = 2;
+    }
+
+    this.plannedLooksFacade.filterPlannedLooks({ status: this.statusId });
+
     this.subs.add(
       this.plannedLooks$.subscribe((plannedLooks: IPlannedLook[]) => {
         this.plannedLooksOriginal = plannedLooks;
@@ -87,14 +106,18 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
         this.coats = clothes.filter((obj) => obj.tag.clothesType === 4);
       }),
 
-      this.placesFacade
-        .getPlaces()
-        .subscribe((places: IPlace[]) => {
-          this.places = places;
+      this.placesFacade.getPlaces().subscribe((places: IPlace[]) => {
+        this.places = places;
+      }),
+
+      this.accessoriesFacade
+        .getAccessories()
+        .subscribe((accessories: IAccessory[]) => {
+          this.accessories = accessories;
         }),
 
-      this.tagsFacade.getTags().subscribe((tags: ITag[]) => {
-        this.tags = tags;
+      this.bandanasFacade.getBandanas().subscribe((bandanas: IBandana[]) => {
+        this.bandanas = bandanas;
       }),
 
       this.handbagsFacade.getHandbags().subscribe((handbags: IHandbag[]) => {
@@ -111,19 +134,22 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
   clear(table: Table) {
     table.clear();
     this.filterPlaces = [];
+    this.filterAccessories = [];
     this.tablePlannedLooks.value = this.plannedLooksOriginal;
   }
 
   openDialog(plannedLook?: ILook) {
     const ref = this._dialogService.open(PlannedLookDialog, {
-      header: plannedLook ? ' Editar' : 'Novo' + 'Look',
-      width: '450px',
+      header: plannedLook ? ' Editar' : 'Novo',
+      width: '500px',
       data: {
         item: plannedLook,
         looks: this.looks,
         handbags: this.handbags,
-        tags: this.tags,
+        bandanas: this.bandanas,
+        accessories: this.accessories,
         places: this.places,
+        statusId: this.statusId,
       },
       appendTo: 'body',
     });
@@ -194,9 +220,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
       const selectedIds = e.value.map((el: any) => el._id);
 
       this.plannedLooks = this.plannedLooks.filter((look: any) =>
-        look.places.some((place: any) =>
-          selectedIds.includes(place._id)
-        )
+        look.places.some((place: any) => selectedIds.includes(place._id))
       );
     } else {
       this.plannedLooks = this.plannedLooksOriginal;
@@ -208,6 +232,28 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
 
     this.filterPlaces = e.value;
   }
+
+  filterAccessory(e: any) {
+    if (e.value.length) {
+      this.plannedLooks = this.plannedLooksOriginal;
+
+      const selectedIds = e.value.map((el: any) => el._id);
+
+      this.looks = this.looks.filter((look: any) =>
+        look.accessories.some((accessory: any) =>
+          selectedIds.includes(accessory._id)
+        )
+      );
+    } else {
+      this.plannedLooks = this.plannedLooksOriginal;
+    }
+
+    (this.tablePlannedLooks.filters['accessories'] as any)[0].value =
+      e.value.map((v: any) => [v]);
+
+    this.filterAccessories = e.value;
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

@@ -82,7 +82,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
                 key: 'notification',
                 severity: 'success',
                 summary: 'Roupa inativada.',
-                detail: 'Peça de roupacom sucesso!',
+                detail: 'Peça de roupa inativada com sucesso!',
                 icon: 'fa-solid fa-check',
               });
             },
@@ -139,7 +139,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
 
   openDialog(clothing?: IClothing) {
     const ref = this._dialogService.open(ItemDialog, {
-      header: clothing ? ' Editar' : 'Nova' + 'Peça de Roupa',
+      header: clothing ? ' Editar ' : 'Nova ' + 'Peça de Roupa',
       width: '450px',
       data: { type: 'clothing', item: clothing, category: 'Roupa' },
       appendTo: 'body',

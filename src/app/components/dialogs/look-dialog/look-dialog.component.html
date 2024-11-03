@@ -67,34 +67,16 @@
 
     <div class="formgrid grid">
       <div class="field col-6">
-        <label for="bandana">Bandana</label>
+        <label for="tag">Tag</label>
         <p-dropdown
-          formControlName="bandana"
-          inputId="bandana"
-          name="bandana"
-          [options]="bandanas"
-          placeholder="Selecione a bandana"
+          formControlName="tag"
+          inputId="tag"
+          name="tag"
+          [options]="tags"
+          placeholder="Selecione a tag"
           optionLabel="name"
           appendTo="body"
-          [showClear]="true"
-        >
-          <option value="">Nenhuma</option>
-        </p-dropdown>
-      </div>
-
-      <div class="field col-6">
-        <label for="accessories">Acessórios</label>
-
-        <p-multiSelect
-          formControlName="accessories"
-          inputId="accessories"
-          name="accessories"
-          [options]="accessories"
-          placeholder="Selecione os acessórios"
-          optionLabel="name"
-          appendTo="body"
-        >
-        </p-multiSelect>
+        ></p-dropdown>
       </div>
     </div>
   </form>

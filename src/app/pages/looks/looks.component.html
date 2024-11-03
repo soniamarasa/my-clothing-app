@@ -1,9 +1,9 @@
 <div class="clothes__container">
   <h2>
-    <strong><i class="fa-solid fa-shapes"></i> Minhas Roupas </strong>
+    <strong><i class="fa-solid fa-shapes"></i> Meus Looks </strong>
 
     <p-button
-      label="Nova Peça"
+      label="Novo Look"
       icon="pi pi-plus"
       (onClick)="openDialog()"
     ></p-button>
@@ -208,9 +208,9 @@
 
           <th style="min-width: 15rem">
             <div class="flex align-items-center">
-              Bandana
+              Tag
               <p-columnFilter
-                field="bandana"
+                field="tag"
                 matchMode="in"
                 display="menu"
                 [showMatchModes]="false"
@@ -219,7 +219,7 @@
               >
                 <ng-template pTemplate="header">
                   <div class="px-3 pt-3 pb-0">
-                    <span class="font-bold">Bandana</span>
+                    <span class="font-bold">Tag</span>
                   </div>
                 </ng-template>
                 <ng-template
@@ -229,48 +229,9 @@
                 >
                   <p-multiSelect
                     [ngModel]="value"
-                    [options]="bandanas"
+                    [options]="tags"
                     placeholder="Selecione"
                     (onChange)="filter($event.value)"
-                    optionLabel="name"
-                  >
-                    <ng-template let-option pTemplate="item">
-                      <div class="inline-block vertical-align-middle">
-                        <span class="ml-1 mt-1">{{ option.name }}</span>
-                      </div>
-                    </ng-template>
-                  </p-multiSelect>
-                </ng-template>
-              </p-columnFilter>
-            </div>
-          </th>
-
-          <th style="min-width: 15rem">
-            <div class="flex align-items-center">
-              Acessórios
-              <p-columnFilter
-                field="accessories"
-                matchMode="in"
-                display="menu"
-                [showMatchModes]="false"
-                [showOperator]="false"
-                [showAddButton]="false"
-              >
-                <ng-template pTemplate="header">
-                  <div class="px-3 pt-3 pb-0">
-                    <span class="font-bold">Acessórios</span>
-                  </div>
-                </ng-template>
-                <ng-template
-                  pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
-                >
-                  <p-multiSelect
-                    [ngModel]="filterAccessories"
-                    [options]="accessories"
-                    placeholder="Selecione"
-                    (onChange)="filterAccessory($event)"
                     optionLabel="name"
                   >
                     <ng-template let-option pTemplate="item">
@@ -313,26 +274,11 @@
               {{ look.shoe?.name }}
             </small>
           </td>
-          <td>
-            <small
-              class="badge"
-              [style.background]="look.bandana?.color + '80'"
-            >
-              <i
-                [style.color]="look.bandana?.color"
-                class="fa-solid fa-hat-wizard"
-              ></i>
-              {{ look.bandana?.name }}
-            </small>
-          </td>
 
           <td>
-            <ng-container *ngFor="let accessory of look?.accessories">
-              <small class="badge" [style.background]="accessory?.color + '80'">
-                {{ accessory?.category.icon }}
-                {{ accessory?.name }}
-              </small>
-            </ng-container>
+            <small class="badge" [style.background]="look.tag?.color + '80'">
+              {{ look.tag?.name }}
+            </small>
           </td>
 
           <td>
@@ -351,9 +297,7 @@
           <td colspan="8">Nenhum resultado encontrado.</td>
         </tr>
       </ng-template>
-      <ng-template pTemplate="summary">
-        Total: {{ looks.length }}
-      </ng-template>
+      <ng-template pTemplate="summary"> Total: {{ looks.length }} </ng-template>
     </p-table>
   </div>
 </div>

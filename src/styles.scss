@@ -10,24 +10,37 @@
   margin: 0;
 }
 
+html,
 body,
 .theme-butterfly {
-  background-color: $tertiary-color;
+  background-color: $quaternary-color;
   color: $senary-color !important;
   font-family: "DM Mono", monospace !important;
-
-  //Scroll
   scrollbar-width: thin;
-  scrollbar-color: $quinary-color $quaternary-color;
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    background-color: $quaternary-color;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: $quinary-color;
-    border-radius: 6px;
-  }
+  scrollbar-color: $quaternary-color $quinary-color;
+  scroll-padding: 5px;
+}
+
+//Scroll
+
+body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: $quinary-color;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: $quaternary-color;
+  border-radius: 1rem;
+}
+
+
+
+.p-card-title {
+  color: $primary-color !important;
+}
+
+.p-card {
+  color: #d4be98 !important;
 }
 
 .p-button {
@@ -44,46 +57,78 @@ h4 {
 }
 
 .btn__secundary {
-  background-color: $tertiary-color;
-  border-color: $tertiary-color;
-  // color: $quaternary-color;
+  background-color: $quaternary-color;
+  border-color: $quaternary-color;
 
   &:hover {
     background-color: $quaternary-color;
     border-color: $quaternary-color;
-    color: tertiary-color;
+    color: quaternary-color;
   }
 }
 
+.card {
+}
+
+.p-menubar .p-menuitem-link .p-menuitem-icon {
+  min-width: 1.2rem !important;
+}
+
 //EMOJI
-.emoji-mart-dark {
+
+.emoji-mart {
   font-family: "DM Mono", monospace !important;
-  color: #2f2e41;
-  border-color: $quinary-color;
-  background-color: $quaternary-color;
+  color: $senary-color;
+  border: 1px solid $quinary-color;
+  background: $quinary-color;
+
+  width: 395px !important;
 }
 
 .emoji-mart-anchor {
-  color: #201f2c;
+  color: $senary-color;
+  padding: 12px 4px;
+  box-shadow: none;
+  background: none;
+  border: none;
 }
 
-.emoji-mart-dark .emoji-mart-category-label span {
-  background-color: $quinary-color;
-  color: #fff;
-  border-radius: 0.6rem;
+.emoji-mart-category-label span {
+  font-weight: bold;
+  background-color: rgb(49 47 46);
 }
 
-.emoji-mart-dark .emoji-mart-search input {
-  color: #fff;
-  border-color: #c2956e9c;
-  background-color: #c2956e9c;
-  margin-bottom: 1rem;
-  font-family: "DM Mono", monospace !important;
+.emoji-mart-search input {
+  border: 1px solid #79797959;
+  background: #7f7f7f3b;
+  margin: 1rem 0;
+  color: $senary-color;
 }
 
-.emoji-mart-dark .emoji-mart-anchor:hover,
-.emoji-mart-dark .emoji-mart-anchor:focus,
-.emoji-mart-dark .emoji-mart-anchor-selected {
+// .emoji-mart-dark {
+//   font-family: "DM Mono", monospace !important;
+//   color: #2f2e41;
+//   border-color: $quinary-color;
+//   background-color: $quaternary-color;
+// }
+
+// .emoji-mart-dark .emoji-mart-category-label span {
+//   background-color: $quinary-color;
+//   color: #fff;
+//   border-radius: 0.6rem;
+// }
+
+// .emoji-mart-search input {
+//   color: #fff;
+//   border-color: #3534349c;
+//   background-color: #3534349c;
+//   margin-bottom: 1rem;
+//   font-family: "DM Mono", monospace !important;
+// }
+
+.emoji-mart-anchor:hover,
+.emoji-mart-anchor:focus,
+.emoji-mart-anchor-selected {
   color: $primary-color;
 }
 

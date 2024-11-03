@@ -1,0 +1,9 @@
+@import "primeflex/primeflex.css";
+@import "../styles/variables.scss";
+
+@mixin styleclass($classes) {
+  @each $class in $classes {
+    &.#{$class} {
+    }
+  }
+}

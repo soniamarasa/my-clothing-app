@@ -56,6 +56,10 @@
       // white-space: nowrap;
     }
 
+    &.item-look{
+      cursor: pointer;
+    }
+
     .many__items {
       display: flex;
       gap: 0.5rem;

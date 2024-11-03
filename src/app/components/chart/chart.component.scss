@@ -1,0 +1,43 @@
+:host {
+  & ::ng-deep {
+    .p-card {
+      height: 100%;
+    }
+
+    .p-card-body {
+      height: 100% !important;
+    }
+
+    .p-card-content {
+      height: 100% !important;
+    }
+    .doughnut {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    & .card-content-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem !important;
+      height: 80% !important;
+      opacity: 0.5;
+    }
+
+    .chart-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    &.spinner-container {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 1rem;
+    }
+  }
+}

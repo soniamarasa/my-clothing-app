@@ -27,8 +27,8 @@ export class HeaderComponent implements OnInit {
     this.items = [
       {
         label: 'Conta',
-        icon: 'pi pi-person',
-        routerLink: '/acount',
+        icon: 'fa-solid fa-user',
+        routerLink: '/account',
       },
       {
         label: 'Sair',

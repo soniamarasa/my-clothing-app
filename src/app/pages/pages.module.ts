@@ -20,7 +20,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
-import { ChartModule } from 'primeng/chart';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { TableModule } from 'primeng/table';
@@ -28,6 +27,8 @@ import { TagModule } from 'primeng/tag';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { FocusTrapModule } from 'primeng/focustrap';
+import { StyleClassModule } from 'primeng/styleclass';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { GravatarModule } from 'ngx-gravatar';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
@@ -61,12 +62,15 @@ import { FooterComponent } from '@components/footer/footer.component';
 import { UserImgComponent } from '@components/user-img/user-img.component';
 import { MenuComponent } from '@components/menu/menu.component';
 import { EmojiComponent } from '@components/emoji/emoji.component';
+import { ChartComponent } from '../components/chart/chart.component';
+import { PieChartComponent } from '../components/pie-chart/pie-chart.component';
 
 //Dialogs
 import { RecoverDialogComponent } from './auth/recover-dialog/recover-dialog.component';
 import { ItemDialog } from '@components/dialogs/item-dialog/item-dialog.component';
 import { LookDialog } from '@components/dialogs/look-dialog/look-dialog.component';
 import { PlannedLookDialog } from '@components/dialogs/planned-look-dialog/planned-look-dialog.component';
+import { BarChartComponent } from '../components/bar-chart/bar-chart.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +95,9 @@ import { PlannedLookDialog } from '@components/dialogs/planned-look-dialog/plann
     ShoesComponent,
     LooksComponent,
     PlannedLooksComponent,
+    ChartComponent,
+    PieChartComponent,
+    BarChartComponent,
 
     EmojiComponent,
     HeaderComponent,
@@ -119,7 +126,6 @@ import { PlannedLookDialog } from '@components/dialogs/planned-look-dialog/plann
     ToastModule,
     MessageModule,
     MessagesModule,
-    ChartModule,
     MenuModule,
     MenubarModule,
     TableModule,
@@ -127,7 +133,8 @@ import { PlannedLookDialog } from '@components/dialogs/planned-look-dialog/plann
     ColorPickerModule,
     OverlayPanelModule,
     FocusTrapModule,
-
+    StyleClassModule,
+    ProgressSpinnerModule,
     GravatarModule,
     PickerComponent,
     EmojiModule,

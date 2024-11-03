@@ -7,13 +7,11 @@ import {
   DynamicDialogConfig,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
-
 import { CategoriesFacade } from '@facades/categories.facade';
 import { TagsFacade } from '@facades/tags.facade';
 import { IClothing } from '@interfaces/clothing';
-import { IAccessory } from '@interfaces/accessory';
+import { ITag } from '@interfaces/tag';
 import { IShoe } from '@interfaces/shoe';
-import { IBandana } from '@interfaces/bandana';
 
 @Component({
   selector: 'app-look-dialog',
@@ -27,8 +25,7 @@ export class LookDialog implements OnInit, OnDestroy {
   bottoms: IClothing[] = [];
   garbs: IClothing[] = [];
   shoes: IShoe[] = [];
-  bandanas: IBandana[] = [];
-  accessories: IAccessory[] = [];
+  tags: ITag[] = [];
 
   formHasChanged = false;
   ref?: DynamicDialogRef;
@@ -41,8 +38,7 @@ export class LookDialog implements OnInit, OnDestroy {
     top: [],
     bottom: [],
     garb: [],
-    bandana: [],
-    accessories: [[]],
+    tag: [null, []],
     shoe: [, [Validators.required]],
   });
 
@@ -70,11 +66,10 @@ export class LookDialog implements OnInit, OnDestroy {
         this.bottoms = this.dialogData.clothes[1];
         this.garbs = this.dialogData.clothes[2];
         this.shoes = this.dialogData.shoes;
-        this.bandanas = this.dialogData.bandanas;
 
-        this.accessories = this.dialogData.accessories;
-
-        console.log(this.accessories, this.dialogData.item);
+        this.tags = this.dialogData.tags.filter(
+          (item: ITag) => item.type === 'Usos'
+        );
 
         if (this.dialogData?.item) {
           this.lookForm.addControl(
@@ -100,8 +95,8 @@ export class LookDialog implements OnInit, OnDestroy {
   }
 
   compareIds(obj1: any, obj2: any) {
-		return obj1 && obj2 && obj1.id == obj2.id;
-	}
+    return obj1 && obj2 && obj1.id == obj2.id;
+  }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

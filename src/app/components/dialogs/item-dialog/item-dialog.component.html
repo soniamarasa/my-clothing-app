@@ -108,14 +108,14 @@
       </div>
 
       <div *ngIf="showIcon" class="field col field__emoji">
-        <p-button
+        <!-- <p-button
           (click)="op.toggle($event)"
           styleClass="p-button-rounded"
           icon="fa-solid fa-icons"
           label="Emoji"
-        ></p-button>
+        ></p-button> -->
         <span id="current__emoji" (click)="op.toggle($event)">{{
-          itemForm.get("icon")?.value
+          itemForm.get("icon")?.value || '🏷️'
         }}</span>
         <p-overlayPanel appendTo="body" #op>
           <app-emoji (currentEmoji)="emoji($event)"></app-emoji>

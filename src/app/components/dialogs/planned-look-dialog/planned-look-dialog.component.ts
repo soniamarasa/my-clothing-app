@@ -11,9 +11,11 @@ import {
 import { CategoriesFacade } from '@facades/categories.facade';
 import { TagsFacade } from '@facades/tags.facade';
 import { IClothing } from '@interfaces/clothing';
-import { ITag } from '@interfaces/tag';
+
 import { IHandbag } from '@interfaces/handbag';
 import { IPlace } from '@interfaces/place';
+import { IAccessory } from '@interfaces/accessory';
+import { IBandana } from '@interfaces/bandana';
 import { statusLook } from '@root/src/app/utils/valueTypes';
 
 @Component({
@@ -23,14 +25,14 @@ import { statusLook } from '@root/src/app/utils/valueTypes';
 })
 export class PlannedLookDialog implements OnInit, OnDestroy {
   private subs = new SubSink();
-
+  isNew: boolean = false;
   coats: IClothing[] = [];
   looks: IClothing[] = [];
   handbags: IHandbag[] = [];
   places: IPlace[] = [];
-  tags: ITag[] = [];
+  bandanas: IBandana[] = [];
+  accessories: IAccessory[] = [];
   status: any[] = statusLook;
-
   formHasChanged = false;
   ref?: DynamicDialogRef;
 
@@ -42,10 +44,11 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
     look: [null, [Validators.required]],
     coat: [null, []],
     handbag: [null, []],
-    place: [null, []],
-    date: [null, []],
-    tag: [null, []],
-    status: [null, [Validators.required]],
+    place: [null, [Validators.required]],
+    date: [null, [Validators.required]],
+    bandana: [],
+    accessories: [[]],
+    status: [this.dialogData.statusId === 1 ? this.status[0] : this.status[1]],
   });
 
   constructor(
@@ -72,17 +75,21 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
         this.coats = this.dialogData.coats;
         this.looks = this.dialogData.looks;
         this.handbags = this.dialogData.handbags;
-        this.tags = this.dialogData.tags.filter((item: ITag) => item.type === "Usos" );
+        this.bandanas = this.dialogData.bandanas;
+        this.accessories = this.dialogData.accessories;
         this.places = this.dialogData.places;
         this.status = this.dialogData.status;
 
         if (this.dialogData?.item) {
+          this.isNew = false;
           this.plannedLookForm.addControl(
             '_id',
             this._fb.control(this.dialogData.item._id, [Validators.required])
           );
 
           this.plannedLookForm.patchValue(this.dialogData.item);
+        } else {
+          this.isNew = true;
         }
       }
       resolve();
@@ -94,6 +101,11 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
       this._ref.close();
     } else {
       let data = this.plannedLookForm.value;
+
+      // if (this.isNew) {
+      //   data.status =
+      //     this.dialogData.statusId === 1 ? this.status[0] : this.status[1];
+      // }
 
       this._ref.close(data);
     }

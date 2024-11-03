@@ -19,6 +19,8 @@ import { BandanasFacade } from '../../facades/bandanas.facade';
 import { ShoesFacade } from '../../facades/shoes.facade';
 import { ClothesFacade } from '../../facades/clothes.facade';
 import { LookDialog } from '../../components/dialogs/look-dialog/look-dialog.component';
+import { TagsFacade } from '../../facades/tags.facade';
+import { ITag } from '../../interfaces/tag';
 // import { FilterUtils } from "primeng/utils";
 
 @Component({
@@ -38,11 +40,12 @@ export class LooksComponent implements OnInit, OnDestroy {
   tops: IClothing[] = [];
   bottoms: IClothing[] = [];
   garbs: IClothing[] = [];
-  accessories: IAccessory[] = [];
-  shoes: IShoe[] = [];
-  bandanas: IBandana[] = [];
 
-  filterAccessories = [];
+  shoes: IShoe[] = [];
+
+  tags: ITag[] = [];
+
+ 
 
   @ViewChild('dt1') tableLooks!: Table;
 
@@ -58,9 +61,8 @@ export class LooksComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private looksFacade: LooksFacade,
     private clothesFacade: ClothesFacade,
-    private accessoriesFacade: AccessoriesFacade,
-    private bandanasFacade: BandanasFacade,
-    private shoesFacade: ShoesFacade
+    private shoesFacade: ShoesFacade,
+    private tagsFacade: TagsFacade
   ) {}
 
   ngOnInit(): void {
@@ -73,19 +75,20 @@ export class LooksComponent implements OnInit, OnDestroy {
       }),
 
       this.clothesFacade.getClothes().subscribe((clothes: IClothing[]) => {
-        this.tops = clothes.filter((obj) => obj.tag.clothesType === 1);
-        this.bottoms = clothes.filter((obj) => obj.tag.clothesType === 2);
-        this.garbs = clothes.filter((obj) => obj.tag.clothesType === 3);
+        console.log(clothes.filter((obj) => obj));
+        this.tops = clothes.filter(
+          (obj) => obj.category.name == 'Peça Superior'
+        );
+        this.bottoms = clothes.filter(
+          (obj) => obj.category.name == 'Peça Inferior'
+        );
+        this.garbs = clothes.filter(
+          (obj) => obj.category.name == 'Traje Completo'
+        );
       }),
 
-      this.accessoriesFacade
-        .getAccessories()
-        .subscribe((accessories: IAccessory[]) => {
-          this.accessories = accessories;
-        }),
-
-      this.bandanasFacade.getBandanas().subscribe((bandanas: IBandana[]) => {
-        this.bandanas = bandanas;
+      this.tagsFacade.getTags().subscribe((tags: ITag[]) => {
+        this.tags = tags;
       }),
 
       this.shoesFacade.getShoes().subscribe((shoes: IShoe[]) => {
@@ -101,20 +104,19 @@ export class LooksComponent implements OnInit, OnDestroy {
 
   clear(table: Table) {
     table.clear();
-    this.filterAccessories = [];
+  
     this.tableLooks.value = this.looksOriginal;
   }
 
   openDialog(look?: ILook) {
     const ref = this._dialogService.open(LookDialog, {
-      header: look ? ' Editar' : 'Novo' + 'Look',
+      header: look ? ' Editar' : 'Novo ' + 'Look',
       width: '450px',
       data: {
         item: look,
         clothes: [this.tops, this.bottoms, this.garbs],
         shoes: this.shoes,
-        bandanas: this.bandanas,
-        accessories: this.accessories,
+        tags: this.tags,
       },
       appendTo: 'body',
     });
@@ -178,27 +180,7 @@ export class LooksComponent implements OnInit, OnDestroy {
     );
   }
 
-  filterAccessory(e: any) {
-    if (e.value.length) {
-      this.looks = this.looksOriginal;
 
-      const selectedIds = e.value.map((el: any) => el._id);
-
-      this.looks = this.looks.filter((look: any) =>
-        look.accessories.some((accessory: any) =>
-          selectedIds.includes(accessory._id)
-        )
-      );
-    } else {
-      this.looks = this.looksOriginal;
-    }
-
-    (this.tableLooks.filters['accessories'] as any)[0].value = e.value.map(
-      (v: any) => [v]
-    );
-
-    this.filterAccessories = e.value;
-  }
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

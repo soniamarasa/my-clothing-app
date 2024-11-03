@@ -1,7 +1,25 @@
+@import "../../styles/mixins.scss";
+
 :host {
   & ::ng-deep {
     &.home {
+      & .indicadores {
+        text-align: center;
+      }
 
+      .p-card-title {
+        font-size: 0.9rem;
+      }
+
+      .p-card-content {
+        font-size: 2rem !important;
+        font-weight: bold;
+      }
+
+      .charts-grid {
+        margin-top: 0.2rem;
+        align-items: stretch;
+      }
     }
   }
 }

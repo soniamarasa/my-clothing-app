@@ -1,8 +1,9 @@
+import { IAccessory } from './accessory';
+import { IBandana } from './bandana';
 import { IClothing } from './clothing';
 import { IHandbag } from './handbag';
 import { ILook } from './look';
 import { IPlace } from './place';
-import { ITag } from './tag';
 
 export interface IPlannedLook {
   _id?: string;
@@ -13,5 +14,7 @@ export interface IPlannedLook {
   date: Date;
   status: string;
   place: IPlace;
-  tag: ITag;
+
+  accessories: IAccessory[];
+  bandana: IBandana | null;
 }

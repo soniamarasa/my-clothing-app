@@ -2,6 +2,7 @@ import { IAccessory } from "./accessory";
 import { IBandana } from "./bandana";
 import { IClothing } from "./clothing";
 import { IShoe } from "./shoe";
+import { ITag } from './tag';
 
 export interface ILook {
   _id?: string;
@@ -10,6 +11,5 @@ export interface ILook {
   bottom: IClothing | null;
   dress: IClothing | null;
   shoe: IShoe | null;
-  accessories: IAccessory[];
-  bandana: IBandana | null;
+  tag: ITag;
 }

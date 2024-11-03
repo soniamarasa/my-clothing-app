@@ -53,7 +53,7 @@ export class MenuComponent implements OnInit {
           {
             label: 'Categorias',
             icon: 'fa-solid fa-shapes',
-                routerLink: '/categories',
+            routerLink: '/categories',
           },
           {
             label: 'Tags',
@@ -92,11 +92,11 @@ export class MenuComponent implements OnInit {
         label: 'Outros',
         icon: 'fa-brands fa-elementor',
         items: [
-          {
-            label: 'Academia',
-            icon: 'fa-solid fa-dumbbell',
-            routerLink: '/gym',
-          },
+          // {
+          //   label: 'Academia',
+          //   icon: 'fa-solid fa-dumbbell',
+          //   routerLink: '/gym',
+          // },
           {
             label: 'Especiais',
             icon: 'fa-solid fa-star',

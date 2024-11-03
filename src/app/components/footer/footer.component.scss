@@ -7,5 +7,11 @@ footer {
   height: max-content;
   padding: 10px;
   margin-top: 20px;
-  background-color: $senary-color;
+  background-color: $quinary-color;
+
+}
+
+a {
+  color: $primary-color !important;
+  text-decoration: none;
 }

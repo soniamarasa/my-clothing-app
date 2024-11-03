@@ -1,9 +1,9 @@
 <div class="clothes__container">
   <h2>
-    <strong><i class="fa-solid fa-shapes"></i> Minhas Roupas </strong>
+    <strong><i class="fa-solid fa-shapes"></i> {{statusId === 1 ? 'Looks Planejados' : 'Looks Usados' }}</strong>
 
     <p-button
-      label="Nova Peça"
+      label="Novo"
       icon="pi pi-plus"
       (onClick)="openDialog()"
     ></p-button>
@@ -168,6 +168,85 @@
               </p-columnFilter>
             </div>
           </th>
+
+          <th style="min-width: 15rem">
+            <div class="flex align-items-center">
+              Bandana
+              <p-columnFilter
+                field="bandana"
+                matchMode="in"
+                display="menu"
+                [showMatchModes]="false"
+                [showOperator]="false"
+                [showAddButton]="false"
+              >
+                <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                    <span class="font-bold">Bandana</span>
+                  </div>
+                </ng-template>
+                <ng-template
+                  pTemplate="filter"
+                  let-value
+                  let-filter="filterCallback"
+                >
+                  <p-multiSelect
+                    [ngModel]="value"
+                    [options]="bandanas"
+                    placeholder="Selecione"
+                    (onChange)="filter($event.value)"
+                    optionLabel="name"
+                  >
+                    <ng-template let-option pTemplate="item">
+                      <div class="inline-block vertical-align-middle">
+                        <span class="ml-1 mt-1">{{ option.name }}</span>
+                      </div>
+                    </ng-template>
+                  </p-multiSelect>
+                </ng-template>
+              </p-columnFilter>
+            </div>
+          </th>
+
+          <th style="min-width: 15rem">
+            <div class="flex align-items-center">
+              Acessórios
+              <p-columnFilter
+                field="accessories"
+                matchMode="in"
+                display="menu"
+                [showMatchModes]="false"
+                [showOperator]="false"
+                [showAddButton]="false"
+              >
+                <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                    <span class="font-bold">Acessórios</span>
+                  </div>
+                </ng-template>
+                <ng-template
+                  pTemplate="filter"
+                  let-value
+                  let-filter="filterCallback"
+                >
+                  <p-multiSelect
+                    [ngModel]="filterAccessories"
+                    [options]="accessories"
+                    placeholder="Selecione"
+                    (onChange)="filterAccessory($event)"
+                    optionLabel="name"
+                  >
+                    <ng-template let-option pTemplate="item">
+                      <div class="inline-block vertical-align-middle">
+                        <span class="ml-1 mt-1">{{ option.name }}</span>
+                      </div>
+                    </ng-template>
+                  </p-multiSelect>
+                </ng-template>
+              </p-columnFilter>
+            </div>
+          </th>
+
           <th style="min-width: 10rem">
             <div class="flex align-items-center">
               Local
@@ -248,45 +327,6 @@
 
           <th style="min-width: 15rem">
             <div class="flex align-items-center">
-              Tag
-              <p-columnFilter
-                field="tag"
-                matchMode="in"
-                display="menu"
-                [showMatchModes]="false"
-                [showOperator]="false"
-                [showAddButton]="false"
-              >
-                <ng-template pTemplate="header">
-                  <div class="px-3 pt-3 pb-0">
-                    <span class="font-bold">Tag</span>
-                  </div>
-                </ng-template>
-                <ng-template
-                  pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
-                >
-                  <p-multiSelect
-                    [ngModel]="value"
-                    [options]="tags"
-                    placeholder="Selecione"
-                    (onChange)="filter($event.value)"
-                    optionLabel="name"
-                  >
-                    <ng-template let-option pTemplate="item">
-                      <div class="inline-block vertical-align-middle">
-                        <span class="ml-1 mt-1">{{ option.name }}</span>
-                      </div>
-                    </ng-template>
-                  </p-multiSelect>
-                </ng-template>
-              </p-columnFilter>
-            </div>
-          </th>
-
-          <th style="min-width: 15rem">
-            <div class="flex align-items-center">
               Data
               <p-columnFilter
                 field="date"
@@ -313,7 +353,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-plannedLook>
-        <tr (onClick)="openDialog(plannedLook)">
+        <tr class="item-look" (click)="openDialog(plannedLook)">
           <td class="many__items">
             <small
               *ngIf="plannedLook?.look.top"
@@ -362,13 +402,42 @@
             </small>
           </td>
           <td>
-            <small class="badge" [style.background]="plannedLook.coat?.color + '80'">
+            <small
+              class="badge"
+              [style.background]="plannedLook.coat?.color + '80'"
+            >
               {{ plannedLook.coat?.category.icon }}
               {{ plannedLook.coat?.name }}
             </small>
           </td>
+
           <td>
-            <small class="badge" [style.background]="plannedLook.place?.color + '80'">
+            <small
+              class="badge"
+              [style.background]="plannedLook.bandana?.color + '80'"
+            >
+              <i
+                [style.color]="plannedLook.bandana?.color"
+                class="fa-solid fa-hat-wizard"
+              ></i>
+              {{ plannedLook.bandana?.name }}
+            </small>
+          </td>
+
+          <td>
+            <ng-container *ngFor="let accessory of plannedLook?.accessories">
+              <small class="badge" [style.background]="accessory?.color + '80'">
+                {{ accessory?.category.icon }}
+                {{ accessory?.name }}
+              </small>
+            </ng-container>
+          </td>
+
+          <td>
+            <small
+              class="badge"
+              [style.background]="plannedLook.place?.color + '80'"
+            >
               {{ plannedLook.place?.icon }}
               {{ plannedLook.place?.name }}
             </small>
@@ -376,12 +445,6 @@
           <td>
             <small class="badge">
               {{ plannedLook.status?.name }}
-            </small>
-          </td>
-
-          <td>
-            <small class="badge" [style.background]="plannedLook.tag?.color + '80'">
-              {{ plannedLook.tag?.name }}
             </small>
           </td>
 

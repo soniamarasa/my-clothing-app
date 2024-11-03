@@ -1,6 +1,6 @@
 <div class="home">
-  <ng-container >
-    <h1>Meu Vestuário</h1>
+  <ng-container>
+    <h1 [routerLink]="['/']">Meu Vestuário</h1>
     <h4 id="username" (click)="menu.toggle($event)">
       <app-user-img [email]="user.email"> </app-user-img> Hello,
       {{ user.userName[0] }}
@@ -8,8 +8,6 @@
     <p-menu #menu [model]="items" [popup]="true"></p-menu>
     <p id="date">{{ todayIs | date : "longDate" : "" : "pt-BR" }}</p>
   </ng-container>
-
-  <i id="home" [routerLink]="['/']" *ngIf="!isHome" class="pi pi-home"></i>
 
   <div class="menu__pages">
     <app-menu></app-menu>
