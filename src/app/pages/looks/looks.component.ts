@@ -40,12 +40,8 @@ export class LooksComponent implements OnInit, OnDestroy {
   tops: IClothing[] = [];
   bottoms: IClothing[] = [];
   garbs: IClothing[] = [];
-
   shoes: IShoe[] = [];
-
   tags: ITag[] = [];
-
- 
 
   @ViewChild('dt1') tableLooks!: Table;
 
@@ -75,7 +71,6 @@ export class LooksComponent implements OnInit, OnDestroy {
       }),
 
       this.clothesFacade.getClothes().subscribe((clothes: IClothing[]) => {
-        console.log(clothes.filter((obj) => obj));
         this.tops = clothes.filter(
           (obj) => obj.category.name == 'Peça Superior'
         );
@@ -104,7 +99,7 @@ export class LooksComponent implements OnInit, OnDestroy {
 
   clear(table: Table) {
     table.clear();
-  
+
     this.tableLooks.value = this.looksOriginal;
   }
 
@@ -180,6 +175,21 @@ export class LooksComponent implements OnInit, OnDestroy {
     );
   }
 
+  getTextColor(bgColor: string): string {
+    const rgb = parseInt(bgColor.replace('#', ''), 16);
+    const r = (rgb >> 16) & 0xff;
+    const g = (rgb >> 8) & 0xff;
+    const b = (rgb >> 0) & 0xff;
+
+    const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+    return brightness > 128 ? 'black' : '#D4BE98';
+  }
+
+  filterGlobal(event: any) {
+    const inputElement = event.target as HTMLInputElement;
+    const filterValue = inputElement.value || '';
+    this.tableLooks.filterGlobal(filterValue, 'contains');
+  }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

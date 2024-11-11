@@ -36,7 +36,7 @@
             <input
               pInputText
               type="text"
-              (input)="dt1.filterGlobal($event.target, 'contains')"
+              (input)="filterGlobal($event)"
               placeholder="Pesquisar..."
             />
           </span>
@@ -44,20 +44,23 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th style="min-width: 25rem">
+          <th pSortableColumn="name" style="min-width: 25rem">
             <div class="flex align-items-center">
-              Roupa
+              Peça de Roupa <p-sortIcon field="name"></p-sortIcon>
               <p-columnFilter
                 type="text"
                 field="name"
                 display="menu"
+                [showMatchModes]="false"
+                [showOperator]="false"
+                [showAddButton]="false"
               ></p-columnFilter>
             </div>
           </th>
 
-          <th style="min-width: 10rem">
+          <th  pSortableColumn="category.name" style="min-width: 10rem">
             <div class="flex align-items-center">
-              Categoria
+              Categoria <p-sortIcon field="category.name"></p-sortIcon>
               <p-columnFilter
                 field="category"
                 matchMode="in"
@@ -94,9 +97,9 @@
             </div>
           </th>
 
-          <th style="min-width: 10rem">
+          <th pSortableColumn="tag.name" style="min-width: 10rem">
             <div class="flex align-items-center">
-              Tag
+              Tag <p-sortIcon field="tag.name"></p-sortIcon>
               <p-columnFilter
                 field="tag"
                 matchMode="in"
@@ -183,8 +186,12 @@
       <ng-template pTemplate="body" let-clothing>
         <tr>
           <td>
-            <span class="badge" [style.background]="clothing.color + '80'">
-              {{ clothing.category.icon }}
+            <span
+              class="badge"
+              [style.color]="getTextColor(clothing.color)"
+              [style.background]="clothing.color + '80'"
+            >
+              {{ clothing.tag.icon }}
               {{ clothing.name }}
             </span>
           </td>
@@ -221,7 +228,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="summary">
-        Total: {{ clothes.length }}
+        Total: {{ dt1._totalRecords }}
       </ng-template>
     </p-table>
   </div>

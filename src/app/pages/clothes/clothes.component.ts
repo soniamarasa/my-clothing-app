@@ -26,6 +26,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   total: number = 0;
   clothes: IClothing[] = [];
+  clothesOriginal: IClothing[] = [];
   categories: ICategory[] = [];
   tags: ITag[] = [];
 
@@ -35,11 +36,14 @@ export class ClothesComponent implements OnInit, OnDestroy {
     { label: 'Inativo', value: true },
   ];
 
+  @ViewChild('dt1') tableClothes!: Table;
+
   readonly clothes$ = this.clothesFacade.clothesState$.pipe(
     map((clothes: IClothing[]) => {
       return clothes;
     })
   );
+  filterClothes: any;
 
   constructor(
     public _dialogService: DialogService,
@@ -54,6 +58,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.clothes$.subscribe((clothes: IClothing[]) => {
         this.clothes = clothes;
+        this.clothesOriginal = clothes;
         this.loading = false;
         this.total = clothes.length;
       }),
@@ -206,9 +211,20 @@ export class ClothesComponent implements OnInit, OnDestroy {
     );
   }
 
-  filter(e: any) {
-    console.log(e);
-    return e;
+  filterGlobal(event: any) {
+    const inputElement = event.target as HTMLInputElement;
+    const filterValue = inputElement.value || '';
+    this.tableClothes.filterGlobal(filterValue, 'contains');
+  }
+
+  getTextColor(bgColor: string): string {
+    const rgb = parseInt(bgColor.replace('#', ''), 16);
+    const r = (rgb >> 16) & 0xff;
+    const g = (rgb >> 8) & 0xff;
+    const b = (rgb >> 0) & 0xff;
+
+    const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+    return brightness > 128 ? 'black' : '#D4BE98';
   }
 
   ngOnDestroy(): void {

@@ -102,7 +102,6 @@ export class BarChartComponent
           color: '#D4BE98',
         },
         backgroundColor: '#312F2E',
-    
       },
       series: [
         {

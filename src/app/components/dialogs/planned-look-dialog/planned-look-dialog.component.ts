@@ -36,16 +36,12 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
   formHasChanged = false;
   ref?: DynamicDialogRef;
 
-  get dialogData(): any {
-    return this._config.data;
-  }
-
   plannedLookForm = this._fb.group({
     look: [null, [Validators.required]],
     coat: [null, []],
     handbag: [null, []],
     place: [null, [Validators.required]],
-    date: [null, [Validators.required]],
+    date: [new Date(), [Validators.required]],
     bandana: [],
     accessories: [[]],
     status: [this.dialogData.statusId === 1 ? this.status[0] : this.status[1]],
@@ -60,9 +56,14 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
     public tagsFacade: TagsFacade
   ) {}
 
+  get dialogData(): any {
+    return this._config.data;
+  }
+
   ngOnInit(): void {
     this.unboxPlannedLookForm();
     this.status = statusLook;
+
   }
 
   get formValue() {
@@ -82,14 +83,21 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
 
         if (this.dialogData?.item) {
           this.isNew = false;
+
+          const itemData = {
+            ...this.dialogData.item,
+            date: new Date(this.dialogData.item.date), // Conversão aqui
+          };
+
           this.plannedLookForm.addControl(
             '_id',
-            this._fb.control(this.dialogData.item._id, [Validators.required])
+            this._fb.control(itemData._id, [Validators.required])
           );
 
-          this.plannedLookForm.patchValue(this.dialogData.item);
+          this.plannedLookForm.patchValue(itemData);
         } else {
           this.isNew = true;
+          this.plannedLookForm.patchValue({ date: new Date() });
         }
       }
       resolve();

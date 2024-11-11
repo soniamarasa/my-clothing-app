@@ -1,0 +1,20 @@
+<ul class="list-indicator">
+  <li *ngFor="let item of data.result; let i = index">
+    <div>
+      <p>
+        <span [ngStyle]="{ color: getColor(i) }">{{ i + 1 + "." }}</span>
+        <span> {{ item.name }}</span>
+      </p>
+
+      <small
+        class="count"
+        [ngStyle]="{
+          'background-color': getColor(i) + '80',
+          color: getTextColor(getColor(i))
+        }"
+      >
+        {{ item.count }}
+      </small>
+    </div>
+  </li>
+</ul>

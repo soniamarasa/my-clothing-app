@@ -254,6 +254,42 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
     this.filterAccessories = e.value;
   }
 
+  getTextColor(bgColor: string): string {
+    const rgb = parseInt(bgColor.replace('#', ''), 16);
+    const r = (rgb >> 16) & 0xff;
+    const g = (rgb >> 8) & 0xff;
+    const b = (rgb >> 0) & 0xff;
+
+    const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+    return brightness > 128 ? 'black' : '#D4BE98';
+  }
+
+  darkenColor(hex: string, percent: number): string {
+    hex = hex.replace('#', '');
+
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
+    const newR = Math.max(0, r - (r * percent) / 100);
+    const newG = Math.max(0, g - (g * percent) / 100);
+    const newB = Math.max(0, b - (b * percent) / 100);
+
+    const darkenedColor =
+      '#' +
+      [newR, newG, newB]
+        .map((channel) => Math.round(channel).toString(16).padStart(2, '0'))
+        .join('');
+
+    return darkenedColor;
+  }
+
+  filterGlobal(event: any) {
+    const inputElement = event.target as HTMLInputElement;
+    const filterValue = inputElement.value || '';
+    this.tablePlannedLooks.filterGlobal(filterValue, 'contains');
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

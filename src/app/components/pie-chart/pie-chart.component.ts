@@ -109,9 +109,12 @@ export class PieChartComponent implements OnDestroy, AfterViewInit {
             enabled: true,
             format: '{point.name}: {point.y}',
             style: {
+              fontSize: '10px',
               textOutline: 'none',
               fontFamily: 'DM Mono',
               color: '#D4BE98',
+              width: 130,
+              wordWrap: 'break-word',
             },
           },
         },
@@ -129,10 +132,16 @@ export class PieChartComponent implements OnDestroy, AfterViewInit {
         },
         backgroundColor: '#312F2E',
       },
+      plotOptions:{
+        pie: {
+          size: '250px', // Reduz o tamanho do gráfico
+          // center: ['50%', '50%'], // Centraliza o gráfico
+        },
+      },
       credits: { enabled: false },
     };
 
-    // Limpar gráfico anterior antes de renderizar um novo
+
     if (this.chart) {
       this.chart.destroy();
     }

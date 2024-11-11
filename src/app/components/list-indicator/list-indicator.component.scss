@@ -1,0 +1,44 @@
+:host {
+  & ::ng-deep {
+    .list-indicator {
+      font-size: 1rem;
+      text-align: left;
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+      flex-direction: column;
+      padding: 0.5rem;
+
+      & div {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+
+        & p {
+          display: flex;
+          gap: 0.5rem;
+        }
+        & span,
+        small {
+          display: inline-flex;
+        }
+
+        & .count {
+          border-radius: 0.5rem;
+          background-color: rgba(136, 136, 136, 0.26);
+          padding: 2px 4px;
+          height: 2rem;
+          display: flex !important;
+          align-items: center;
+          max-width: 2rem;
+          min-width: 2rem;
+          justify-content: center;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 900px) {
+  }
+}

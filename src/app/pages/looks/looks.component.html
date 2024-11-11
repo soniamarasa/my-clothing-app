@@ -21,12 +21,11 @@
       [paginator]="true"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [globalFilterFields]="[
-        'top._id',
-        'bottom._id',
-        'garb._id',
-        'shoe._id',
-        'bandana._id',
-        'accessories._id'
+        'top.name',
+        'bottom.name',
+        'garb.name',
+        'shoe.name',
+        'tag.name'
       ]"
     >
       <ng-template pTemplate="caption">
@@ -43,7 +42,7 @@
             <input
               pInputText
               type="text"
-              (input)="dt1.filterGlobal($event.target, 'contains')"
+              (input)="filterGlobal($event)"
               placeholder="Pesquisar..."
             />
           </span>
@@ -206,7 +205,7 @@
             </div>
           </th>
 
-          <th style="min-width: 15rem">
+          <th style="min-width: 8rem">
             <div class="flex align-items-center">
               Tag
               <p-columnFilter
@@ -244,51 +243,59 @@
               </p-columnFilter>
             </div>
           </th>
-
-          <th style="width: 10%">Ação</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-look>
-        <tr>
+        <tr (click)="openDialog(look)">
           <td>
-            <small class="badge" [style.background]="look.top?.color + '80'">
-              {{ look.top?.category.icon }}
+            <small
+              class="badge"
+              [style.color]="getTextColor(look?.top?.color || '')"
+              [style.background]="look.top?.color + '70'"
+            >
+              {{ look.top?.tag.icon }}
               {{ look.top?.name }}
             </small>
           </td>
           <td>
-            <small class="badge" [style.background]="look.bottom?.color + '80'">
-              {{ look.bottom?.category.icon }}
+            <small
+              class="badge"
+              [style.color]="getTextColor(look?.bottom?.color || '')"
+              [style.background]="look.bottom?.color + '70'"
+            >
+              {{ look.bottom?.tag.icon }}
               {{ look.bottom?.name }}
             </small>
           </td>
           <td>
-            <small class="badge" [style.background]="look.garb?.color + '80'">
-              {{ look.garb?.category.icon }}
+            <small
+              class="badge"
+              [style.color]="getTextColor(look?.garb?.color || '')"
+              [style.background]="look.garb?.color + '70'"
+            >
+              {{ look.garb?.tag.icon }}
               {{ look.garb?.name }}
             </small>
           </td>
           <td>
-            <small class="badge" [style.background]="look.shoe?.color + '80'">
+            <small
+              class="badge"
+              [style.color]="getTextColor(look.shoe.color)"
+              [style.background]="look.shoe?.color + '70'"
+            >
               {{ look.shoe?.category.icon }}
               {{ look.shoe?.name }}
             </small>
           </td>
 
           <td>
-            <small class="badge" [style.background]="look.tag?.color + '80'">
+            <small
+              class="badge"
+              [style.color]="getTextColor(look.tag.color)"
+              [style.background]="look.tag?.color + '70'"
+            >
               {{ look.tag?.name }}
             </small>
-          </td>
-
-          <td>
-            <p-button
-              icon="fa-solid fa-pen-to-square"
-              styleClass="p-button-rounded p-button-text"
-              (onClick)="openDialog(look)"
-            ></p-button>
-            <!-- <p-button icon="pi pi-times"
-                styleClass="p-button-rounded p-button-danger p-button-text"></p-button> </td> -->
           </td>
         </tr>
       </ng-template>
@@ -297,7 +304,9 @@
           <td colspan="8">Nenhum resultado encontrado.</td>
         </tr>
       </ng-template>
-      <ng-template pTemplate="summary"> Total: {{ looks.length }} </ng-template>
+      <ng-template pTemplate="summary">
+        Total: {{ dt1._totalRecords }}
+      </ng-template>
     </p-table>
   </div>
 </div>

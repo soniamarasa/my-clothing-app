@@ -52,7 +52,6 @@ export class HeaderComponent implements OnInit {
 
   setYear(event: any) {
     this.year = event.getFullYear().toString();
-    console.log(this.year);
     // this.plannedLooksFacade.filterPlannedLooks({year: this.year})
     this.dashboardFacade.filter({year: this.year})
   }

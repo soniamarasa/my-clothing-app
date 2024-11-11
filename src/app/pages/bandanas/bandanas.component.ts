@@ -46,7 +46,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
 
   openDialog(bandana?: IBandana) {
     const ref = this._dialogService.open(ItemDialog, {
-      header: bandana ? ' Editar' : 'Nova' + ' bandana',
+      header: bandana ? 'Editar' : 'Novo',
       width: '450px',
       data: { type: 'bandana', item: bandana },
       appendTo: 'body',

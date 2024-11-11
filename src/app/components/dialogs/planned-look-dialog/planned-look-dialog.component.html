@@ -52,7 +52,7 @@
 
     <div class="formgrid grid">
       <div class="field col-6">
-        <label for="bandana">Bandana</label>
+        <label for="bandana">Lenços|Bandanas</label>
         <p-dropdown formControlName="bandana" inputId="bandana" name="bandana" [options]="bandanas"
           placeholder="Selecione a bandana" optionLabel="name" appendTo="body" [showClear]="true">
           <option value="">Nenhuma</option>
@@ -77,7 +77,7 @@
 
       <div class="field col-6">
         <label for="date">Quando</label>
-        <p-calendar formControlName="date" inputId="date" name="date" appendTo="body" [showIcon]="true"></p-calendar>
+        <p-calendar formControlName="date"  [dateFormat]="'dd/mm/yy'" inputId="date" name="date" appendTo="body" [showIcon]="true"></p-calendar>
       </div>
     </div>
 

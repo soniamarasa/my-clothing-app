@@ -1,5 +1,8 @@
 :host {
   & ::ng-deep {
-   
+    .p-menubar .p-submenu-list {
+
+      width: max-content !important;
+  }
   }
 }

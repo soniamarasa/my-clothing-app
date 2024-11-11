@@ -25,8 +25,8 @@
             <th pSortableColumn="name">
               Nome <p-sortIcon field="name"></p-sortIcon>
             </th>
-            <th pSortableColumn="category" style="width: 30%">
-              Categoria <p-sortIcon field="category"></p-sortIcon>
+            <th pSortableColumn="category.name" style="width: 30%">
+              Categoria <p-sortIcon field="category.name"></p-sortIcon>
             </th>
             <th style="width: 10%">Ação</th>
           </tr>
@@ -34,7 +34,11 @@
         <ng-template pTemplate="body" let-accessory>
           <tr>
             <td>
-              <span class="badge" [style.background]="accessory.color + '80'">
+              <span
+                class="badge"
+                [style.color]="getTextColor(accessory.color)"
+                [style.background]="accessory.color + '70'"
+              >
                 {{ accessory.category.icon }}
                 {{ accessory.name }}
               </span>

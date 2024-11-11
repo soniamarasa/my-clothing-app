@@ -1,6 +1,9 @@
 <div class="clothes__container">
   <h2>
-    <strong><i class="fa-solid fa-shapes"></i> {{statusId === 1 ? 'Looks Planejados' : 'Looks Usados' }}</strong>
+    <strong
+      ><i class="fa-solid fa-shapes"></i>
+      {{ statusId === 1 ? "Looks Planejados" : "Looks Usados" }}</strong
+    >
 
     <p-button
       label="Novo"
@@ -21,13 +24,16 @@
       [paginator]="true"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [globalFilterFields]="[
-        'look._id',
-        'handbag._id',
-        'coat._id',
-        'place._id',
-        'status._id',
-        'tag._id',
-        'date._id'
+        'look.bottom.name',
+        'look.top.name',
+        'look.garb.name',
+        'look.shoe.name',
+        'handbag.name',
+        'coat.name',
+        'place.name',
+        'accessories.name',
+        'bandana.name',
+        'date'
       ]"
     >
       <ng-template pTemplate="caption">
@@ -44,7 +50,7 @@
             <input
               pInputText
               type="text"
-              (input)="dt1.filterGlobal($event.target, 'contains')"
+              (input)="filterGlobal($event)"
               placeholder="Pesquisar..."
             />
           </span>
@@ -52,11 +58,22 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th style="min-width: 25rem">
+          <th pSortableColumn="date" style="min-width: 8rem">
             <div class="flex align-items-center">
-              Look
+              Data <p-sortIcon field="date"></p-sortIcon>
               <p-columnFilter
-                field="look"
+                type="date"
+                field="date"
+                display="menu"
+              ></p-columnFilter>
+            </div>
+          </th>
+
+          <th style="min-width: 10rem">
+            <div class="flex align-items-center">
+              Local
+              <p-columnFilter
+                field="place"
                 matchMode="in"
                 display="menu"
                 [showMatchModes]="false"
@@ -65,7 +82,7 @@
               >
                 <ng-template pTemplate="header">
                   <div class="px-3 pt-3 pb-0">
-                    <span class="font-bold">Looks</span>
+                    <span class="font-bold">Local</span>
                   </div>
                 </ng-template>
                 <ng-template
@@ -75,14 +92,14 @@
                 >
                   <p-multiSelect
                     [ngModel]="value"
-                    [options]="looks"
+                    [options]="places"
                     placeholder="Selecione"
                     (onChange)="filter($event.value)"
                     optionLabel="name"
                   >
                     <ng-template let-option pTemplate="item">
                       <div class="inline-block vertical-align-middle">
-                        <span class="ml-1 mt-1">{{ option.bandana }}</span>
+                        <span class="ml-1 mt-1">{{ option.name }}</span>
                       </div>
                     </ng-template>
                   </p-multiSelect>
@@ -91,7 +108,11 @@
             </div>
           </th>
 
-          <th style="min-width: 10rem">
+          <th style="min-width: 25rem">
+            <div class="flex align-items-center">Look</div>
+          </th>
+
+          <th style="min-width: 13rem">
             <div class="flex align-items-center">
               Bolsa
               <p-columnFilter
@@ -169,7 +190,7 @@
             </div>
           </th>
 
-          <th style="min-width: 15rem">
+          <th style="min-width: 10rem">
             <div class="flex align-items-center">
               Bandana
               <p-columnFilter
@@ -249,45 +270,6 @@
 
           <th style="min-width: 10rem">
             <div class="flex align-items-center">
-              Local
-              <p-columnFilter
-                field="place"
-                matchMode="in"
-                display="menu"
-                [showMatchModes]="false"
-                [showOperator]="false"
-                [showAddButton]="false"
-              >
-                <ng-template pTemplate="header">
-                  <div class="px-3 pt-3 pb-0">
-                    <span class="font-bold">Local</span>
-                  </div>
-                </ng-template>
-                <ng-template
-                  pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
-                >
-                  <p-multiSelect
-                    [ngModel]="value"
-                    [options]="places"
-                    placeholder="Selecione"
-                    (onChange)="filter($event.value)"
-                    optionLabel="name"
-                  >
-                    <ng-template let-option pTemplate="item">
-                      <div class="inline-block vertical-align-middle">
-                        <span class="ml-1 mt-1">{{ option.name }}</span>
-                      </div>
-                    </ng-template>
-                  </p-multiSelect>
-                </ng-template>
-              </p-columnFilter>
-            </div>
-          </th>
-
-          <th style="min-width: 15rem">
-            <div class="flex align-items-center">
               Status
               <p-columnFilter
                 field="status"
@@ -324,41 +306,29 @@
               </p-columnFilter>
             </div>
           </th>
-
-          <th style="min-width: 15rem">
-            <div class="flex align-items-center">
-              Data
-              <p-columnFilter
-                field="date"
-                matchMode="in"
-                display="menu"
-                [showMatchModes]="false"
-                [showOperator]="false"
-                [showAddButton]="false"
-              >
-                <ng-template pTemplate="header">
-                  <div class="px-3 pt-3 pb-0">
-                    <span class="font-bold">Data</span>
-                  </div>
-                </ng-template>
-                <ng-template
-                  pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
-                >
-                </ng-template>
-              </p-columnFilter>
-            </div>
-          </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-plannedLook>
         <tr class="item-look" (click)="openDialog(plannedLook)">
+          <td>
+            {{ plannedLook.date | date : "dd/MM/yyyy" }}
+          </td>
+          <td>
+            <small
+              class="badge"
+              [style.background]="plannedLook.place?.color + '70'"
+            >
+              {{ plannedLook.place?.icon }}
+              {{ plannedLook.place?.name }}
+            </small>
+          </td>
+
           <td class="many__items">
             <small
               *ngIf="plannedLook?.look.top"
               class="badge"
-              [style.background]="plannedLook.look.top?.color + '80'"
+              [style.color]="getTextColor(plannedLook?.look.top?.color)"
+              [style.background]="plannedLook.look.top?.color + '70'"
             >
               {{ plannedLook.look.top.category.icon }}
               {{ plannedLook.look.top.name }}
@@ -366,7 +336,8 @@
             <small
               *ngIf="plannedLook.look?.bottom"
               class="badge"
-              [style.background]="plannedLook.look.bottom?.color + '80'"
+              [style.color]="getTextColor(plannedLook?.look.bottom?.color)"
+              [style.background]="plannedLook.look.bottom?.color + '70'"
             >
               {{ plannedLook.look.bottom.category.icon }}
               {{ plannedLook.look.bottom.name }}
@@ -374,7 +345,8 @@
             <small
               *ngIf="plannedLook.look?.garb"
               class="badge"
-              [style.background]="plannedLook.look.garb?.color + '80'"
+              [style.color]="getTextColor(plannedLook?.look.garb?.color)"
+              [style.background]="plannedLook.look.garb?.color + '70'"
             >
               {{ plannedLook.look.garb.category.icon }}
               {{ plannedLook.look.garb.name }}
@@ -382,7 +354,8 @@
             <small
               *ngIf="plannedLook.look?.shoe"
               class="badge"
-              [style.background]="plannedLook.look.shoe?.color + '80'"
+              [style.color]="getTextColor(plannedLook?.look.shoe?.color)"
+              [style.background]="plannedLook.look.shoe?.color + '70'"
             >
               {{ plannedLook.look.shoe.category.icon }}
               {{ plannedLook.look.shoe.name }}
@@ -391,10 +364,13 @@
           <td>
             <small
               class="badge"
-              [style.background]="plannedLook.handbag?.color + '80'"
+              [style.color]="getTextColor(plannedLook?.handbag?.color || '')"
+              [style.background]="plannedLook.handbag?.color + '60'"
             >
               <i
-                [style.color]="plannedLook.handbag?.color"
+                [style.color]="
+                  darkenColor(plannedLook.handbag?.color || '', 30)
+                "
                 class="fa-solid fa-bag-shopping"
               ></i>
 
@@ -404,7 +380,7 @@
           <td>
             <small
               class="badge"
-              [style.background]="plannedLook.coat?.color + '80'"
+              [style.background]="plannedLook.coat?.color + '70'"
             >
               {{ plannedLook.coat?.category.icon }}
               {{ plannedLook.coat?.name }}
@@ -414,9 +390,10 @@
           <td>
             <small
               class="badge"
-              [style.background]="plannedLook.bandana?.color + '80'"
+              [style.background]="plannedLook.bandana?.color + '70'"
             >
               <i
+                *ngIf="plannedLook.bandana"
                 [style.color]="plannedLook.bandana?.color"
                 class="fa-solid fa-hat-wizard"
               ></i>
@@ -426,7 +403,7 @@
 
           <td>
             <ng-container *ngFor="let accessory of plannedLook?.accessories">
-              <small class="badge" [style.background]="accessory?.color + '80'">
+              <small class="badge" [style.background]="accessory?.color + '70'">
                 {{ accessory?.category.icon }}
                 {{ accessory?.name }}
               </small>
@@ -434,22 +411,9 @@
           </td>
 
           <td>
-            <small
-              class="badge"
-              [style.background]="plannedLook.place?.color + '80'"
-            >
-              {{ plannedLook.place?.icon }}
-              {{ plannedLook.place?.name }}
-            </small>
-          </td>
-          <td>
             <small class="badge">
               {{ plannedLook.status?.name }}
             </small>
-          </td>
-
-          <td>
-            {{ plannedLook.date | date }}
           </td>
         </tr>
       </ng-template>
@@ -459,7 +423,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="summary">
-        Total: {{ plannedLooks.length }}
+        Total: {{ dt1._totalRecords }}
       </ng-template>
     </p-table>
   </div>

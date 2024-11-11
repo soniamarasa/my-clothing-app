@@ -64,23 +64,21 @@ import { MenuComponent } from '@components/menu/menu.component';
 import { EmojiComponent } from '@components/emoji/emoji.component';
 import { ChartComponent } from '../components/chart/chart.component';
 import { PieChartComponent } from '../components/pie-chart/pie-chart.component';
+import { BarChartComponent } from '../components/bar-chart/bar-chart.component';
+import { ListIndicatorComponent } from '../components/list-indicator/list-indicator.component';
 
 //Dialogs
 import { RecoverDialogComponent } from './auth/recover-dialog/recover-dialog.component';
 import { ItemDialog } from '@components/dialogs/item-dialog/item-dialog.component';
 import { LookDialog } from '@components/dialogs/look-dialog/look-dialog.component';
 import { PlannedLookDialog } from '@components/dialogs/planned-look-dialog/planned-look-dialog.component';
-import { BarChartComponent } from '../components/bar-chart/bar-chart.component';
+import { ListDialog } from '../components/dialogs/list-dialog/list-dialog.component';
 
 @NgModule({
   declarations: [
     PagesComponent,
     AuthComponent,
     HomeComponent,
-    RecoverDialogComponent,
-    ItemDialog,
-    LookDialog,
-    PlannedLookDialog,
     RegistrationComponent,
     PasswordRecoverComponent,
     AccountComponent,
@@ -98,6 +96,13 @@ import { BarChartComponent } from '../components/bar-chart/bar-chart.component';
     ChartComponent,
     PieChartComponent,
     BarChartComponent,
+    ListIndicatorComponent,
+
+    RecoverDialogComponent,
+    ItemDialog,
+    LookDialog,
+    PlannedLookDialog,
+    ListDialog,
 
     EmojiComponent,
     HeaderComponent,

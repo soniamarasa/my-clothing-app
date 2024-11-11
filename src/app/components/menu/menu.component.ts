@@ -24,7 +24,7 @@ export class MenuComponent implements OnInit {
             routerLink: '/accessories',
           },
           {
-            label: 'Bandanas',
+            label: 'Lenços | Bandanas',
             icon: 'fa-solid fa-hat-wizard',
             routerLink: '/bandanas',
           },
