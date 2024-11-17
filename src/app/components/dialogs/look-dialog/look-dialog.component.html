@@ -12,6 +12,8 @@
           optionLabel="name"
           appendTo="body"
           [showClear]="true"
+          [filter]="true"
+          filterBy="name"
         ></p-dropdown>
       </div>
 
@@ -26,6 +28,8 @@
           optionLabel="name"
           appendTo="body"
           [showClear]="true"
+          [filter]="true"
+          filterBy="name"
         ></p-dropdown>
       </div>
     </div>
@@ -42,6 +46,8 @@
           placeholder="Selecione o traje"
           optionLabel="name"
           appendTo="body"
+          [filter]="true"
+          filterBy="name"
         ></p-dropdown>
       </div>
 
@@ -55,6 +61,8 @@
           placeholder="Selecione o sapato"
           optionLabel="name"
           appendTo="body"
+          [filter]="true"
+          filterBy="name"
         ></p-dropdown>
 
         <ng-container *ngIf="lookForm.get('shoe')?.touched">

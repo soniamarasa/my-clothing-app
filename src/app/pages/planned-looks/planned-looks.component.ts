@@ -81,6 +81,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+  
     const currentRoute = this._router.url;
     if (currentRoute.includes('/planned-looks')) {
       this.statusId = 1;

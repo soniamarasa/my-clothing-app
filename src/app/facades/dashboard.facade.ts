@@ -19,6 +19,7 @@ import {
 import { DashboardStore } from '@stores/dashboard.store';
 
 import { IDashboard } from '@root/src/app/interfaces/dashboard';
+import { FilterFacade } from './filter.facade';
 
 const REFRESH_INTERVAL = 600000;
 
@@ -54,7 +55,7 @@ export class DashboardFacade {
 
   constructor(
     private dashboardService: DashboardService,
-    private dashboardStore: DashboardStore
+    private dashboardStore: DashboardStore,
   ) {}
 
   getDashboard(queryParams?: IGetDashboardParams) {

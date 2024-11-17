@@ -5,6 +5,7 @@ import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { PlannedLooksFacade } from '../../facades/plannedLooks.facade';
 import { DashboardFacade } from '../../facades/dashboard.facade';
+import { FilterFacade } from '../../facades/filter.facade';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +14,6 @@ import { DashboardFacade } from '../../facades/dashboard.facade';
 })
 export class HeaderComponent implements OnInit {
   todayIs = new Date();
-  year: any = this.todayIs;
   isHome = window.location.pathname === '/' ? true : false;
   $user = this.userFacade.authState$;
   user!: IUser | any;
@@ -21,9 +21,10 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private userFacade: UsersFacade,
-    private _router: Router,
+    public filterFacade: FilterFacade,
     private plannedLooksFacade: PlannedLooksFacade,
-    private dashboardFacade: DashboardFacade
+    private dashboardFacade: DashboardFacade,
+    private _router: Router
   ) {
     this.$user.subscribe((user) => {
       this.user = user.user;
@@ -51,8 +52,6 @@ export class HeaderComponent implements OnInit {
   }
 
   setYear(event: any) {
-    this.year = event.getFullYear().toString();
-    // this.plannedLooksFacade.filterPlannedLooks({year: this.year})
-    this.dashboardFacade.filter({year: this.year})
+    this.filterFacade.setFilter(event.getFullYear().toString());
   }
 }

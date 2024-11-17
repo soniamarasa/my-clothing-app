@@ -3,34 +3,15 @@
     <p-button icon="pi pi-list" (onClick)="openDialog()" [rounded]="true" [text]="true" />
   </div>
 
-  <div
-    [class.chart-container]="chartType === 'pie'"
-    [class.card-content-empty]="!showChart"
-  >
+  <div [class.chart-container]="chartType === 'pie'" [class.card-content-empty]="!showChart">
     <div *ngIf="loading; else canvas" class="spinner-container">
-      <p-progressSpinner
-        styleClass="w-4rem h-4rem"
-        strokeWidth="8"
-        fill="var(--surface-ground)"
-        animationDuration=".5s"
-      />
+      <p-progressSpinner styleClass="w-8rem h-8rem" strokeWidth="5" animationDuration=".9s" />
     </div>
 
     <ng-template #canvas>
-      <app-bar-chart
-        *ngIf="showChart && chartType === 'bar'"
-        [data]="data"
-        [type]="header"
-      ></app-bar-chart>
-      <app-pie-chart
-        *ngIf="showChart && chartType === 'pie'"
-        [data]="data"
-        [type]="header"
-      ></app-pie-chart>
-      <app-list-indicator
-        *ngIf="showChart && chartType === 'list'"
-        [data]="data"
-      ></app-list-indicator>
+      <app-bar-chart *ngIf="showChart && chartType === 'bar'" [data]="data" [type]="header"></app-bar-chart>
+      <app-pie-chart *ngIf="showChart && chartType === 'pie'" [data]="data" [type]="header"></app-pie-chart>
+      <app-list-indicator *ngIf="showChart && chartType === 'list'" [data]="data"></app-list-indicator>
 
       <p *ngIf="!showChart" class="empty-data">
         <i class="fa-solid fa-magnifying-glass-chart"></i>

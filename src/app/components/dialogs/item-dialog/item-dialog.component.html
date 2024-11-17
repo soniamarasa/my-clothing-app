@@ -141,11 +141,12 @@
   <div class="p-dialog-footer">
     <p-button
       label="Cancelar"
-      styleClass="p-button-text p-button-plain"
+      styleClass="p-button-danger"
       (onClick)="onClose()"
     ></p-button>
 
     <p-button
+    styleClass="p-button-success"
       pFocusTrap
       label="Salvar"
       [disabled]="itemForm.invalid"

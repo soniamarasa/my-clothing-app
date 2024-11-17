@@ -40,9 +40,14 @@ export class PieChartComponent implements OnDestroy, AfterViewInit {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data'] && this.data) {
+      this.createChart(this.data);
+    }
+  }
+
   createChart(data: any) {
     if (!this.chartContainer) {
-      this.cdr.detectChanges();
       return;
     }
 
@@ -86,11 +91,7 @@ export class PieChartComponent implements OnDestroy, AfterViewInit {
         backgroundColor: 'transparent',
         renderTo: this.chartContainer?.nativeElement,
         events: {
-          load: () => {
-            if (this.chart) {
-              this.chart.reflow();
-            }
-          },
+          load: () => {},
         },
         width: null,
       },
@@ -132,7 +133,7 @@ export class PieChartComponent implements OnDestroy, AfterViewInit {
         },
         backgroundColor: '#312F2E',
       },
-      plotOptions:{
+      plotOptions: {
         pie: {
           size: '250px', // Reduz o tamanho do gráfico
           // center: ['50%', '50%'], // Centraliza o gráfico
@@ -140,7 +141,6 @@ export class PieChartComponent implements OnDestroy, AfterViewInit {
       },
       credits: { enabled: false },
     };
-
 
     if (this.chart) {
       this.chart.destroy();

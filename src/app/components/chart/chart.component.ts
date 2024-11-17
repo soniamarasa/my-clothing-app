@@ -33,7 +33,11 @@ export class ChartComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes?.['data'] && this.data) {
-      this.showChart = this.data.result.length > 0;
+      this.loading = true;
+      setTimeout(() => {
+        this.showChart = this.data.result.length > 0;
+        this.loading = false;
+      }, 500);
     }
   }
 

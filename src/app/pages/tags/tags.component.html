@@ -35,7 +35,10 @@
         <ng-template pTemplate="body" let-tag>
           <tr>
             <td>
-              <span class="badge" [style.background]="tag.color + '80'"
+              <span
+                class="badge"
+                [style.color]="getTextColor(tag?.color)"
+                [style.background]="tag.color + '80'"
                 >{{ tag.icon }} {{ tag.name }}
               </span>
             </td>

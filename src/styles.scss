@@ -33,8 +33,9 @@ body::-webkit-scrollbar-thumb {
   border-radius: 1rem;
 }
 
-.p-password, .p-multiselect {
-width: 100% !important;
+.p-password,
+.p-multiselect {
+  width: 100% !important;
 }
 
 .p-card-title {
@@ -42,7 +43,7 @@ width: 100% !important;
 }
 
 .p-card {
-  color: #d4be98 !important;
+  color: $senary-color !important;
 }
 
 .p-button {
@@ -143,7 +144,11 @@ h4 {
   border-radius: 0.5rem;
 }
 
-
-.p-column-filter-buttonbar{
+.p-column-filter-buttonbar {
   display: none;
+}
+
+.field-checkbox > label,
+.field-radiobutton > label {
+  margin-bottom: 0 !important;
 }

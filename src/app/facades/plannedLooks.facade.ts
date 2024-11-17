@@ -26,6 +26,8 @@ const REFRESH_INTERVAL = 600000;
   providedIn: 'root',
 })
 export class PlannedLooksFacade {
+  year = new Date().getFullYear().toString();
+
   private readonly autoRefresh$ = interval(REFRESH_INTERVAL).pipe(startWith(0));
   private readonly _refresh = new BehaviorSubject(undefined);
 
@@ -36,7 +38,7 @@ export class PlannedLooksFacade {
     this.filter$,
     this.autoRefresh$,
     this._refresh.asObservable(),
-  ]).pipe(switchMap(() => this.getPlannedLooks({ ...this._filter.value })));
+  ]).pipe(switchMap(() => this.getPlannedLooks({ year:this.year, ...this._filter.value })));
 
   readonly plannedLooksState$ = combineLatest([
     this.plannedLooksStore.plannedLooksState$,

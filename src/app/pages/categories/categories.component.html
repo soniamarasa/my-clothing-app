@@ -34,7 +34,7 @@
         <ng-template pTemplate="body" let-category>
           <tr>
             <td>
-              <span class="badge" [style.background]="category.color +'5c'"
+              <span class="badge" [style.color]="getTextColor(category?.color)" [style.background]="category.color +'5c'"
                 >{{ category.icon }} {{ category.name }}
               </span>
             </td>
