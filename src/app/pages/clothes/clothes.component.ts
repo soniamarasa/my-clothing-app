@@ -41,17 +41,18 @@ export class ClothesComponent implements OnInit, OnDestroy {
   readonly clothes$ = this.clothesFacade.clothesState$.pipe(
     map((clothes: IClothing[]) => {
       return clothes;
-    })
+    }),
   );
   filterClothes: any;
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
+    private _confirmationService: ConfirmationService,
     private confirmationService: ConfirmationService,
     private clothesFacade: ClothesFacade,
     private categoriesFacade: CategoriesFacade,
-    private tagsFacade: TagsFacade
+    private tagsFacade: TagsFacade,
   ) {}
 
   ngOnInit(): void {
@@ -71,40 +72,8 @@ export class ClothesComponent implements OnInit, OnDestroy {
 
       this.tagsFacade.getTags().subscribe((tags: ITag[]) => {
         this.tags = tags.filter((obj) => obj.type === 'Roupa');
-      })
+      }),
     );
-  }
-
-  confirm(clothing: IClothing) {
-    this.confirmationService.confirm({
-      message: 'Tem certeza que você deseja inativar essa peça de roupa?',
-      header: 'Inativar Roupa',
-      accept: () => {
-        this.subs.add(
-          this.clothesFacade.inactivate(clothing._id).subscribe({
-            next: () => {
-              this._messageService.add({
-                key: 'notification',
-                severity: 'success',
-                summary: 'Roupa inativada.',
-                detail: 'Peça de roupa inativada com sucesso!',
-                icon: 'fa-solid fa-check',
-              });
-            },
-            error: () => {
-              this._messageService.add({
-                key: 'notification',
-                severity: 'error',
-                summary: 'Houve um problema!',
-                detail:
-                  'Não foi possível inativar a peça de roupa. Tente novamente mais tarde.',
-                icon: 'fa-solid fa-exclamation-circle',
-              });
-            },
-          })
-        );
-      },
-    });
   }
 
   activate(clothing: IClothing) {
@@ -116,7 +85,6 @@ export class ClothesComponent implements OnInit, OnDestroy {
             severity: 'success',
             summary: 'Roupa ativado.',
             detail: 'Roupa foi ativada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -126,10 +94,9 @@ export class ClothesComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível ativar essa peça de roupa. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
@@ -157,7 +124,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
             ? this.updateClothing(clothingObj)
             : this.newClothing(clothingObj);
         }
-      })
+      }),
     );
   }
 
@@ -169,7 +136,6 @@ export class ClothesComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Roupa criada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -179,10 +145,9 @@ export class ClothesComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar essa roupa. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
@@ -194,7 +159,6 @@ export class ClothesComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Roupa atualizada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -204,10 +168,9 @@ export class ClothesComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar essa roupa. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
@@ -215,6 +178,36 @@ export class ClothesComponent implements OnInit, OnDestroy {
     const inputElement = event.target as HTMLInputElement;
     const filterValue = inputElement.value || '';
     this.tableClothes.filterGlobal(filterValue, 'contains');
+  }
+
+  confirm(clothing: IClothing) {
+    this._confirmationService.confirm({
+      message: 'Tem certeza que você deseja exluir essa peça de roupa?',
+      header: 'Excluir',
+      accept: () => {
+        this.subs.add(
+          this.clothesFacade.delete(clothing).subscribe({
+            next: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'success',
+                summary: 'Peça de roupa excluída.',
+                detail: 'A peça de roupa foi deletada com sucesso!',
+              });
+            },
+            error: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'error',
+                summary: 'Houve um problema!',
+                detail:
+                  'Não foi possível deletar a peça de roupa. Tente novamente mais tarde.',
+              });
+            },
+          }),
+        );
+      },
+    });
   }
 
   getTextColor(bgColor: string): string {

@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -25,18 +31,18 @@ export class TagsComponent implements OnInit, OnDestroy {
 
   @ViewChild('table', { static: false }) table!: Table;
 
-
   readonly tags$ = this.tagsFacade.tagsState$.pipe(
     map((tags: ITag[]) => {
       return tags;
-    })
+    }),
   );
 
   constructor(
     public _dialogService: DialogService,
     private _cdr: ChangeDetectorRef,
     private _messageService: MessageService,
-    private tagsFacade: TagsFacade
+    private _confirmationService: ConfirmationService,
+    private tagsFacade: TagsFacade,
   ) {}
 
   ngOnInit(): void {
@@ -45,11 +51,9 @@ export class TagsComponent implements OnInit, OnDestroy {
         this.tags = tags;
         this.loading = false;
         this.total = tags.length;
-      })
+      }),
     );
   }
-
-
 
   openDialog(tag?: ITag) {
     const ref = this._dialogService.open(ItemDialog, {
@@ -65,7 +69,7 @@ export class TagsComponent implements OnInit, OnDestroy {
           this.loading = true;
           tagObj._id ? this.updateTag(tagObj) : this.newTag(tagObj);
         }
-      })
+      }),
     );
   }
 
@@ -77,7 +81,6 @@ export class TagsComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Tag criada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -87,10 +90,9 @@ export class TagsComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar essa tag. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
@@ -102,7 +104,6 @@ export class TagsComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Tag atualizada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -112,11 +113,40 @@ export class TagsComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar essa tag. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
+  }
+
+  confirm(tag: ITag) {
+    this._confirmationService.confirm({
+      message: 'Tem certeza que você deseja exluir essa tag?',
+      header: 'Excluir',
+      accept: () => {
+        this.subs.add(
+          this.tagsFacade.delete(tag).subscribe({
+            next: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'success',
+                summary: 'Tag excluída.',
+                detail: 'A tag foi deletada com sucesso!',
+              });
+            },
+            error: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'error',
+                summary: 'Houve um problema!',
+                detail:
+                  'Não foi possível deletar a tag. Tente novamente mais tarde.',
+              });
+            },
+          }),
+        );
+      },
+    });
   }
 
   getTextColor(bgColor: string): string {

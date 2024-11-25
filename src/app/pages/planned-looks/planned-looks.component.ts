@@ -22,7 +22,6 @@ import { IClothing } from '@interfaces/clothing';
 import { IHandbag } from '@interfaces/handbag';
 import { IPlace } from '@interfaces/place';
 import { IPlannedLook } from '../../interfaces/plannedLook';
-import { ITag } from '@interfaces/tag';
 import { AccessoriesFacade } from '../../facades/accessories.facade';
 import { BandanasFacade } from '../../facades/bandanas.facade';
 import { IBandana } from '../../interfaces/bandana';
@@ -62,12 +61,13 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
   readonly plannedLooks$ = this.plannedLooksFacade.plannedLooksState$.pipe(
     map((plannedLooks: IPlannedLook[]) => {
       return plannedLooks;
-    })
+    }),
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
+    private _confirmationService: ConfirmationService,
     private _router: Router,
     private _route: ActivatedRoute,
     private confirmationService: ConfirmationService,
@@ -77,11 +77,10 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
     private placesFacade: PlacesFacade,
     private accessoriesFacade: AccessoriesFacade,
     private bandanasFacade: BandanasFacade,
-    private handbagsFacade: HandbagsFacade
+    private handbagsFacade: HandbagsFacade,
   ) {}
 
   ngOnInit(): void {
-  
     const currentRoute = this._router.url;
     if (currentRoute.includes('/planned-looks')) {
       this.statusId = 1;
@@ -123,7 +122,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
 
       this.handbagsFacade.getHandbags().subscribe((handbags: IHandbag[]) => {
         this.handbags = handbags;
-      })
+      }),
     );
   }
 
@@ -160,7 +159,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
         if (lookObj) {
           lookObj._id ? this.updateLook(lookObj) : this.newLook(lookObj);
         }
-      })
+      }),
     );
   }
 
@@ -172,7 +171,6 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Roupa criada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -182,10 +180,9 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar essa roupa. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
@@ -197,7 +194,6 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Roupa atualizada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -207,10 +203,9 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar essa roupa. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
@@ -221,14 +216,14 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
       const selectedIds = e.value.map((el: any) => el._id);
 
       this.plannedLooks = this.plannedLooks.filter((look: any) =>
-        look.places.some((place: any) => selectedIds.includes(place._id))
+        look.places.some((place: any) => selectedIds.includes(place._id)),
       );
     } else {
       this.plannedLooks = this.plannedLooksOriginal;
     }
 
     (this.tablePlannedLooks.filters['places'] as any)[0].value = e.value.map(
-      (v: any) => [v]
+      (v: any) => [v],
     );
 
     this.filterPlaces = e.value;
@@ -242,8 +237,8 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
 
       this.looks = this.looks.filter((look: any) =>
         look.accessories.some((accessory: any) =>
-          selectedIds.includes(accessory._id)
-        )
+          selectedIds.includes(accessory._id),
+        ),
       );
     } else {
       this.plannedLooks = this.plannedLooksOriginal;

@@ -8,9 +8,8 @@ describe('RecoverDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RecoverDialogComponent ]
-    })
-    .compileComponents();
+      declarations: [RecoverDialogComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

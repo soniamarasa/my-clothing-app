@@ -25,13 +25,14 @@ export class HandbagsComponent implements OnInit, OnDestroy {
   readonly handbags$ = this.handbagsFacade.handbagsState$.pipe(
     map((handbags: IHandbag[]) => {
       return handbags;
-    })
+    }),
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private handbagsFacade: HandbagsFacade
+    private _confirmationService: ConfirmationService,
+    private handbagsFacade: HandbagsFacade,
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +41,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
         this.handbags = handbags;
         this.loading = false;
         this.total = handbags.length;
-      })
+      }),
     );
   }
 
@@ -48,7 +49,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
     const ref = this._dialogService.open(ItemDialog, {
       header: handbags ? ' Editar' : 'Nova' + ' bolsa',
       width: '450px',
-      data: { type: 'handbags', item: handbags},
+      data: { type: 'handbags', item: handbags },
       appendTo: 'body',
     });
 
@@ -59,7 +60,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
             ? this.updateHandbag(handbagsObj)
             : this.newHandbag(handbagsObj);
         }
-      })
+      }),
     );
   }
 
@@ -71,7 +72,6 @@ export class HandbagsComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Bolsa criada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -81,10 +81,9 @@ export class HandbagsComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar essa bolsa. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
@@ -96,7 +95,6 @@ export class HandbagsComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Bolsa atualizada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -106,13 +104,41 @@ export class HandbagsComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar essa bolsa. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
+  confirm(handbag: IHandbag) {
+    this._confirmationService.confirm({
+      message: 'Tem certeza que você deseja exluir essa bolsa?',
+      header: 'Excluir',
+      accept: () => {
+        this.subs.add(
+          this.handbagsFacade.delete(handbag).subscribe({
+            next: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'success',
+                summary: 'Bolsa excluída.',
+                detail: 'A bolsa foi deletada com sucesso!',
+              });
+            },
+            error: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'error',
+                summary: 'Houve um problema!',
+                detail:
+                  'Não foi possível deletar a bolsa. Tente novamente mais tarde.',
+              });
+            },
+          }),
+        );
+      },
+    });
+  }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

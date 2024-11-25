@@ -43,7 +43,7 @@ export class UsersService {
       {
         password,
       },
-      { headers }
+      { headers },
     );
   }
 
@@ -62,7 +62,7 @@ export class UsersService {
   updateUser(user: IUser) {
     return this._http.put<IUser>(
       `${environment.url}/updateUser/${user._id}`,
-      user
+      user,
     );
   }
 }

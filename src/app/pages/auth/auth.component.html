@@ -8,7 +8,6 @@
     <div class="col-12 sm:col-12 md:col-6 lg:col-8 container-img">
       <div class="img">
         <img src="../../../assets/undraw_web_shopping_re_owap.svg" alt="" />
-       
       </div>
     </div>
 
@@ -20,18 +19,31 @@
           <form [formGroup]="form">
             <div class="field">
               <label for="email" class="block">E-mail</label>
-              <input type="email" pInputText required class="p-inputtext p-inputtext-md" formControlName="email"
-                placeholder="Digite seu e-mail" />
-              <small class="p-error" *ngIf="
+              <input
+                type="email"
+                pInputText
+                required
+                class="p-inputtext p-inputtext-md"
+                formControlName="email"
+                placeholder="Digite seu e-mail"
+              />
+              <small
+                class="p-error"
+                *ngIf="
                   formControl['email'].touched &&
                   formControl['email'].errors?.['required']
-                ">
+                "
+              >
                 E-mail é obrigatório!
               </small>
 
-              <small class="p-error" *ngIf="
-                  formControl['email'].touched && formControl['email'].errors?.['email']
-                ">
+              <small
+                class="p-error"
+                *ngIf="
+                  formControl['email'].touched &&
+                  formControl['email'].errors?.['email']
+                "
+              >
                 Digite um e-mail válido!
               </small>
             </div>
@@ -39,19 +51,33 @@
             <div class="field">
               <label for="password" class="block">Senha</label>
 
-              <p-password required formControlName="password" placeholder="Digite a sua senha" [feedback]="false"
-                [toggleMask]="true" styleClass="p-password p-component p-inputwrapper p-input-icon-right"></p-password>
-              <small class="p-error" *ngIf="
+              <p-password
+                required
+                formControlName="password"
+                placeholder="Digite a sua senha"
+                [feedback]="false"
+                [toggleMask]="true"
+                styleClass="p-password p-component p-inputwrapper p-input-icon-right"
+              ></p-password>
+              <small
+                class="p-error"
+                *ngIf="
                   formControl['password'].touched &&
                   formControl['password'].errors?.['required']
-                ">
+                "
+              >
                 Senha é obrigatória!
               </small>
             </div>
 
             <div class="button-container">
-              <p-button [disabled]="form.invalid" type="submit" (keydown.enter)="login()" (onClick)="login()"
-                label="Entrar"></p-button>
+              <p-button
+                [disabled]="form.invalid"
+                type="submit"
+                (keydown.enter)="login()"
+                (onClick)="login()"
+                label="Entrar"
+              ></p-button>
             </div>
           </form>
 
@@ -60,7 +86,13 @@
 
         <div class="footer">
           <p>Ainda não tem uma conta?</p>
-          <p-button routerLink="/signup" size="small" [text]="true" styleClass=" p-button-sm">Cadastre-se</p-button>
+          <p-button
+            routerLink="/signup"
+            size="small"
+            [text]="true"
+            styleClass=" p-button-sm"
+            >Cadastre-se</p-button
+          >
         </div>
       </p-card>
     </div>

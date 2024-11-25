@@ -40,12 +40,12 @@ export class ShoesFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true })
+    shareReplay({ refCount: true }),
   );
 
   constructor(
     private shoesService: ShoesService,
-    private shoesStore: ShoesStore
+    private shoesStore: ShoesStore,
   ) {}
 
   getShoes(queryParams?: IGetShoesParams) {
@@ -70,6 +70,12 @@ export class ShoesFacade {
     return this.shoesService
       .updateShoe(shoe)
       .pipe(tap((shoe) => this.shoesStore.updateShoe(shoe)));
+  }
+
+  delete(shoe: IShoe) {
+    return this.shoesService
+      .delete(shoe)
+      .pipe(tap((shoe) => this.shoesStore.deleteShoe(shoe)));
   }
 
   filterShoes(filter: IGetShoesParams) {

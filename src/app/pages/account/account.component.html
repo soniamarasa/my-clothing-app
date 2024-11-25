@@ -23,7 +23,8 @@
               <small
                 class="p-error"
                 *ngIf="
-                  formControl['name'].touched && formControl['name'].errors?.['required']
+                  formControl['name'].touched &&
+                  formControl['name'].errors?.['required']
                 "
               >
                 Name é obrigatório!
@@ -53,7 +54,8 @@
               <small
                 class="p-error"
                 *ngIf="
-                  formControl['email'].touched && formControl['email'].errors?.['email']
+                  formControl['email'].touched &&
+                  formControl['email'].errors?.['email']
                 "
               >
                 Enter a valid email address
@@ -213,7 +215,9 @@
                   class="p-error"
                   *ngIf="
                     formPasswordControl['confirmPassword'].touched &&
-                    formPasswordControl['confirmPassword'].errors?.['passwordMismatch']
+                    formPasswordControl['confirmPassword'].errors?.[
+                      'passwordMismatch'
+                    ]
                   "
                 >
                   Passwords don't match

@@ -17,14 +17,19 @@
       />
       <small
         class="p-error"
-        *ngIf="formControl['email'].touched && formControl['email'].errors?.['required']"
+        *ngIf="
+          formControl['email'].touched &&
+          formControl['email'].errors?.['required']
+        "
       >
         E-mail é obrigatório!
       </small>
 
       <small
         class="p-error"
-        *ngIf="formControl['email'].touched && formControl['email'].errors?.['email']"
+        *ngIf="
+          formControl['email'].touched && formControl['email'].errors?.['email']
+        "
       >
         Enter a valid email address
       </small>

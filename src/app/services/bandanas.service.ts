@@ -13,7 +13,6 @@ export interface IGetBandanasParams {
 @Injectable({
   providedIn: 'root',
 })
-
 export class BandanasService {
   constructor(private readonly _http: HttpClient) {}
 
@@ -32,6 +31,15 @@ export class BandanasService {
   }
 
   updateBandana(bandana: IBandana) {
-    return this._http.put<IBandana>(`${environment.url}/bandanas/${bandana._id}`, bandana);
+    return this._http.put<IBandana>(
+      `${environment.url}/bandanas/${bandana._id}`,
+      bandana,
+    );
+  }
+
+  delete(bandana: IBandana) {
+    return this._http.delete<IBandana>(
+      `${environment.url}/bandanas/${bandana._id}`,
+    );
   }
 }

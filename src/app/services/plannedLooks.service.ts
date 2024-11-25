@@ -22,21 +22,27 @@ export class PlannedLooksService {
 
   getPlannedLookById(id: IPlannedLook['_id']) {
     return this._http.get<IPlannedLook>(
-      `${environment.url}/plannedLooks/${id}`
+      `${environment.url}/plannedLooks/${id}`,
     );
   }
 
   newPlannedLook(plannedLook: IPlannedLook) {
     return this._http.post<IPlannedLook>(
       `${environment.url}/plannedLooks`,
-      plannedLook
+      plannedLook,
     );
   }
 
   updatePlannedLook(plannedLook: IPlannedLook) {
     return this._http.put<IPlannedLook>(
       `${environment.url}/plannedLooks/${plannedLook._id}`,
-      plannedLook
+      plannedLook,
+    );
+  }
+
+  delete(plannedLook: IPlannedLook) {
+    return this._http.delete<IPlannedLook>(
+      `${environment.url}/plannedLooks/${plannedLook._id}`,
     );
   }
 }

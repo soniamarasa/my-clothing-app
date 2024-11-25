@@ -1,3 +1,9 @@
+<p-confirmDialog
+  acceptLabel="Excluir"
+  rejectLabel="Cancelar"
+  rejectButtonStyleClass="p-button-text p-button-plain"
+></p-confirmDialog>
+
 <div class="clothes__container">
   <h2>
     <strong><i class="fa-solid fa-shapes"></i> Meus Looks </strong>
@@ -25,7 +31,7 @@
         'bottom.name',
         'garb.name',
         'shoe.name',
-        'tag.name'
+        'tag.name',
       ]"
     >
       <ng-template pTemplate="caption">
@@ -243,11 +249,12 @@
               </p-columnFilter>
             </div>
           </th>
+          <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-look>
-        <tr (click)="openDialog(look)">
-          <td>
+        <tr >
+          <td (click)="openDialog(look)">
             <small
               class="badge"
               [style.color]="getTextColor(look?.top?.color || '')"
@@ -257,7 +264,7 @@
               {{ look.top?.name }}
             </small>
           </td>
-          <td>
+          <td (click)="openDialog(look)">
             <small
               class="badge"
               [style.color]="getTextColor(look?.bottom?.color || '')"
@@ -267,7 +274,7 @@
               {{ look.bottom?.name }}
             </small>
           </td>
-          <td>
+          <td (click)="openDialog(look)">
             <small
               class="badge"
               [style.color]="getTextColor(look?.garb?.color || '')"
@@ -277,7 +284,7 @@
               {{ look.garb?.name }}
             </small>
           </td>
-          <td>
+          <td (click)="openDialog(look)">
             <small
               class="badge"
               [style.color]="getTextColor(look.shoe.color)"
@@ -288,7 +295,7 @@
             </small>
           </td>
 
-          <td>
+          <td (click)="openDialog(look)">
             <small
               class="badge"
               [style.color]="getTextColor(look.tag.color)"
@@ -296,6 +303,16 @@
             >
               {{ look.tag?.name }}
             </small>
+          </td>
+
+          <td>
+            <p-button
+              icon="fa-solid fa-trash"
+              [rounded]="true"
+              [text]="true"
+              pTooltip="Excluir"
+              (onClick)="confirm(look)"
+            ></p-button>
           </td>
         </tr>
       </ng-template>

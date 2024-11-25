@@ -48,7 +48,7 @@ export class LookDialog implements OnInit, OnDestroy {
     public _dialogService: DialogService,
     private _fb: UntypedFormBuilder,
     public categoriesFacade: CategoriesFacade,
-    public tagsFacade: TagsFacade
+    public tagsFacade: TagsFacade,
   ) {}
 
   ngOnInit(): void {
@@ -68,13 +68,13 @@ export class LookDialog implements OnInit, OnDestroy {
         this.shoes = this.dialogData.shoes;
 
         this.tags = this.dialogData.tags.filter(
-          (item: ITag) => item.type === 'Usos'
+          (item: ITag) => item.type === 'Usos',
         );
 
         if (this.dialogData?.item) {
           this.lookForm.addControl(
             '_id',
-            this._fb.control(this.dialogData.item._id, [Validators.required])
+            this._fb.control(this.dialogData.item._id, [Validators.required]),
           );
 
           this.lookForm.patchValue({ ...this.dialogData.item });

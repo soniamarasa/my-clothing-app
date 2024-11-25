@@ -26,12 +26,13 @@ export class AuthComponent implements OnInit {
     public _dialogService: DialogService,
     private _router: Router,
     private _messageService: MessageService,
-    private facade: UsersFacade
+    private facade: UsersFacade,
   ) {
     this.subs.add(
       this.facade.authState$.subscribe(
-        ({ isAuthenticated }) => isAuthenticated && this._router.navigate(['/'])
-      )
+        ({ isAuthenticated }) =>
+          isAuthenticated && this._router.navigate(['/']),
+      ),
     );
 
     this.createForm();
@@ -60,7 +61,7 @@ export class AuthComponent implements OnInit {
         if (email) {
           this.retrievePassword(email);
         }
-      })
+      }),
     );
   }
 
@@ -73,7 +74,6 @@ export class AuthComponent implements OnInit {
             severity: 'success',
             summary: 'Success!',
             detail: res.message,
-            icon: 'fa-solid fa-check',
           });
         },
 
@@ -83,10 +83,9 @@ export class AuthComponent implements OnInit {
             severity: 'error',
             summary: 'An error has occurred!',
             detail: error.error.error,
-            icon: 'fa-solid fa-check',
           });
         },
-      })
+      }),
     );
   }
 
@@ -107,9 +106,8 @@ export class AuthComponent implements OnInit {
               severity: 'error',
               summary: 'An error has occurred!',
               detail: error.error.error,
-              icon: 'fa-solid fa-check',
             }),
-        })
+        }),
     );
   }
 }

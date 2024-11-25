@@ -41,8 +41,8 @@ export class DashboardFacade {
     switchMap(() =>
       this.getDashboard({
         ...this._filter.value,
-      })
-    )
+      }),
+    ),
   );
 
   readonly dashboardState$ = combineLatest([
@@ -50,7 +50,7 @@ export class DashboardFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true })
+    shareReplay({ refCount: true }),
   );
 
   constructor(

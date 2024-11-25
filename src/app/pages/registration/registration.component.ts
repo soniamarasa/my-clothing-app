@@ -12,7 +12,7 @@ import { finalize } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { SubSink } from 'subsink';
 
-import { CustomValidationService } from '@services/customValidation.service'
+import { CustomValidationService } from '@services/customValidation.service';
 import { UsersFacade } from '@facades/users.facade';
 import { IUser } from '../../interfaces/user';
 
@@ -34,12 +34,13 @@ export class RegistrationComponent implements OnInit {
     private _messageService: MessageService,
     private _router: Router,
     private customValidator: CustomValidationService,
-    private facade: UsersFacade
+    private facade: UsersFacade,
   ) {
     this.subs.add(
       this.facade.authState$.subscribe(
-        ({ isAuthenticated }: any) => isAuthenticated && this._router.navigate(['/'])
-      )
+        ({ isAuthenticated }: any) =>
+          isAuthenticated && this._router.navigate(['/']),
+      ),
     );
 
     this.createForm();
@@ -78,13 +79,12 @@ export class RegistrationComponent implements OnInit {
           this.customValidator.MatchPassword('password', 'confirmPassword'),
           this.customValidator.MatchEmail('email', 'confirmEmail'),
         ],
-      } as AbstractControlOptions
+      } as AbstractControlOptions,
     );
   }
 
-  getAvatar(e:any){
-
-   this.email = e.target.value;
+  getAvatar(e: any) {
+    this.email = e.target.value;
   }
 
   submit() {
@@ -101,7 +101,6 @@ export class RegistrationComponent implements OnInit {
               severity: 'success',
               summary: 'Success!',
               detail: 'Your account has been successfully created.',
-              icon: 'fa-solid fa-check',
             }),
               setTimeout(() => this._router.navigate(['/auth']), 1500);
           },
@@ -111,9 +110,8 @@ export class RegistrationComponent implements OnInit {
               severity: 'error',
               summary: 'An error has occurred!',
               detail: error.error.error,
-              icon: 'fa-solid fa-check',
             }),
-        })
+        }),
     );
   }
 }

@@ -1,3 +1,9 @@
+<p-confirmDialog
+  acceptLabel="Excluir"
+  rejectLabel="Cancelar"
+  rejectButtonStyleClass="p-button-text p-button-plain"
+></p-confirmDialog>
+
 <div class="clothes__container">
   <h2>
     <strong
@@ -33,7 +39,7 @@
         'place.name',
         'accessories.name',
         'bandana.name',
-        'date'
+        'date',
       ]"
     >
       <ng-template pTemplate="caption">
@@ -311,7 +317,7 @@
       <ng-template pTemplate="body" let-plannedLook>
         <tr class="item-look" (click)="openDialog(plannedLook)">
           <td>
-            {{ plannedLook.date | date : "dd/MM/yyyy" }}
+            {{ plannedLook.date | date: "dd/MM/yyyy" }}
           </td>
           <td>
             <small

@@ -1,16 +1,15 @@
 :host {
-	& ::ng-deep {
-		& canvas {
+  & ::ng-deep {
+    & canvas {
+      height: max-content !important;
+    }
+  }
 
-			height: max-content !important;
-		}
-	}
-
-	@media screen and (max-width: 900px) {
-		& canvas {
-			width: 100% !important;
-			max-width: 500px;
-			height: max-content !important;
-		}
-	}
+  @media screen and (max-width: 900px) {
+    & canvas {
+      width: 100% !important;
+      max-width: 500px;
+      height: max-content !important;
+    }
+  }
 }

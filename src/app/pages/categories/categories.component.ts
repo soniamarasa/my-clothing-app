@@ -26,13 +26,14 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   readonly categories$ = this.categoriesFacade.categoriesState$.pipe(
     map((categories: ICategory[]) => {
       return categories;
-    })
+    }),
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private categoriesFacade: CategoriesFacade
+    private _confirmationService: ConfirmationService,
+    private categoriesFacade: CategoriesFacade,
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +42,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
         this.categories = categories;
         this.loading = false;
         this.total = categories.length;
-      })
+      }),
     );
   }
 
@@ -60,7 +61,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
             ? this.updateCategory(categoryObj)
             : this.newCategory(categoryObj);
         }
-      })
+      }),
     );
   }
 
@@ -72,7 +73,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Categoria criada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -82,10 +82,9 @@ export class CategoriesComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar essa categoria. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
@@ -97,7 +96,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Categoria atualizada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -107,11 +105,40 @@ export class CategoriesComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar essa categoria. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
+  }
+
+  confirm(category: ICategory) {
+    this._confirmationService.confirm({
+      message: 'Tem certeza que você deseja exluir essa categoria?',
+      header: 'Excluir',
+      accept: () => {
+        this.subs.add(
+          this.categoriesFacade.delete(category).subscribe({
+            next: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'success',
+                summary: 'Categoria excluída.',
+                detail: 'A categoria foi deletada com sucesso!',
+              });
+            },
+            error: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'error',
+                summary: 'Houve um problema!',
+                detail:
+                  'Não foi possível deletar a categoria. Tente novamente mais tarde.',
+              });
+            },
+          }),
+        );
+      },
+    });
   }
 
   getTextColor(bgColor: string): string {
@@ -123,7 +150,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
     return brightness > 128 ? 'black' : '#D4BE98';
   }
-
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

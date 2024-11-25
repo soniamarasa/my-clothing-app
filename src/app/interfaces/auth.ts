@@ -7,8 +7,8 @@ export interface IAuth {
 }
 
 export interface Tokens {
-	token?: string | null;
-	accessToken?: string | null;
-	refreshToken?: string | null;
-	refreshTokenExpiresAt?: Date | null;
+  token?: string | null;
+  accessToken?: string | null;
+  refreshToken?: string | null;
+  refreshTokenExpiresAt?: Date | null;
 }

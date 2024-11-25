@@ -29,14 +29,20 @@ export class CategoriesService {
   newCategory(category: ICategory) {
     return this._http.post<ICategory>(
       `${environment.url}/categories`,
-      category
+      category,
     );
   }
 
   updateCategory(category: ICategory) {
     return this._http.put<ICategory>(
       `${environment.url}/categories/${category._id}`,
-      category
+      category,
+    );
+  }
+
+  delete(category: ICategory) {
+    return this._http.delete<ICategory>(
+      `${environment.url}/categories/${category._id}`,
     );
   }
 }

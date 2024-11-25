@@ -28,12 +28,13 @@ export class PasswordRecoverComponent implements OnInit {
     public _formBuilder: UntypedFormBuilder,
     private _messageService: MessageService,
     private customValidator: CustomValidationService,
-    private facade: UsersFacade
+    private facade: UsersFacade,
   ) {
     this.subs.add(
       this.facade.authState$.subscribe(
-        ({ isAuthenticated }: boolean | any) => isAuthenticated && this._router.navigate(['/'])
-      )
+        ({ isAuthenticated }: boolean | any) =>
+          isAuthenticated && this._router.navigate(['/']),
+      ),
     );
 
     this.createForm();
@@ -62,7 +63,7 @@ export class PasswordRecoverComponent implements OnInit {
         validators: [
           this.customValidator.MatchPassword('password', 'confirmPassword'),
         ],
-      } as AbstractControlOptions
+      } as AbstractControlOptions,
     );
   }
 
@@ -77,7 +78,6 @@ export class PasswordRecoverComponent implements OnInit {
               severity: 'success',
               summary: 'Success!',
               detail: res.message,
-              icon: 'fa-solid fa-check',
             });
 
             setTimeout(() => this._router.navigate(['/auth']), 1000);
@@ -89,10 +89,9 @@ export class PasswordRecoverComponent implements OnInit {
               severity: 'error',
               summary: 'An error has occurred!',
               detail: error.error.error,
-              icon: 'fa-solid fa-check',
             });
           },
-        })
+        }),
     );
   }
 }

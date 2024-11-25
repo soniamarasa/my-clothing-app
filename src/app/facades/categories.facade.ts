@@ -45,20 +45,20 @@ export class CategoriesFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true })
+    shareReplay({ refCount: true }),
   );
 
   constructor(
     private categoriesService: CategoriesService,
-    private categoriesStore: CategoriesStore
+    private categoriesStore: CategoriesStore,
   ) {}
 
   getCategories(queryParams?: IGetCategoriesParams) {
     return this.categoriesService.getCategories(queryParams).pipe(
       map((categories) => [...fixedCategories, ...categories]),
       tap((combinedCategories) =>
-        this.categoriesStore.updateCategories(combinedCategories)
-      )
+        this.categoriesStore.updateCategories(combinedCategories),
+      ),
     );
   }
 
@@ -78,6 +78,12 @@ export class CategoriesFacade {
     return this.categoriesService
       .updateCategory(category)
       .pipe(tap((category) => this.categoriesStore.updateCategory(category)));
+  }
+
+  delete(category: ICategory) {
+    return this.categoriesService
+      .delete(category)
+      .pipe(tap((category) => this.categoriesStore.deleteCategory(category)));
   }
 
   filterCategories(filter: IGetCategoriesParams) {

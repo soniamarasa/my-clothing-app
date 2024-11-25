@@ -35,16 +35,19 @@ export class TokenInterceptor implements HttpInterceptor {
       return {
         token: user?.token,
       };
-    })
+    }),
   );
 
-  constructor(private _router: Router, private facade: UsersFacade) {
+  constructor(
+    private _router: Router,
+    private facade: UsersFacade,
+  ) {
     this.token$.subscribe((token) => (this.tokens = token));
   }
 
   intercept(
     request: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     const { token } = this.tokens;
 
@@ -54,7 +57,6 @@ export class TokenInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error: any) => {
-
         if (error instanceof HttpErrorResponse) {
           console.log(error);
           if (error.status === 401) {
@@ -65,13 +67,13 @@ export class TokenInterceptor implements HttpInterceptor {
         }
 
         return throwError(() => error);
-      })
+      }),
     );
   }
 
   interceptWithTimeout(
     request: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     return new Observable((observer) => {
       const { token } = this.tokens;
@@ -82,9 +84,7 @@ export class TokenInterceptor implements HttpInterceptor {
         next.handle(request).subscribe({
           next: (event) => observer.next(event),
           error: (error) => {
-
             if (error instanceof HttpErrorResponse) {
-
               if (error.status === 401) {
                 this.facade.logout();
                 this._router.navigate(['/auth']);

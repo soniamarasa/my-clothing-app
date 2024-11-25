@@ -1,6 +1,5 @@
 export interface Dropdown {
-    name: string;
-    code: string;
-    inactive?: boolean;
-  }
-  
+  name: string;
+  code: string;
+  inactive?: boolean;
+}

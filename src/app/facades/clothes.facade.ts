@@ -40,12 +40,12 @@ export class ClothesFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true })
+    shareReplay({ refCount: true }),
   );
 
   constructor(
     private clothesService: ClothesService,
-    private clothesStore: ClothesStore
+    private clothesStore: ClothesStore,
   ) {}
 
   getClothes(queryParams?: IGetClothesParams) {
@@ -82,6 +82,12 @@ export class ClothesFacade {
     return this.clothesService
       .inactivate(id)
       .pipe(tap((clothing) => this.clothesStore.updateClothing(clothing)));
+  }
+
+  delete(clothing: IClothing) {
+    return this.clothesService
+      .delete(clothing)
+      .pipe(tap(() => this.clothesStore.deleteClothing(clothing)));
   }
 
   filterClothes(filter: IGetClothesParams) {

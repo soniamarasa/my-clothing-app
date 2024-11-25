@@ -13,7 +13,6 @@ export interface IGetShoesParams {
 @Injectable({
   providedIn: 'root',
 })
-
 export class ShoesService {
   constructor(private readonly _http: HttpClient) {}
 
@@ -33,5 +32,9 @@ export class ShoesService {
 
   updateShoe(shoe: IShoe) {
     return this._http.put<IShoe>(`${environment.url}/shoes/${shoe._id}`, shoe);
+  }
+
+  delete(shoe: IShoe) {
+    return this._http.delete<IShoe>(`${environment.url}/shoes/${shoe._id}`);
   }
 }

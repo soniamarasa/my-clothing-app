@@ -1,3 +1,9 @@
+<p-confirmDialog
+  acceptLabel="Excluir"
+  rejectLabel="Cancelar"
+  rejectButtonStyleClass="p-button-text p-button-plain"
+></p-confirmDialog>
+
 <div class="clothes__container">
   <h2>
     <strong><i class="fa-solid fa-shapes"></i> Minhas Roupas </strong>
@@ -58,7 +64,7 @@
             </div>
           </th>
 
-          <th  pSortableColumn="category.name" style="min-width: 10rem">
+          <th pSortableColumn="category.name" style="min-width: 10rem">
             <div class="flex align-items-center">
               Categoria <p-sortIcon field="category.name"></p-sortIcon>
               <p-columnFilter
@@ -214,11 +220,18 @@
           <td class="table__actions">
             <p-button
               icon="fa-solid fa-pen-to-square"
-              styleClass="p-button-rounded p-button-text"
+              [rounded]="true"
+              [text]="true"
+              pTooltip="Editar"
               (onClick)="openDialog(clothing)"
             ></p-button>
-            <!-- <p-button icon="pi pi-times"
-                styleClass="p-button-rounded p-button-danger p-button-text"></p-button> </td> -->
+            <p-button
+              icon="fa-solid fa-trash"
+              [rounded]="true"
+              [text]="true"
+              pTooltip="Excluir"
+              (onClick)="confirm(clothing)"
+            ></p-button>
           </td>
         </tr>
       </ng-template>

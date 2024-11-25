@@ -6,7 +6,8 @@
       }
     }
 
-    & .p-dropdown, .p-multiselect {
+    & .p-dropdown,
+    .p-multiselect {
       width: 100%;
     }
 
@@ -37,8 +38,5 @@
       width: 2.2rem;
       height: 2.2rem;
     }
-
-
-
   }
 }

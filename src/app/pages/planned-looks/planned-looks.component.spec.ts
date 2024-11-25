@@ -8,9 +8,8 @@ describe('PlannedLooksComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlannedLooksComponent ]
-    })
-    .compileComponents();
+      declarations: [PlannedLooksComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -10,4 +10,3 @@ export interface IUser {
   imgUrl?: string;
   token?: string;
 }
-

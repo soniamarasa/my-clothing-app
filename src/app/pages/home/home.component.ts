@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         data: dashboard,
       };
     }),
-    startWith({ loading: true, data: null })
+    startWith({ loading: true, data: null }),
   );
 
   ngOnInit(): void {
@@ -36,14 +36,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.dashboard$.subscribe((state) => {
         this.dashboard = state.data!;
         this.loading = state.loading;
-      })
+      }),
     );
   }
 
   constructor(
     public _dialogService: DialogService,
     private _router: Router,
-    private dashboardFacade: DashboardFacade
+    private dashboardFacade: DashboardFacade,
   ) {}
 
   ngOnDestroy(): any {}

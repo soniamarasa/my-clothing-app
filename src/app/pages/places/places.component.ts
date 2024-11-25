@@ -25,13 +25,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
   readonly places$ = this.placesFacade.placesState$.pipe(
     map((places: IPlace[]) => {
       return places;
-    })
+    }),
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private placesFacade: PlacesFacade
+    private _confirmationService: ConfirmationService,
+    private placesFacade: PlacesFacade,
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +41,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
         this.places = places;
         this.loading = false;
         this.total = places.length;
-      })
+      }),
     );
   }
 
@@ -57,7 +58,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
         if (placeObj) {
           placeObj._id ? this.updatePlace(placeObj) : this.newPlace(placeObj);
         }
-      })
+      }),
     );
   }
 
@@ -69,7 +70,6 @@ export class PlacesComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Local criado com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -79,11 +79,40 @@ export class PlacesComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar esse Local. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
+  }
+
+  confirm(place: IPlace) {
+    this._confirmationService.confirm({
+      message: 'Tem certeza que você deseja exluir esse local?',
+      header: 'Excluir',
+      accept: () => {
+        this.subs.add(
+          this.placesFacade.delete(place).subscribe({
+            next: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'success',
+                summary: 'Local excluído.',
+                detail: 'O local foi deletado com sucesso!',
+              });
+            },
+            error: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'error',
+                summary: 'Houve um problema!',
+                detail:
+                  'Não foi possível deletar o local. Tente novamente mais tarde.',
+              });
+            },
+          }),
+        );
+      },
+    });
   }
 
   updatePlace(place: IPlace) {
@@ -94,7 +123,6 @@ export class PlacesComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Local atualizado com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -104,10 +132,9 @@ export class PlacesComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar esse Local. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 

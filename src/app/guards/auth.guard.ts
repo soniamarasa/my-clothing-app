@@ -14,17 +14,20 @@ import { UsersFacade } from '@facades/users.facade';
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
   private readonly isAuthenticated$ = this.usersFacade.authState$.pipe(
-    map(({ isAuthenticated }) => isAuthenticated)
+    map(({ isAuthenticated }) => isAuthenticated),
   );
 
-  constructor(private _router: Router, private usersFacade: UsersFacade) {}
+  constructor(
+    private _router: Router,
+    private usersFacade: UsersFacade,
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return (this.isAuthenticated$ as Observable<boolean>).pipe(
       tap(
         (isAuthenticated) =>
-          !isAuthenticated && this._router.navigate(['/auth'])
-      )
+          !isAuthenticated && this._router.navigate(['/auth']),
+      ),
     );
   }
 

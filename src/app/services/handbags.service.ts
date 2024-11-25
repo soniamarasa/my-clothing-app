@@ -31,6 +31,15 @@ export class HandbagsService {
   }
 
   updateHandbag(handbag: IHandbag) {
-    return this._http.put<IHandbag>(`${environment.url}/handbags/${handbag._id}`, handbag);
+    return this._http.put<IHandbag>(
+      `${environment.url}/handbags/${handbag._id}`,
+      handbag,
+    );
+  }
+
+  delete(handbag: IHandbag) {
+    return this._http.delete<IHandbag>(
+      `${environment.url}/handbags/${handbag._id}`,
+    );
   }
 }

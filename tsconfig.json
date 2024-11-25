@@ -19,27 +19,24 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
+    "lib": ["ES2022", "dom"],
     "paths": {
-			"@root/*": ["./*"],
-			"@app/*": ["./src/app/*"],
-			"@components/*": ["./src/app/components/*"],
-			"@directives/*": ["./src/app/directives/*"],
-			"@facades/*": ["./src/app/facades/*"],
-			"@guards/*": ["./src/app/guards/*"],
-			"@interfaces/*": ["./src/app/interfaces/*"],
-			"@interceptors/*": ["./src/app/interceptors/*"],
-			"@pages/*": ["./src/app/pages/*"],
-			"@resolvers/*": ["./src/app/resolvers/*"],
-			"@services/*": ["./src/app/services/*"],
-			"@stores/*": ["./src/app/stores/*"],
-			"@utils/*": ["./src/app/utils/*"],
-			"@environments/*": ["./src/environments/*"],
+      "@root/*": ["./*"],
+      "@app/*": ["./src/app/*"],
+      "@components/*": ["./src/app/components/*"],
+      "@directives/*": ["./src/app/directives/*"],
+      "@facades/*": ["./src/app/facades/*"],
+      "@guards/*": ["./src/app/guards/*"],
+      "@interfaces/*": ["./src/app/interfaces/*"],
+      "@interceptors/*": ["./src/app/interceptors/*"],
+      "@pages/*": ["./src/app/pages/*"],
+      "@resolvers/*": ["./src/app/resolvers/*"],
+      "@services/*": ["./src/app/services/*"],
+      "@stores/*": ["./src/app/stores/*"],
+      "@utils/*": ["./src/app/utils/*"],
+      "@environments/*": ["./src/environments/*"],
       "@styles/*": ["./src/app/styles/*"]
-		}
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

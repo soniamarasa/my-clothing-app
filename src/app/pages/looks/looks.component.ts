@@ -48,17 +48,18 @@ export class LooksComponent implements OnInit, OnDestroy {
   readonly looks$ = this.looksFacade.looksState$.pipe(
     map((looks: ILook[]) => {
       return looks;
-    })
+    }),
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
+    private _confirmationService: ConfirmationService,
     private confirmationService: ConfirmationService,
     private looksFacade: LooksFacade,
     private clothesFacade: ClothesFacade,
     private shoesFacade: ShoesFacade,
-    private tagsFacade: TagsFacade
+    private tagsFacade: TagsFacade,
   ) {}
 
   ngOnInit(): void {
@@ -72,13 +73,13 @@ export class LooksComponent implements OnInit, OnDestroy {
 
       this.clothesFacade.getClothes().subscribe((clothes: IClothing[]) => {
         this.tops = clothes.filter(
-          (obj) => obj.category.name == 'Peça Superior'
+          (obj) => obj.category.name == 'Peça Superior',
         );
         this.bottoms = clothes.filter(
-          (obj) => obj.category.name == 'Peça Inferior'
+          (obj) => obj.category.name == 'Peça Inferior',
         );
         this.garbs = clothes.filter(
-          (obj) => obj.category.name == 'Traje Completo'
+          (obj) => obj.category.name == 'Traje Completo',
         );
       }),
 
@@ -88,7 +89,7 @@ export class LooksComponent implements OnInit, OnDestroy {
 
       this.shoesFacade.getShoes().subscribe((shoes: IShoe[]) => {
         this.shoes = shoes;
-      })
+      }),
     );
   }
 
@@ -121,7 +122,7 @@ export class LooksComponent implements OnInit, OnDestroy {
         if (lookObj) {
           lookObj._id ? this.updateLook(lookObj) : this.newLook(lookObj);
         }
-      })
+      }),
     );
   }
 
@@ -132,8 +133,7 @@ export class LooksComponent implements OnInit, OnDestroy {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Roupa criada com sucesso!',
-            icon: 'fa-solid fa-check',
+            summary: 'Look criado com sucesso!',
           });
         },
         error: () => {
@@ -142,11 +142,10 @@ export class LooksComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível criar essa roupa. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
+              'Não foi possível criar esse look. Tente novamente mais tarde.',
           });
         },
-      })
+      }),
     );
   }
 
@@ -157,8 +156,7 @@ export class LooksComponent implements OnInit, OnDestroy {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Roupa atualizada com sucesso!',
-            icon: 'fa-solid fa-check',
+            summary: 'Look atualizado com sucesso!',
           });
         },
         error: () => {
@@ -167,12 +165,41 @@ export class LooksComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível atualizar essa roupa. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
+              'Não foi possível atualizar esse look. Tente novamente mais tarde.',
           });
         },
-      })
+      }),
     );
+  }
+
+  confirm(look: ILook) {
+    this._confirmationService.confirm({
+      message: 'Tem certeza que você deseja exluir esse look?',
+      header: 'Excluir',
+      accept: () => {
+        this.subs.add(
+          this.looksFacade.delete(look).subscribe({
+            next: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'success',
+                summary: 'Look excluído.',
+                detail: 'O Look foi deletado com sucesso!',
+              });
+            },
+            error: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'error',
+                summary: 'Houve um problema!',
+                detail:
+                  'Não foi possível deletar o look. Tente novamente mais tarde.',
+              });
+            },
+          }),
+        );
+      },
+    });
   }
 
   getTextColor(bgColor: string): string {

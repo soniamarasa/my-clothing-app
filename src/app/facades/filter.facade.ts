@@ -12,7 +12,7 @@ export class FilterFacade {
 
   constructor(
     private plannedLooksFacade: PlannedLooksFacade,
-    private dashboardFacade: DashboardFacade
+    private dashboardFacade: DashboardFacade,
   ) {}
 
   setFilter(year: string) {

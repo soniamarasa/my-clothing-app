@@ -37,7 +37,7 @@ export class AccountComponent implements OnInit {
     public _formBuilder: UntypedFormBuilder,
     private _messageService: MessageService,
     private customValidator: CustomValidationService,
-    private facade: UsersFacade
+    private facade: UsersFacade,
   ) {
     this.gender = [
       { name: 'Female', code: 'female' },
@@ -52,9 +52,9 @@ export class AccountComponent implements OnInit {
         this.setForms(this.user);
         this.formData.statusChanges.subscribe(() => (this.showBtnForm = true));
         this.formPassword.statusChanges.subscribe(
-          () => (this.showBtnFormPass = true)
+          () => (this.showBtnFormPass = true),
         );
-      })
+      }),
     );
   }
 
@@ -90,7 +90,7 @@ export class AccountComponent implements OnInit {
         validators: [
           this.customValidator.MatchPassword('password', 'confirmPassword'),
         ],
-      } as AbstractControlOptions
+      } as AbstractControlOptions,
     );
   }
 
@@ -127,7 +127,6 @@ export class AccountComponent implements OnInit {
                 severity: 'success',
                 summary: 'Success!',
                 detail: 'Your account details have been updated.',
-                icon: 'fa-solid fa-check',
               });
             },
             error: (error) =>
@@ -136,9 +135,8 @@ export class AccountComponent implements OnInit {
                 severity: 'error',
                 summary: 'An error has occurred!',
                 detail: error.error.error,
-                icon: 'fa-solid fa-check',
               }),
-          })
+          }),
       );
     } else {
       this.subs.add(
@@ -153,7 +151,6 @@ export class AccountComponent implements OnInit {
                 severity: 'success',
                 summary: 'Success!',
                 detail: 'Your password has been updated.',
-                icon: 'fa-solid fa-check',
               });
             },
             error: (error) =>
@@ -162,9 +159,8 @@ export class AccountComponent implements OnInit {
                 severity: 'error',
                 summary: 'An error has occurred!',
                 detail: error.error.error,
-                icon: 'fa-solid fa-check',
               }),
-          })
+          }),
       );
     }
   }

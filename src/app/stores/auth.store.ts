@@ -12,10 +12,9 @@ const INITIAL_STATE: IAuthState = {
 @Injectable({
   providedIn: 'root',
 })
-
 export class AuthStore {
   private _authState = new BehaviorSubject<IAuthState>(
-    this.authStateStorage || INITIAL_STATE
+    this.authStateStorage || INITIAL_STATE,
   );
   readonly authState$ = this._authState.asObservable();
 
@@ -51,7 +50,6 @@ export class AuthStore {
 
     this.localStorageService.remove('auth');
     this.localStorageService.remove('idUser');
-
 
     return this._authState.asObservable();
   }

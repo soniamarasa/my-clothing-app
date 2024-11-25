@@ -11,7 +11,10 @@ import {
   tap,
 } from 'rxjs';
 
-import { IGetHandbagsParams, HandbagsService } from '@services/handbags.service';
+import {
+  IGetHandbagsParams,
+  HandbagsService,
+} from '@services/handbags.service';
 
 import { HandbagsStore } from '@stores/handbags.store';
 
@@ -40,12 +43,12 @@ export class HandbagsFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true })
+    shareReplay({ refCount: true }),
   );
 
   constructor(
     private handbagsService: HandbagsService,
-    private handbagsStore: HandbagsStore
+    private handbagsStore: HandbagsStore,
   ) {}
 
   getHandbags(queryParams?: IGetHandbagsParams) {
@@ -70,6 +73,12 @@ export class HandbagsFacade {
     return this.handbagsService
       .updateHandbag(handbag)
       .pipe(tap((handbag) => this.handbagsStore.updateHandbag(handbag)));
+  }
+
+  delete(handbag: IHandbag) {
+    return this.handbagsService
+      .delete(handbag)
+      .pipe(tap((handbag) => this.handbagsStore.deleteHandbag(handbag)));
   }
 
   filterHandbags(filter: IGetHandbagsParams) {

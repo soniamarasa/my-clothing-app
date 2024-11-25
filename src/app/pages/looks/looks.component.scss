@@ -8,36 +8,14 @@
       }
     }
 
-    // .p-button.p-button-outlined {
-    //   color: #2f2e41;
-    // }
-
-    // .p-button.p-button-outlined:enabled:active {
-    //   background: rgba(213, 136, 86, 0.16);
-    //   color: #2f2e41;
-    // }
-
-    // .p-button.p-button-outlined:enabled:hover {
-    //   background: rgba(213, 136, 86, 0.04);
-    //   color: #2f2e41;
-    // }
-
     .p-datatable .p-datatable-header {
       border-radius: 1rem 1rem 0 0;
       border: none;
     }
 
-    // .p-datatable .p-datatable-thead > tr > th:first-child {
-    //   border-radius: 1rem 0 0;
-    // }
-
-    // .p-datatable .p-datatable-thead > tr > th:last-child {
-    //   border-radius: 0 1rem 0 0;
-    // }
-
-    // .p-datatable > .p-datatable-wrapper {
-    //   border-radius: 1rem 1rem 0 0;
-    // }
+    td {
+      cursor: pointer;
+    }
 
     .table__actions {
       display: flex;

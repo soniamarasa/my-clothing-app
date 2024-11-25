@@ -33,7 +33,11 @@ export class PlacesService {
   updatePlace(place: IPlace) {
     return this._http.put<IPlace>(
       `${environment.url}/places/${place._id}`,
-      place
+      place,
     );
+  }
+
+  delete(place: IPlace) {
+    return this._http.delete<IPlace>(`${environment.url}/places/${place._id}`);
   }
 }

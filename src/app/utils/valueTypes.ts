@@ -18,7 +18,10 @@ export const categoryTypes = [
   { name: 'Acessório' },
 ];
 
-export const tagTypes = [{ name: 'Roupa' }, { name: 'Usos' }];
+export const tagTypes = [
+  { name: 'Roupa' },
+  { name: 'Usos' },
+];
 
 export const clothesTypes = [
   { name: 'Peça Superior', value: 1 },

@@ -33,4 +33,8 @@ export class TagsService {
   updateTag(tag: ITag) {
     return this._http.put<ITag>(`${environment.url}/tags/${tag._id}`, tag);
   }
+
+  delete(tag: ITag) {
+    return this._http.delete<ITag>(`${environment.url}/tags/${tag._id}`);
+  }
 }

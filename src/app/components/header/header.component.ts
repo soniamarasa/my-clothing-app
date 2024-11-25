@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
     public filterFacade: FilterFacade,
     private plannedLooksFacade: PlannedLooksFacade,
     private dashboardFacade: DashboardFacade,
-    private _router: Router
+    private _router: Router,
   ) {
     this.$user.subscribe((user) => {
       this.user = user.user;

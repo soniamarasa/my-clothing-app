@@ -52,7 +52,7 @@ export class PieChartComponent implements OnDestroy, AfterViewInit {
     }
 
     const sortedResult: IDashboardItem[] = data.result.sort(
-      (a: IDashboardItem, b: IDashboardItem) => b.count - a.count
+      (a: IDashboardItem, b: IDashboardItem) => b.count - a.count,
     );
 
     const largeSegments = sortedResult.filter((item) => item.count > 3);
@@ -148,7 +148,7 @@ export class PieChartComponent implements OnDestroy, AfterViewInit {
 
     this.chart = Highcharts.chart(
       this.chartContainer.nativeElement,
-      this.chartOptions
+      this.chartOptions,
     );
   }
 

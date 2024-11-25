@@ -1,5 +1,5 @@
-import { ICategory } from "./category";
-import { ITag } from "./tag";
+import { ICategory } from './category';
+import { ITag } from './tag';
 
 export interface IClothing {
   _id?: string;
@@ -7,6 +7,6 @@ export interface IClothing {
   name?: string;
   color?: string;
   inactive: Boolean;
-  category: ICategory,
-  tag: ITag,
+  category: ICategory;
+  tag: ITag;
 }

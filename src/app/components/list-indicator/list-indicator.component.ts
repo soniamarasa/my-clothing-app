@@ -16,7 +16,9 @@ import { colors } from '../../utils/colors';
   templateUrl: './list-indicator.component.html',
   styleUrls: ['./list-indicator.component.scss'],
 })
-export class ListIndicatorComponent implements OnDestroy, AfterViewInit, OnChanges {
+export class ListIndicatorComponent
+  implements OnDestroy, AfterViewInit, OnChanges
+{
   @Input() data!: IDashboardItem[] | any;
   @Input() header!: string;
   @Input() loading: boolean = true;
@@ -25,9 +27,7 @@ export class ListIndicatorComponent implements OnDestroy, AfterViewInit, OnChang
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  ngAfterViewInit(): void {
-  
-  }
+  ngAfterViewInit(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes?.['data'] && this.data) {
@@ -39,13 +39,11 @@ export class ListIndicatorComponent implements OnDestroy, AfterViewInit, OnChang
     return colors[index % colors.length];
   }
 
-
   getTextColor(bgColor: string): string {
     const rgb = parseInt(bgColor.replace('#', ''), 16);
     const r = (rgb >> 16) & 0xff;
     const g = (rgb >> 8) & 0xff;
     const b = (rgb >> 0) & 0xff;
-
 
     const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
     return brightness > 128 ? 'black' : '#D4BE98';

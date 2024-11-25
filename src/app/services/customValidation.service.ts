@@ -4,7 +4,6 @@ import { FormGroup } from '@angular/forms';
 @Injectable({
   providedIn: 'root',
 })
-
 export class CustomValidationService {
   MatchEmail(email: string, confirmEmail: string) {
     return (formGroup: FormGroup) => {
@@ -56,5 +55,4 @@ export class CustomValidationService {
       return null;
     };
   }
-
 }

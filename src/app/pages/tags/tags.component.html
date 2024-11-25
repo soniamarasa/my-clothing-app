@@ -1,3 +1,9 @@
+<p-confirmDialog
+  acceptLabel="Excluir"
+  rejectLabel="Cancelar"
+  rejectButtonStyleClass="p-button-text p-button-plain"
+></p-confirmDialog>
+
 <div class="tags__container">
   <h2>
     <strong><i class="fa-solid fa-tag"></i> Tags </strong>
@@ -50,11 +56,19 @@
               <p-button
                 [disabled]="!tag.userId"
                 icon="fa-solid fa-pen-to-square"
-                styleClass="p-button-rounded p-button-text"
+                [rounded]="true"
+                [text]="true"
+                pTooltip="Editar"
                 (onClick)="openDialog(tag)"
               ></p-button>
-              <!-- <p-button icon="pi pi-times"
-                styleClass="p-button-rounded p-button-danger p-button-text"></p-button> </td> -->
+              <p-button
+                [disabled]="!tag.userId"
+                icon="fa-solid fa-trash"
+                [rounded]="true"
+                [text]="true"
+                pTooltip="Excluir"
+                (onClick)="confirm(tag)"
+              ></p-button>
             </td>
           </tr>
         </ng-template>

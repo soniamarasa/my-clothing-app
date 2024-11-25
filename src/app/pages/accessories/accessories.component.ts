@@ -25,13 +25,14 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
   readonly accessories$ = this.accessoriesFacade.accessoriesState$.pipe(
     map((accessories: IAccessory[]) => {
       return accessories;
-    })
+    }),
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private accessoriesFacade: AccessoriesFacade
+    private _confirmationService: ConfirmationService,
+    private accessoriesFacade: AccessoriesFacade,
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +41,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
         this.accessories = accessories;
         this.loading = false;
         this.total = accessories.length;
-      })
+      }),
     );
   }
 
@@ -56,14 +57,14 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
       (ref as DynamicDialogRef).onClose.subscribe((accessoryObj) => {
         if (accessoryObj) {
           accessoryObj._id
-            ? this.updateAceIAccessory(accessoryObj)
-            : this.newAceIAccessory(accessoryObj);
+            ? this.updateAccessory(accessoryObj)
+            : this.newAccessory(accessoryObj);
         }
-      })
+      }),
     );
   }
 
-  newAceIAccessory(accessory: IAccessory) {
+  newAccessory(accessory: IAccessory) {
     this.subs.add(
       this.accessoriesFacade.newAccessory(accessory).subscribe({
         next: (accessory) => {
@@ -71,7 +72,6 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Acessório criado com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -81,14 +81,13 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar esse acessório. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
-  updateAceIAccessory(accessory: IAccessory) {
+  updateAccessory(accessory: IAccessory) {
     this.subs.add(
       this.accessoriesFacade.updateAccessory(accessory).subscribe({
         next: (accessory) => {
@@ -96,7 +95,6 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Acessório atualizado com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -106,11 +104,40 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar esse acessório. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
+  }
+
+  confirm(accessory: IAccessory) {
+    this._confirmationService.confirm({
+      message: 'Tem certeza que você deseja exluir esse acessório?',
+      header: 'Excluir',
+      accept: () => {
+        this.subs.add(
+          this.accessoriesFacade.deleteAccessory(accessory).subscribe({
+            next: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'success',
+                summary: 'Acessório excluído.',
+                detail: 'O acessório foi deletado com sucesso!',
+              });
+            },
+            error: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'error',
+                summary: 'Houve um problema!',
+                detail:
+                  'Não foi possível deletar o acessório. Tente novamente mais tarde.',
+              });
+            },
+          }),
+        );
+      },
+    });
   }
 
   getTextColor(bgColor: string): string {

@@ -25,13 +25,14 @@ export class BandanasComponent implements OnInit, OnDestroy {
   readonly bandanas$ = this.bandanasFacade.bandanasState$.pipe(
     map((bandanas: IBandana[]) => {
       return bandanas;
-    })
+    }),
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private bandanasFacade: BandanasFacade
+    private _confirmationService: ConfirmationService,
+    private bandanasFacade: BandanasFacade,
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +41,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
         this.bandanas = bandanas;
         this.loading = false;
         this.total = bandanas.length;
-      })
+      }),
     );
   }
 
@@ -59,7 +60,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
             ? this.updateBandana(bandanaObj)
             : this.newBandana(bandanaObj);
         }
-      })
+      }),
     );
   }
 
@@ -71,7 +72,6 @@ export class BandanasComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Bandana criada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -81,10 +81,9 @@ export class BandanasComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar essa bandana. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
@@ -96,7 +95,6 @@ export class BandanasComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Bandana atualizada com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -106,13 +104,41 @@ export class BandanasComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar essa bandana. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
+  confirm(bandana: IBandana) {
+    this._confirmationService.confirm({
+      message: 'Tem certeza que você deseja exluir esse item?',
+      header: 'Excluir',
+      accept: () => {
+        this.subs.add(
+          this.bandanasFacade.delete(bandana).subscribe({
+            next: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'success',
+                summary: 'Item excluído.',
+                detail: 'O item foi deletado com sucesso!',
+              });
+            },
+            error: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'error',
+                summary: 'Houve um problema!',
+                detail:
+                  'Não foi possível deletar o item. Tente novamente mais tarde.',
+              });
+            },
+          }),
+        );
+      },
+    });
+  }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

@@ -53,7 +53,7 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
     public _dialogService: DialogService,
     private _fb: UntypedFormBuilder,
     public categoriesFacade: CategoriesFacade,
-    public tagsFacade: TagsFacade
+    public tagsFacade: TagsFacade,
   ) {}
 
   get dialogData(): any {
@@ -63,7 +63,6 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.unboxPlannedLookForm();
     this.status = statusLook;
-
   }
 
   get formValue() {
@@ -91,7 +90,7 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
 
           this.plannedLookForm.addControl(
             '_id',
-            this._fb.control(itemData._id, [Validators.required])
+            this._fb.control(itemData._id, [Validators.required]),
           );
 
           this.plannedLookForm.patchValue(itemData);

@@ -1,3 +1,9 @@
+<p-confirmDialog
+  acceptLabel="Excluir"
+  rejectLabel="Cancelar"
+  rejectButtonStyleClass="p-button-text p-button-plain"
+></p-confirmDialog>
+
 <div class="handbags__container">
   <h2>
     <strong><i class="fa-solid fa-shapes"></i> Bolsas </strong>
@@ -41,11 +47,18 @@
             <td class="table__actions">
               <p-button
                 icon="fa-solid fa-pen-to-square"
-                styleClass="p-button-rounded p-button-text"
+                [rounded]="true"
+                [text]="true"
+                pTooltip="Editar"
                 (onClick)="openDialog(handbag)"
               ></p-button>
-              <!-- <p-button icon="pi pi-times"
-                styleClass="p-button-rounded p-button-danger p-button-text"></p-button> </td> -->
+              <p-button
+                icon="fa-solid fa-trash"
+                [rounded]="true"
+                [text]="true"
+                pTooltip="Excluir"
+                (onClick)="confirm(handbag)"
+              ></p-button>
             </td>
           </tr>
         </ng-template>

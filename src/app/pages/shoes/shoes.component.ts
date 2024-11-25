@@ -25,13 +25,14 @@ export class ShoesComponent implements OnInit, OnDestroy {
   readonly shoes$ = this.shoesFacade.shoesState$.pipe(
     map((shoes: IShoe[]) => {
       return shoes;
-    })
+    }),
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private shoesFacade: ShoesFacade
+    private _confirmationService: ConfirmationService,
+    private shoesFacade: ShoesFacade,
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +41,7 @@ export class ShoesComponent implements OnInit, OnDestroy {
         this.shoes = shoes;
         this.loading = false;
         this.total = shoes.length;
-      })
+      }),
     );
   }
 
@@ -55,11 +56,9 @@ export class ShoesComponent implements OnInit, OnDestroy {
     this.subs.add(
       (ref as DynamicDialogRef).onClose.subscribe((shoeObj) => {
         if (shoeObj) {
-          shoeObj._id
-            ? this.updateShoe(shoeObj)
-            : this.newShoe(shoeObj);
+          shoeObj._id ? this.updateShoe(shoeObj) : this.newShoe(shoeObj);
         }
-      })
+      }),
     );
   }
 
@@ -71,7 +70,6 @@ export class ShoesComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Sapato criado com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -81,10 +79,9 @@ export class ShoesComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar esse sapato. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
   }
 
@@ -96,7 +93,6 @@ export class ShoesComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'success',
             summary: 'Sapato atualizado com sucesso!',
-            icon: 'fa-solid fa-check',
           });
         },
         error: () => {
@@ -106,11 +102,40 @@ export class ShoesComponent implements OnInit, OnDestroy {
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar esse sapato. Tente novamente mais tarde.',
-            icon: 'fa-solid fa-exclamation-circle',
           });
         },
-      })
+      }),
     );
+  }
+
+  confirm(shoe: IShoe) {
+    this._confirmationService.confirm({
+      message: 'Tem certeza que você deseja exluir esse sapato?',
+      header: 'Excluir',
+      accept: () => {
+        this.subs.add(
+          this.shoesFacade.delete(shoe).subscribe({
+            next: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'success',
+                summary: 'Sapato excluído.',
+                detail: 'O sapato foi deletado com sucesso!',
+              });
+            },
+            error: () => {
+              this._messageService.add({
+                key: 'notification',
+                severity: 'error',
+                summary: 'Houve um problema!',
+                detail:
+                  'Não foi possível deletar o sapato. Tente novamente mais tarde.',
+              });
+            },
+          }),
+        );
+      },
+    });
   }
 
   getTextColor(bgColor: string): string {
@@ -122,8 +147,6 @@ export class ShoesComponent implements OnInit, OnDestroy {
     const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
     return brightness > 128 ? 'black' : '#D4BE98';
   }
-
-
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();

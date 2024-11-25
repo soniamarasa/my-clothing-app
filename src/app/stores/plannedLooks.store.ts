@@ -9,7 +9,7 @@ export const INITIAL_STATE: IPlannedLook[] = [];
 })
 export class PlannedLooksStore {
   private _plannedLooksState = new BehaviorSubject<IPlannedLook[]>(
-    INITIAL_STATE
+    INITIAL_STATE,
   );
   readonly plannedLooksState$ = this._plannedLooksState.asObservable();
 
@@ -29,7 +29,7 @@ export class PlannedLooksStore {
     const state = this._plannedLooksState.value;
 
     const plannedLookIndex = state.findIndex(
-      ({ _id }) => _id === plannedLook._id
+      ({ _id }) => _id === plannedLook._id,
     );
 
     if (plannedLookIndex >= 0) {
@@ -49,7 +49,7 @@ export class PlannedLooksStore {
     const state = this._plannedLooksState.value;
 
     const plannedLookIndex = state.findIndex(
-      ({ _id }) => _id === plannedLook._id
+      ({ _id }) => _id === plannedLook._id,
     );
 
     state.splice(plannedLookIndex, 1);

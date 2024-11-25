@@ -40,12 +40,12 @@ export class PlacesFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true })
+    shareReplay({ refCount: true }),
   );
 
   constructor(
     private placesService: PlacesService,
-    private placesStore: PlacesStore
+    private placesStore: PlacesStore,
   ) {}
 
   getPlaces(queryParams?: IGetPlacesParams) {
@@ -70,6 +70,12 @@ export class PlacesFacade {
     return this.placesService
       .updatePlace(place)
       .pipe(tap((place) => this.placesStore.updatePlace(place)));
+  }
+
+  delete(place: IPlace) {
+    return this.placesService
+      .delete(place)
+      .pipe(tap((place) => this.placesStore.deletePlace(place)));
   }
 
   filterPlaces(filter: IGetPlacesParams) {

@@ -43,15 +43,18 @@ export class TagsFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true })
+    shareReplay({ refCount: true }),
   );
 
-  constructor(private tagsService: TagsService, private tagsStore: TagsStore) {}
+  constructor(
+    private tagsService: TagsService,
+    private tagsStore: TagsStore,
+  ) {}
 
   getTags(queryParams?: IGetTagsParams) {
     return this.tagsService.getTags(queryParams).pipe(
       map((tags) => [...fixedTags, ...tags]),
-      tap((combinedTags) => this.tagsStore.updateTags(combinedTags))
+      tap((combinedTags) => this.tagsStore.updateTags(combinedTags)),
     );
   }
 
@@ -71,6 +74,12 @@ export class TagsFacade {
     return this.tagsService
       .updateTag(tag)
       .pipe(tap((tag) => this.tagsStore.updateTag(tag)));
+  }
+
+  delete(tag: ITag) {
+    return this.tagsService
+      .delete(tag)
+      .pipe(tap((tag) => this.tagsStore.deleteTag(tag)));
   }
 
   filterTags(filter: IGetTagsParams) {

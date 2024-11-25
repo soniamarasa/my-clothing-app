@@ -1,4 +1,4 @@
-import { ICategory } from "./category";
+import { ICategory } from './category';
 
 export interface IShoe {
   _id?: string;

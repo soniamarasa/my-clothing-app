@@ -13,7 +13,6 @@ export interface IGetAccessoriesParams {
 @Injectable({
   providedIn: 'root',
 })
-
 export class AccessoriesService {
   constructor(private readonly _http: HttpClient) {}
 
@@ -28,10 +27,22 @@ export class AccessoriesService {
   }
 
   newAccessory(accessory: IAccessory) {
-    return this._http.post<IAccessory>(`${environment.url}/accessories`, accessory);
+    return this._http.post<IAccessory>(
+      `${environment.url}/accessories`,
+      accessory,
+    );
   }
 
   updateAccessory(accessory: IAccessory) {
-    return this._http.put<IAccessory>(`${environment.url}/accessories/${accessory._id}`, accessory);
+    return this._http.put<IAccessory>(
+      `${environment.url}/accessories/${accessory._id}`,
+      accessory,
+    );
+  }
+
+  deleteAccessory(accessory: IAccessory) {
+    return this._http.delete<IAccessory>(
+      `${environment.url}/accessories/${accessory._id}`,
+    );
   }
 }

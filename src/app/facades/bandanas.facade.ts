@@ -11,7 +11,10 @@ import {
   tap,
 } from 'rxjs';
 
-import { IGetBandanasParams, BandanasService } from '@services/bandanas.service';
+import {
+  IGetBandanasParams,
+  BandanasService,
+} from '@services/bandanas.service';
 
 import { BandanasStore } from '@stores/bandanas.store';
 
@@ -22,7 +25,6 @@ const REFRESH_INTERVAL = 600000;
 @Injectable({
   providedIn: 'root',
 })
-
 export class BandanasFacade {
   private readonly autoRefresh$ = interval(REFRESH_INTERVAL).pipe(startWith(0));
   private readonly _refresh = new BehaviorSubject(undefined);
@@ -41,12 +43,12 @@ export class BandanasFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true })
+    shareReplay({ refCount: true }),
   );
 
   constructor(
     private bandanasService: BandanasService,
-    private bandanasStore: BandanasStore
+    private bandanasStore: BandanasStore,
   ) {}
 
   getBandanas(queryParams?: IGetBandanasParams) {
@@ -71,6 +73,12 @@ export class BandanasFacade {
     return this.bandanasService
       .updateBandana(bandana)
       .pipe(tap((bandana) => this.bandanasStore.updateBandana(bandana)));
+  }
+
+  delete(bandana: IBandana) {
+    return this.bandanasService
+      .delete(bandana)
+      .pipe(tap((bandana) => this.bandanasStore.deleteBandana(bandana)));
   }
 
   filterBandanas(filter: IGetBandanasParams) {

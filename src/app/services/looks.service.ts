@@ -13,7 +13,6 @@ export interface IGetLooksParams {
 @Injectable({
   providedIn: 'root',
 })
-
 export class LooksService {
   constructor(private readonly _http: HttpClient) {}
 
@@ -33,5 +32,9 @@ export class LooksService {
 
   updateLook(look: ILook) {
     return this._http.put<ILook>(`${environment.url}/looks/${look._id}`, look);
+  }
+
+  delete(look: ILook) {
+    return this._http.delete<ILook>(`${environment.url}/looks/${look._id}`);
   }
 }

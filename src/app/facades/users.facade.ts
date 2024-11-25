@@ -24,7 +24,7 @@ export class UsersFacade {
     private usersService: UsersService,
     private localStorageService: LocalStorageService,
     private usersStore: UsersStore,
-    private authStore: AuthStore
+    private authStore: AuthStore,
   ) {}
 
   login({ email, password }: ILoginBody) {
@@ -42,13 +42,10 @@ export class UsersFacade {
   }
 
   logout() {
-
-    return this.usersService
-      .logout()
-      .pipe(
-        shareReplay(),
-        tap(() => this.authStore.logout())
-      );
+    return this.usersService.logout().pipe(
+      shareReplay(),
+      tap(() => this.authStore.logout()),
+    );
   }
 
   getUserById(id: IUser['_id']) {

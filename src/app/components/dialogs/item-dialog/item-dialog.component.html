@@ -115,7 +115,7 @@
           label="Emoji"
         ></p-button> -->
         <span id="current__emoji" (click)="op.toggle($event)">{{
-          itemForm.get("icon")?.value || '🏷️'
+          itemForm.get("icon")?.value || "🏷️"
         }}</span>
         <p-overlayPanel appendTo="body" #op>
           <app-emoji (currentEmoji)="emoji($event)"></app-emoji>
@@ -146,7 +146,7 @@
     ></p-button>
 
     <p-button
-    styleClass="p-button-success"
+      styleClass="p-button-success"
       pFocusTrap
       label="Salvar"
       [disabled]="itemForm.invalid"

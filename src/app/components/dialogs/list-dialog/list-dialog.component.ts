@@ -18,7 +18,7 @@ export class ListDialog implements OnInit, OnDestroy {
   constructor(
     public _ref: DynamicDialogRef,
     public _config: DynamicDialogConfig,
-    public _dialogService: DialogService
+    public _dialogService: DialogService,
   ) {}
 
   get dialogData(): any {

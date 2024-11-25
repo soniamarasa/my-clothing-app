@@ -1,15 +1,31 @@
+<p-confirmDialog
+  acceptLabel="Excluir"
+  rejectLabel="Cancelar"
+  rejectButtonStyleClass="p-button-text p-button-plain"
+></p-confirmDialog>
+
 <div class="places__container">
   <h2>
     <strong><i class="fa-solid fa-tree-city"></i> Locais </strong>
 
-    <p-button label="Novo Local" icon="pi pi-plus" (onClick)="openDialog()"></p-button>
+    <p-button
+      label="Novo Local"
+      icon="pi pi-plus"
+      (onClick)="openDialog()"
+    ></p-button>
   </h2>
 
   <div class="places__grid">
     <div>
-      <p-table [paginator]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5, 10, 15, 30]"
+      <p-table
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[5, 10, 15, 30]"
         [totalRecords]="total"
-        [value]="places" [tableStyle]="{ 'min-width': '30rem' }">
+        [value]="places"
+        [tableStyle]="{ 'min-width': '30rem' }"
+      >
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name">
@@ -22,16 +38,26 @@
         <ng-template pTemplate="body" let-place>
           <tr>
             <td>
-              <i  [style.color]="place.color" class="fa-solid fa-tree-city"></i>
+              <i [style.color]="place.color" class="fa-solid fa-tree-city"></i>
 
               {{ place.name }}
             </td>
 
             <td class="table__actions">
-              <p-button icon="fa-solid fa-pen-to-square" styleClass="p-button-rounded p-button-text"
-                (onClick)="openDialog(place)"></p-button>
-              <!-- <p-button icon="pi pi-times"
-                styleClass="p-button-rounded p-button-danger p-button-text"></p-button> </td> -->
+              <p-button
+                icon="fa-solid fa-pen-to-square"
+                [rounded]="true"
+                [text]="true"
+                pTooltip="Editar"
+                (onClick)="openDialog(place)"
+              ></p-button>
+              <p-button
+                icon="fa-solid fa-trash"
+                [rounded]="true"
+                [text]="true"
+                pTooltip="Excluir"
+                (onClick)="confirm(place)"
+              ></p-button>
             </td>
           </tr>
         </ng-template>

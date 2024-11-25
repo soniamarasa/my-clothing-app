@@ -40,12 +40,12 @@ export class LooksFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true })
+    shareReplay({ refCount: true }),
   );
 
   constructor(
     private looksService: LooksService,
-    private looksStore: LooksStore
+    private looksStore: LooksStore,
   ) {}
 
   getLooks(queryParams?: IGetLooksParams) {
@@ -64,6 +64,12 @@ export class LooksFacade {
     return this.looksService
       .newLook(look)
       .pipe(tap((look) => this.looksStore.updateLook(look)));
+  }
+
+  delete(look: ILook) {
+    return this.looksService
+      .delete(look)
+      .pipe(tap((look) => this.looksStore.deleteLook(look)));
   }
 
   updateLook(look: ILook) {

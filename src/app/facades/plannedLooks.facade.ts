@@ -38,19 +38,23 @@ export class PlannedLooksFacade {
     this.filter$,
     this.autoRefresh$,
     this._refresh.asObservable(),
-  ]).pipe(switchMap(() => this.getPlannedLooks({ year:this.year, ...this._filter.value })));
+  ]).pipe(
+    switchMap(() =>
+      this.getPlannedLooks({ year: this.year, ...this._filter.value }),
+    ),
+  );
 
   readonly plannedLooksState$ = combineLatest([
     this.plannedLooksStore.plannedLooksState$,
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true })
+    shareReplay({ refCount: true }),
   );
 
   constructor(
     private plannedLooksService: PlannedLooksService,
-    private plannedLooksStore: PlannedLooksStore
+    private plannedLooksStore: PlannedLooksStore,
   ) {}
 
   getPlannedLooks(queryParams?: IGetPlannedLooksParams) {
@@ -58,8 +62,8 @@ export class PlannedLooksFacade {
       .getPlannedLooks(queryParams)
       .pipe(
         tap((plannedLooks) =>
-          this.plannedLooksStore.updatePlannedLooks(plannedLooks)
-        )
+          this.plannedLooksStore.updatePlannedLooks(plannedLooks),
+        ),
       );
   }
 
@@ -68,8 +72,8 @@ export class PlannedLooksFacade {
       .getPlannedLookById(id)
       .pipe(
         tap((plannedLook) =>
-          this.plannedLooksStore.updatePlannedLook(plannedLook)
-        )
+          this.plannedLooksStore.updatePlannedLook(plannedLook),
+        ),
       );
   }
 
@@ -78,8 +82,8 @@ export class PlannedLooksFacade {
       .newPlannedLook(plannedLook)
       .pipe(
         tap((plannedLook) =>
-          this.plannedLooksStore.updatePlannedLook(plannedLook)
-        )
+          this.plannedLooksStore.updatePlannedLook(plannedLook),
+        ),
       );
   }
 
@@ -88,8 +92,18 @@ export class PlannedLooksFacade {
       .updatePlannedLook(plannedLook)
       .pipe(
         tap((plannedLook) =>
-          this.plannedLooksStore.updatePlannedLook(plannedLook)
-        )
+          this.plannedLooksStore.updatePlannedLook(plannedLook),
+        ),
+      );
+  }
+
+  delete(plannedLook: IPlannedLook) {
+    return this.plannedLooksService
+      .delete(plannedLook)
+      .pipe(
+        tap((plannedLook) =>
+          this.plannedLooksStore.deletePlannedLook(plannedLook),
+        ),
       );
   }
 

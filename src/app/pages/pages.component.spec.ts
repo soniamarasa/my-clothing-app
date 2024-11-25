@@ -5,12 +5,8 @@ import { PagesComponent } from './pages.component';
 describe('PagesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        PagesComponent
-      ],
+      imports: [RouterTestingModule],
+      declarations: [PagesComponent],
     }).compileComponents();
   });
 
@@ -30,6 +26,8 @@ describe('PagesComponent', () => {
     const fixture = TestBed.createComponent(PagesComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('planner-angular app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain(
+      'planner-angular app is running!',
+    );
   });
 });

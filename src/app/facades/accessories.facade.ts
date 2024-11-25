@@ -43,12 +43,12 @@ export class AccessoriesFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true })
+    shareReplay({ refCount: true }),
   );
 
   constructor(
     private accessoriesService: AccessoriesService,
-    private accessoriesStore: AccessoriesStore
+    private accessoriesStore: AccessoriesStore,
   ) {}
 
   getAccessories(queryParams?: IGetAccessoriesParams) {
@@ -56,8 +56,8 @@ export class AccessoriesFacade {
       .getAccessories(queryParams)
       .pipe(
         tap((accessories) =>
-          this.accessoriesStore.updateAccessories(accessories)
-        )
+          this.accessoriesStore.updateAccessories(accessories),
+        ),
       );
   }
 
@@ -65,7 +65,7 @@ export class AccessoriesFacade {
     return this.accessoriesService
       .getAccessoryById(id)
       .pipe(
-        tap((accessory) => this.accessoriesStore.updateAccessory(accessory))
+        tap((accessory) => this.accessoriesStore.updateAccessory(accessory)),
       );
   }
 
@@ -73,7 +73,7 @@ export class AccessoriesFacade {
     return this.accessoriesService
       .newAccessory(accessory)
       .pipe(
-        tap((accessory) => this.accessoriesStore.updateAccessory(accessory))
+        tap((accessory) => this.accessoriesStore.updateAccessory(accessory)),
       );
   }
 
@@ -81,7 +81,15 @@ export class AccessoriesFacade {
     return this.accessoriesService
       .updateAccessory(accessory)
       .pipe(
-        tap((accessory) => this.accessoriesStore.updateAccessory(accessory))
+        tap((accessory) => this.accessoriesStore.updateAccessory(accessory)),
+      );
+  }
+
+  deleteAccessory(accessory: IAccessory) {
+    return this.accessoriesService
+      .deleteAccessory(accessory)
+      .pipe(
+        tap((accessory) => this.accessoriesStore.deleteAccessory(accessory)),
       );
   }
 
