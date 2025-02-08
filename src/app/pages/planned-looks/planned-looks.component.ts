@@ -30,7 +30,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-planned-looks',
-  templateUrl: './planned-Looks.component.html',
+  templateUrl: './planned-looks.component.html',
   styleUrls: ['./planned-looks.component.scss'],
   providers: [DialogService, ConfirmationService],
 })
