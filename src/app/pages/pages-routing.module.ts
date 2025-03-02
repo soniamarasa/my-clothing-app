@@ -24,7 +24,7 @@ const routes: Routes = [
     path: '',
     component: PagesComponent,
     canActivate: [AuthGuard],
-    title: 'Meu Vestuário',
+    title: 'Meu Closet',
     children: [
       {
         path: '',

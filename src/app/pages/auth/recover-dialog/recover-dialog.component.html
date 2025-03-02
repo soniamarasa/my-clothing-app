@@ -2,7 +2,7 @@
 
 <div class="dialog-body">
   <p>
-    That's okay, it happens! Confirm your email and we'll send the Instructions
+    Está tudo bem, acontece! Confirme seu e-mail e enviaremos as instruções.
   </p>
 
   <form [formGroup]="form">
@@ -31,7 +31,7 @@
           formControl['email'].touched && formControl['email'].errors?.['email']
         "
       >
-        Enter a valid email address
+        Digite um e-mail válido.
       </small>
     </div>
   </form>
@@ -41,6 +41,6 @@
   <p-button
     [disabled]="form.invalid"
     (onClick)="submit()"
-    label="Submit"
+    label="Ok"
   ></p-button>
 </div>

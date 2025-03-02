@@ -257,7 +257,7 @@
           <td (click)="openDialog(look)">
             <small
               class="badge"
-              [style.color]="getTextColor(look?.top?.color || '')"
+              [style.color]="getTextColor(look.top?.color || '')"
               [style.background]="look.top?.color + '70'"
             >
               {{ look.top?.tag.icon }}
@@ -298,7 +298,7 @@
           <td (click)="openDialog(look)">
             <small
               class="badge"
-              [style.color]="getTextColor(look.tag.color)"
+              [style.color]="getTextColor(look?.tag?.color || '')"
               [style.background]="look.tag?.color + '70'"
             >
               {{ look.tag?.name }}

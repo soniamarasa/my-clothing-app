@@ -53,7 +53,7 @@ export class AuthComponent implements OnInit {
 
   openDialogRecover() {
     const ref = this._dialogService.open(RecoverDialogComponent, {
-      header: 'Forgot your password?',
+      header: 'Esqueceu a sua senha?',
     });
 
     this.subs.add(

@@ -11,7 +11,7 @@
         width: 100%;
 
         & h3 {
-          color: #eec41e !important;
+          // color: #eec41e !important;
           cursor: pointer;
         }
       }
@@ -69,16 +69,6 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
-    }
-
-    .p-button {
-      background-color: #eec41e;
-      border-color: #eec41e;
-
-      &:hover {
-        background-color: #ddb517;
-        border-color: #ddb517;
-      }
     }
 
     @media (max-width: 768px) {

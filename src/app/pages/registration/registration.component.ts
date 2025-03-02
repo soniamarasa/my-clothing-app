@@ -34,20 +34,20 @@ export class RegistrationComponent implements OnInit {
     private _messageService: MessageService,
     private _router: Router,
     private customValidator: CustomValidationService,
-    private facade: UsersFacade,
+    private facade: UsersFacade
   ) {
     this.subs.add(
       this.facade.authState$.subscribe(
         ({ isAuthenticated }: any) =>
-          isAuthenticated && this._router.navigate(['/']),
-      ),
+          isAuthenticated && this._router.navigate(['/'])
+      )
     );
 
     this.createForm();
 
     this.gender = [
-      { name: 'Female', code: 'female' },
-      { name: 'Male', code: 'male' },
+      { name: 'Feminino', code: 'female' },
+      { name: 'Masculino', code: 'male' },
     ];
   }
 
@@ -79,7 +79,7 @@ export class RegistrationComponent implements OnInit {
           this.customValidator.MatchPassword('password', 'confirmPassword'),
           this.customValidator.MatchEmail('email', 'confirmEmail'),
         ],
-      } as AbstractControlOptions,
+      } as AbstractControlOptions
     );
   }
 
@@ -111,7 +111,7 @@ export class RegistrationComponent implements OnInit {
               summary: 'An error has occurred!',
               detail: error.error.error,
             }),
-        }),
+        })
     );
   }
 }

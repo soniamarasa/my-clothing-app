@@ -1,24 +1,21 @@
 <div class="home">
   <ng-container>
-    <p-calendar
-      (ngModelChange)="setYear($event)"
-      styleClass="year_select"
-      [(ngModel)]="this.filterFacade.year"
-      [readonlyInput]="true"
-      [yearNavigator]="true"
-      view="year"
-      dateFormat="yy"
-      [showIcon]="true"
-      inputId="icondisplay"
-    />
-    <h1 [routerLink]="['/']">Meu Vestuário</h1>
+    <p-calendar (ngModelChange)="setYear($event)" styleClass="year_select" [(ngModel)]="this.filterFacade.year"
+      [readonlyInput]="true" [yearNavigator]="true" view="year" dateFormat="yy" [showIcon]="true"
+      inputId="icondisplay" />
+
     <h4 id="username" (click)="menu.toggle($event)">
       <app-user-img [email]="user.email"> </app-user-img> Hello,
       {{ user.userName[0] }}
     </h4>
     <p-menu #menu [model]="items" [popup]="true"></p-menu>
-    <p id="date">{{ todayIs | date: "longDate" : "" : "pt-BR" }}</p>
+
   </ng-container>
+
+  <div class="title-container ">
+    <h1 [routerLink]="['/']">Meu Closet</h1>
+    <p id="date">{{ todayIs | date: "longDate" : "" : "pt-BR" }}</p>
+  </div>
 
   <div class="menu__pages">
     <app-menu></app-menu>

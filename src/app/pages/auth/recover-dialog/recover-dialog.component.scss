@@ -11,9 +11,8 @@
         width: 100%;
         & .p-inputtext {
           width: 100%;
-          color: black;
+
           border-color: transparent;
-          background: rgba(0, 0, 0, 0.05);
         }
       }
     }
@@ -22,16 +21,6 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
-    }
-
-    .p-button {
-      background-color: #eec41e;
-      border-color: #eec41e;
-
-      &:hover {
-        background-color: #ddb517;
-        border-color: #ddb517;
-      }
     }
   }
 }

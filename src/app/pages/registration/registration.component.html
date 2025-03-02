@@ -1,7 +1,7 @@
 <p-toast key="notification" position="top-right" styleClass="default"></p-toast>
 
 <div class="container-register">
-  <h1>Register</h1>
+  <h1>Cadastre-se</h1>
 
   <div class="grid">
     <p-card class="col-12">
@@ -12,14 +12,14 @@
 
         <form [formGroup]="form">
           <div class="field">
-            <label for="name" class="block">Name</label>
+            <label for="name" class="block">Nome</label>
             <input
               type="text"
               pInputText
               required
               class="p-inputtext p-inputtext-md"
               formControlName="name"
-              placeholder="Type your full name"
+              placeholder="Digite seu nome completo"
             />
 
             <small
@@ -29,17 +29,17 @@
                 formControl['name'].errors?.['required']
               "
             >
-              Name é obrigatório!
+              Nome é obrigatório!
             </small>
           </div>
 
           <div class="grid p-fluid">
             <div class="col-12 md:col-6">
               <div class="field">
-                <label for="gender" class="block">Gender</label>
+                <label for="gender" class="block">Gênero</label>
                 <p-dropdown
                   [options]="gender"
-                  placeholder="Select your gender"
+                  placeholder="Selecione o seu gênero"
                   optionLabel="name"
                   optionValue="code"
                   formControlName="gender"
@@ -51,20 +51,20 @@
                     formControl['gender'].errors?.['required']
                   "
                 >
-                  Gender é obrigatório!
+                  Gênero é obrigatório!
                 </small>
               </div>
             </div>
 
             <div class="col-12 md:col-6">
               <div class="field">
-                <label for="birthdate" class="block">Bithdate</label>
+                <label for="birthdate" class="block">Data de Nascimento</label>
                 <p-calendar
                   formControlName="birthdate"
                   dateFormat="dd.mm.yy"
                   [showIcon]="true"
                   inputId="icon"
-                  placeholder="Select your birthdate"
+                  placeholder="Selecione a data"
                 ></p-calendar>
                 <small
                   class="p-error"
@@ -73,7 +73,7 @@
                     formControl['birthdate'].errors?.['required']
                   "
                 >
-                  Birthdate é obrigatório!
+                  Esse campo é obrigatório!
                 </small>
               </div>
             </div>
@@ -89,7 +89,7 @@
                   required
                   class="p-inputtext p-inputtext-md"
                   formControlName="email"
-                  placeholder="Type your e-mail"
+                  placeholder="Digite o seu e-mail"
                   (blur)="getAvatar($event)"
                 />
                 <small
@@ -109,21 +109,21 @@
                     formControl['email'].errors?.['email']
                   "
                 >
-                  Enter a valid email address
+                  Digite um e-mail válido.
                 </small>
               </div>
             </div>
 
             <div class="col-12 md:col-6">
               <div class="field">
-                <label for="confirmEmail" class="block">Confirm E-mail</label>
+                <label for="confirmEmail" class="block">Confirme o E-mail</label>
                 <input
                   type="email"
                   pInputText
                   required
                   class="p-inputtext p-inputtext-md"
                   formControlName="confirmEmail"
-                  placeholder="Confirm your e-mail"
+                  placeholder="Digite o e-mail"
                 />
                 <small
                   class="p-error"
@@ -142,7 +142,7 @@
                     formControl['confirmEmail'].errors?.['emailMismatch']
                   "
                 >
-                  Email doesn't match
+                  Email diferente!
                 </small>
               </div>
             </div>
@@ -151,24 +151,24 @@
           <div class="grid p-fluid">
             <div class="col-12 md:col-6">
               <div class="field">
-                <label for="password" class="block">Password</label>
+                <label for="password" class="block">Senha</label>
                 <p-password
                   [toggleMask]="true"
                   formControlName="password"
-                  placeholder="Type your password"
+                  placeholder="Digite a sua senha"
                   styleClass="p-password p-component p-inputwrapper p-input-icon-right"
                 >
                   <ng-template pTemplate="header">
-                    <h6>Pick a password</h6>
+                    <h6>Escolha uma senha</h6>
                   </ng-template>
                   <ng-template pTemplate="footer">
                     <p-divider></p-divider>
-                    <p class="mt-2">Password must be:</p>
+                    <p class="mt-2">A senha deve conter:</p>
                     <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
-                      <li>At least one lowercase</li>
-                      <li>At least one uppercase</li>
-                      <li>At least one numeric</li>
-                      <li>Minimum 8 characters</li>
+                      <li>Pelo menos uma letra minúscula</li>
+                      <li>Pelo menos uma letra maiúscula</li>
+                      <li>Pelo menos um número</li>
+                      <li>Mínimo de 8 caracteres</li>
                     </ul>
                   </ng-template>
                 </p-password>
@@ -180,7 +180,7 @@
                     formControl['password'].errors?.['required']
                   "
                 >
-                  Password é obrigatório!
+                  A senha é obrigatória!
                 </small>
               </div>
             </div>
@@ -188,13 +188,13 @@
             <div class="col-12 md:col-6">
               <div class="field">
                 <label for="confirmPassword" class="block"
-                  >Confirm Password</label
+                  >Confirme a Senha</label
                 >
 
                 <p-password
                   required
                   formControlName="confirmPassword"
-                  placeholder="Confirm your password"
+                  placeholder="Digite a sua senha"
                   [feedback]="false"
                   [toggleMask]="true"
                   styleClass="p-password p-component p-inputwrapper p-input-icon-right"
@@ -207,7 +207,7 @@
                     formControl['confirmPassword'].errors?.['required']
                   "
                 >
-                  Password é obrigatório!
+                A senha é obrigatória!
                 </small>
 
                 <small
@@ -217,7 +217,7 @@
                     formControl['confirmPassword'].errors?.['passwordMismatch']
                   "
                 >
-                  Passwords don't match
+                  Senhas nao combinam.
                 </small>
               </div>
             </div>
@@ -237,7 +237,7 @@
     </p-card>
 
     <div class="logo" [routerLink]="['/']">
-      <h3>Meu Vestuário</h3>
+      <h3>Meu Closet</h3>
     </div>
   </div>
 </div>

@@ -39,7 +39,7 @@
         'place.name',
         'accessories.name',
         'bandana.name',
-        'date',
+        'date'
       ]"
     >
       <ng-template pTemplate="caption">
@@ -157,6 +157,45 @@
             </div>
           </th>
 
+          <th style="min-width: 15rem">
+            <div class="flex align-items-center">
+              Acessórios
+              <p-columnFilter
+                field="accessories"
+                matchMode="in"
+                display="menu"
+                [showMatchModes]="false"
+                [showOperator]="false"
+                [showAddButton]="false"
+              >
+                <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                    <span class="font-bold">Acessórios</span>
+                  </div>
+                </ng-template>
+                <ng-template
+                  pTemplate="filter"
+                  let-value
+                  let-filter="filterCallback"
+                >
+                  <p-multiSelect
+                    [ngModel]="filterAccessories"
+                    [options]="accessories"
+                    placeholder="Selecione"
+                    (onChange)="filterAccessory($event)"
+                    optionLabel="name"
+                  >
+                    <ng-template let-option pTemplate="item">
+                      <div class="inline-block vertical-align-middle">
+                        <span class="ml-1 mt-1">{{ option.name }}</span>
+                      </div>
+                    </ng-template>
+                  </p-multiSelect>
+                </ng-template>
+              </p-columnFilter>
+            </div>
+          </th>
+
           <th style="min-width: 10rem">
             <div class="flex align-items-center">
               Casaco
@@ -235,45 +274,6 @@
             </div>
           </th>
 
-          <th style="min-width: 15rem">
-            <div class="flex align-items-center">
-              Acessórios
-              <p-columnFilter
-                field="accessories"
-                matchMode="in"
-                display="menu"
-                [showMatchModes]="false"
-                [showOperator]="false"
-                [showAddButton]="false"
-              >
-                <ng-template pTemplate="header">
-                  <div class="px-3 pt-3 pb-0">
-                    <span class="font-bold">Acessórios</span>
-                  </div>
-                </ng-template>
-                <ng-template
-                  pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
-                >
-                  <p-multiSelect
-                    [ngModel]="filterAccessories"
-                    [options]="accessories"
-                    placeholder="Selecione"
-                    (onChange)="filterAccessory($event)"
-                    optionLabel="name"
-                  >
-                    <ng-template let-option pTemplate="item">
-                      <div class="inline-block vertical-align-middle">
-                        <span class="ml-1 mt-1">{{ option.name }}</span>
-                      </div>
-                    </ng-template>
-                  </p-multiSelect>
-                </ng-template>
-              </p-columnFilter>
-            </div>
-          </th>
-
           <th style="min-width: 10rem">
             <div class="flex align-items-center">
               Status
@@ -317,7 +317,7 @@
       <ng-template pTemplate="body" let-plannedLook>
         <tr class="item-look" (click)="openDialog(plannedLook)">
           <td>
-            {{ plannedLook.date | date: "dd/MM/yyyy" }}
+            {{ plannedLook.date | date : "dd/MM/yyyy" }}
           </td>
           <td>
             <small
@@ -329,44 +329,47 @@
             </small>
           </td>
 
-          <td class="many__items">
-            <small
-              *ngIf="plannedLook?.look.top"
-              class="badge"
-              [style.color]="getTextColor(plannedLook?.look.top?.color)"
-              [style.background]="plannedLook.look.top?.color + '70'"
-            >
-              {{ plannedLook.look.top.category.icon }}
-              {{ plannedLook.look.top.name }}
-            </small>
-            <small
-              *ngIf="plannedLook.look?.bottom"
-              class="badge"
-              [style.color]="getTextColor(plannedLook?.look.bottom?.color)"
-              [style.background]="plannedLook.look.bottom?.color + '70'"
-            >
-              {{ plannedLook.look.bottom.category.icon }}
-              {{ plannedLook.look.bottom.name }}
-            </small>
-            <small
-              *ngIf="plannedLook.look?.garb"
-              class="badge"
-              [style.color]="getTextColor(plannedLook?.look.garb?.color)"
-              [style.background]="plannedLook.look.garb?.color + '70'"
-            >
-              {{ plannedLook.look.garb.category.icon }}
-              {{ plannedLook.look.garb.name }}
-            </small>
-            <small
-              *ngIf="plannedLook.look?.shoe"
-              class="badge"
-              [style.color]="getTextColor(plannedLook?.look.shoe?.color)"
-              [style.background]="plannedLook.look.shoe?.color + '70'"
-            >
-              {{ plannedLook.look.shoe.category.icon }}
-              {{ plannedLook.look.shoe.name }}
-            </small>
+          <td>
+            <div class="many__items">
+              <small
+                *ngIf="plannedLook?.look.top"
+                class="badge"
+                [style.color]="getTextColor(plannedLook?.look.top?.color)"
+                [style.background]="plannedLook.look.top?.color + '70'"
+              >
+                {{ plannedLook.look.top.category.icon }}
+                {{ plannedLook.look.top.name }}
+              </small>
+              <small
+                *ngIf="plannedLook.look?.bottom"
+                class="badge"
+                [style.color]="getTextColor(plannedLook?.look.bottom?.color)"
+                [style.background]="plannedLook.look.bottom?.color + '70'"
+              >
+                {{ plannedLook.look.bottom.category.icon }}
+                {{ plannedLook.look.bottom.name }}
+              </small>
+              <small
+                *ngIf="plannedLook.look?.garb"
+                class="badge"
+                [style.color]="getTextColor(plannedLook?.look.garb?.color)"
+                [style.background]="plannedLook.look.garb?.color + '70'"
+              >
+                {{ plannedLook.look.garb.category.icon }}
+                {{ plannedLook.look.garb.name }}
+              </small>
+              <small
+                *ngIf="plannedLook.look?.shoe"
+                class="badge"
+                [style.color]="getTextColor(plannedLook?.look.shoe?.color)"
+                [style.background]="plannedLook.look.shoe?.color + '70'"
+              >
+                {{ plannedLook.look.shoe.category.icon }}
+                {{ plannedLook.look.shoe.name }}
+              </small>
+            </div>
           </td>
+
           <td>
             <small
               class="badge"
@@ -383,6 +386,21 @@
               {{ plannedLook.handbag?.name }}
             </small>
           </td>
+
+          <td>
+            <div class="accessory-container">
+              <ng-container *ngFor="let accessory of plannedLook?.accessories">
+                <small
+                  class="badge"
+                  [style.background]="accessory?.color + '70'"
+                >
+                  {{ accessory?.category.icon }}
+                  {{ accessory?.name }}
+                </small>
+              </ng-container>
+            </div>
+          </td>
+
           <td>
             <small
               class="badge"
@@ -405,15 +423,6 @@
               ></i>
               {{ plannedLook.bandana?.name }}
             </small>
-          </td>
-
-          <td>
-            <ng-container *ngFor="let accessory of plannedLook?.accessories">
-              <small class="badge" [style.background]="accessory?.color + '70'">
-                {{ accessory?.category.icon }}
-                {{ accessory?.name }}
-              </small>
-            </ng-container>
           </td>
 
           <td>

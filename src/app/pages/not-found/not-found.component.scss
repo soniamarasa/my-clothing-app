@@ -3,11 +3,10 @@
     .container-not-found {
       min-height: calc(100vh - 0px);
       max-height: calc(100vh - 0px);
-      background-color: white !important;
       overflow-x: hidden;
 
       .container-div {
-        margin: 3rem auto;
+        margin: 10vh auto;
         width: 75%;
         max-width: 800px;
         display: flex;
@@ -23,16 +22,9 @@
       }
     }
 
-    .p-button {
-      background-color: #eec41e;
-      border-color: #eec41e;
-
-      &:hover {
-        background-color: #ddb517;
-        border-color: #ddb517;
-      }
+    .detail-404 {
+      text-align: center;
     }
-
     i {
       margin-right: 0.5rem;
     }
@@ -40,13 +32,13 @@
     h2 {
       margin: 2rem 0 0;
       text-align: center;
-      color: #eec41e !important;
+      color: #866d9b !important;
     }
 
     h3 {
       padding-top: 2rem;
       cursor: pointer;
-      color: #c49877 !important;
+      color: #708a81 !important;
     }
   }
 }

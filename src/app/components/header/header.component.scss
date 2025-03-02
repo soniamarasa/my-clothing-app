@@ -1,7 +1,6 @@
 :host {
   & ::ng-deep {
     & .home {
-      min-width: 500px;
       text-align: center;
 
       & h1,
@@ -63,6 +62,10 @@
     @media (max-width: 768px) {
       h4 {
         display: none;
+      }
+
+      .title-container {
+        margin-top: 3rem;
       }
     }
   }
