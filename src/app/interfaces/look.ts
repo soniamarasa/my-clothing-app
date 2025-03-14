@@ -9,7 +9,7 @@ export interface ILook {
   userId?: string;
   top: IClothing | null;
   bottom: IClothing | null;
-  dress: IClothing | null;
+  garb: IClothing | null;
   shoe: IShoe | null;
   tag: ITag;
 }

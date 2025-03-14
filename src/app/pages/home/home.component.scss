@@ -21,5 +21,46 @@
         align-items: stretch;
       }
     }
+
+    & .next_look_container {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      img {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      > span {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        font-size: 1rem;
+        border-radius: 6px;
+        padding: 6px 10px;
+      }
+
+      .item-2 {
+        color: #77835c;
+        background-color: #77835c30;
+      }
+
+      .item-1 {
+        color: #de615d;
+        background-color: #de615d30;
+      }
+
+      .item-3 {
+        color: #708a81;
+        background-color: #708a8130;
+      }
+
+      .item-4 {
+        color: #cda64e;
+        background-color: #cda64e30;
+        flex-wrap: wrap;
+      }
+    }
   }
 }

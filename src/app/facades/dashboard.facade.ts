@@ -41,8 +41,8 @@ export class DashboardFacade {
     switchMap(() =>
       this.getDashboard({
         ...this._filter.value,
-      }),
-    ),
+      })
+    )
   );
 
   readonly dashboardState$ = combineLatest([
@@ -50,18 +50,26 @@ export class DashboardFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true }),
+    shareReplay({ refCount: true })
   );
 
   constructor(
     private dashboardService: DashboardService,
-    private dashboardStore: DashboardStore,
+    private dashboardStore: DashboardStore
   ) {}
 
   getDashboard(queryParams?: IGetDashboardParams) {
     return this.dashboardService
       .getDashboard(queryParams)
       .pipe(tap((dashboard) => this.dashboardStore.updateDashboard(dashboard)));
+  }
+
+  getUnusedLooks() {
+    return this.dashboardService.getUnusedLooks();
+  }
+
+  getNextPlannedLook() {
+    return this.dashboardService.getNextPlannedLook();
   }
 
   filter(filter: IGetDashboardParams) {

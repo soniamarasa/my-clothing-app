@@ -5,6 +5,8 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { SubSink } from 'subsink';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { IDashboard } from '../../interfaces/dashboard';
+import { ILook } from '../../interfaces/look';
+import { IPlannedLook } from '../../interfaces/plannedLook';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +17,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   subs = new SubSink();
   dashboard!: IDashboard | null;
   loading: boolean = false;
+  unusedLooks!: ILook[];
+  nextPlannedLook!: IPlannedLook[];
 
   readonly dashboard$ = this.dashboardFacade.dashboardState$.pipe(
     tap(() => {
@@ -26,8 +30,14 @@ export class HomeComponent implements OnInit, OnDestroy {
         data: dashboard,
       };
     }),
-    startWith({ loading: true, data: null }),
+    startWith({ loading: true, data: null })
   );
+
+  constructor(
+    public _dialogService: DialogService,
+    private _router: Router,
+    private dashboardFacade: DashboardFacade
+  ) {}
 
   ngOnInit(): void {
     this.dashboardFacade.filter({ year: new Date().getFullYear().toString() });
@@ -36,15 +46,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.dashboard$.subscribe((state) => {
         this.dashboard = state.data!;
         this.loading = state.loading;
-      }),
+      })
+    );
+
+    this.subs.add(
+      this.dashboardFacade
+        .getUnusedLooks()
+        .subscribe((data) => (this.unusedLooks = data)),
+      this.dashboardFacade
+        .getNextPlannedLook()
+        .subscribe((data) => (this.nextPlannedLook = data))
     );
   }
-
-  constructor(
-    public _dialogService: DialogService,
-    private _router: Router,
-    private dashboardFacade: DashboardFacade,
-  ) {}
 
   ngOnDestroy(): any {}
 }

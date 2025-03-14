@@ -170,7 +170,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Roupa criada com sucesso!',
+            summary: 'Look criado com sucesso!',
           });
         },
         error: () => {
@@ -179,7 +179,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível criar essa roupa. Tente novamente mais tarde.',
+              'Não foi possível criar esse look. Tente novamente mais tarde.',
           });
         },
       }),
@@ -193,7 +193,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
           this._messageService.add({
             key: 'notification',
             severity: 'success',
-            summary: 'Roupa atualizada com sucesso!',
+            summary: 'Look atualizado com sucesso!',
           });
         },
         error: () => {
@@ -202,7 +202,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
             severity: 'error',
             summary: 'Houve um problema!',
             detail:
-              'Não foi possível atualizar essa roupa. Tente novamente mais tarde.',
+              'Não foi possível atualizar esse look. Tente novamente mais tarde.',
           });
         },
       }),

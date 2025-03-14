@@ -31,6 +31,50 @@
       >{{ dashboard.shoes.total }}</p-card
     >
   </div>
+  <p-card
+    *ngIf="nextPlannedLook.length"
+    [header]="'Próximo Look - ' + (nextPlannedLook[0].date | date)"
+    class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+  >
+    <div *ngFor="let look of nextPlannedLook" class="next_look_container">
+      <span pTooltip="Roupa" class="item-1">
+        <img src="../../../assets/clothes.png" />
+
+        <span *ngIf="look.look.garb">
+          {{ look.look.garb.name }}
+        </span>
+
+        <span *ngIf="!look.look.garb">
+          {{ look.look.top?.name }} +
+          {{ look.look.bottom?.name }}
+        </span>
+      </span>
+
+      <span pTooltip="Sapato" class="item-2">
+        <img src="../../../assets/shoe1.png" />
+
+        {{ look.look.shoe?.name }}
+      </span>
+
+      <span pTooltip="Bolsa" class="item-3" *ngIf="look.handbag">
+        <img src="../../../assets/bag.png" />
+
+        {{ look.handbag.name }}
+      </span>
+
+      <ng-container *ngIf="look.accessories.length">
+        <span
+          pTooltip="Acessórios"
+          *ngFor="let accessory of look.accessories"
+          class="item-4"
+        >
+          <img src="../../../assets/accessory.png" />
+
+          <small>{{ accessory.name }}</small>
+        </span>
+      </ng-container>
+    </div>
+  </p-card>
 
   <div class="grid charts-grid">
     <div class="indicadores col-12 lg:col-6">
