@@ -1,0 +1,216 @@
+<div class="clothes__container">
+  <h2>
+    <strong><i class="fa-solid fa-shapes"></i> Looks não usados em {{  filterFacade.year| date : 'yyyy'}} </strong>
+  </h2>
+
+  <div class="card">
+    <p-table #dt1 [value]="looks" dataKey="id" [rows]="20" [rowsPerPageOptions]="[20, 35, 50]" [totalRecords]="total"
+      [loading]="loading" [paginator]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [globalFilterFields]="[
+        'top.name',
+        'bottom.name',
+        'garb.name',
+        'shoe.name',
+        'tag.name',
+      ]">
+      <ng-template pTemplate="caption">
+        <div class="flex">
+          <button pButton label="Limpar" class="p-button-outlined p-button-secondary" icon="pi pi-filter-slash"
+            (click)="clear(dt1)"></button>
+          <span class="p-input-icon-left ml-auto">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="filterGlobal($event)" placeholder="Pesquisar..." />
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="min-width: 15rem">
+            <div class="flex align-items-center">
+              Parte de Cima
+              <p-columnFilter field="category" matchMode="in" display="menu" [showMatchModes]="false"
+                [showOperator]="false" [showAddButton]="false">
+                <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                    <span class="font-bold">Categorias</span>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-multiSelect [ngModel]="value" [options]="tops" placeholder="Selecione"
+                    (onChange)="filter($event.value)" optionLabel="name">
+                    <ng-template let-option pTemplate="item">
+                      <div class="inline-block vertical-align-middle">
+                        <span class="ml-1 mt-1">{{ option.name }}</span>
+                      </div>
+                    </ng-template>
+                  </p-multiSelect>
+                </ng-template>
+              </p-columnFilter>
+            </div>
+          </th>
+
+          <th style="min-width: 15rem">
+            <div class="flex align-items-center">
+              Parte de Baixo
+              <p-columnFilter field="bottom" matchMode="in" display="menu" [showMatchModes]="false"
+                [showOperator]="false" [showAddButton]="false">
+                <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                    <span class="font-bold">Parte de Baixo</span>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-multiSelect [ngModel]="value" [options]="bottoms" placeholder="Selecione"
+                    (onChange)="filter($event.value)" optionLabel="name">
+                    <ng-template let-option pTemplate="item">
+                      <div class="inline-block vertical-align-middle">
+                        <span class="ml-1 mt-1">{{ option.name }}</span>
+                      </div>
+                    </ng-template>
+                  </p-multiSelect>
+                </ng-template>
+              </p-columnFilter>
+            </div>
+          </th>
+
+          <th style="min-width: 20rem">
+            <div class="flex align-items-center">
+              Traje
+              <p-columnFilter field="garb" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false"
+                [showAddButton]="false">
+                <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                    <span class="font-bold">Traje</span>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-multiSelect [ngModel]="value" [options]="garbs" placeholder="Selecione"
+                    (onChange)="filter($event.value)" optionLabel="name">
+                    <ng-template let-option pTemplate="item">
+                      <div class="inline-block vertical-align-middle">
+                        <span class="ml-1 mt-1">{{ option.name }}</span>
+                      </div>
+                    </ng-template>
+                  </p-multiSelect>
+                </ng-template>
+              </p-columnFilter>
+            </div>
+          </th>
+          <th style="min-width: 15rem">
+            <div class="flex align-items-center">
+              Sapato
+              <p-columnFilter field="shoe" matchMode="in" display="menu" [showMatchModes]="false" [showOperator]="false"
+                [showAddButton]="false">
+                <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                    <span class="font-bold">Sapato</span>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-multiSelect [ngModel]="value" [options]="shoes" placeholder="Selecione"
+                    (onChange)="filter($event.value)" optionLabel="name">
+                    <ng-template let-option pTemplate="item">
+                      <div class="inline-block vertical-align-middle">
+                        <span class="ml-1 mt-1">{{ option.name }}</span>
+                      </div>
+                    </ng-template>
+                  </p-multiSelect>
+                </ng-template>
+              </p-columnFilter>
+            </div>
+          </th>
+          <!-- 
+          <th style="min-width: 8rem">
+            <div class="flex align-items-center">
+              Tag
+              <p-columnFilter
+                field="tag"
+                matchMode="in"
+                display="menu"
+                [showMatchModes]="false"
+                [showOperator]="false"
+                [showAddButton]="false"
+              >
+                <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                    <span class="font-bold">Tag</span>
+                  </div>
+                </ng-template>
+                <ng-template
+                  pTemplate="filter"
+                  let-value
+                  let-filter="filterCallback"
+                >
+                  <p-multiSelect
+                    [ngModel]="value"
+                    [options]="tags"
+                    placeholder="Selecione"
+                    (onChange)="filter($event.value)"
+                    optionLabel="name"
+                  >
+                    <ng-template let-option pTemplate="item">
+                      <div class="inline-block vertical-align-middle">
+                        <span class="ml-1 mt-1">{{ option.name }}</span>
+                      </div>
+                    </ng-template>
+                  </p-multiSelect>
+                </ng-template>
+              </p-columnFilter>
+            </div>
+          </th> -->
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-look>
+        <tr>
+          <td>
+            <small class="badge" [style.color]="getTextColor(look.top?.color || '')"
+              [style.background]="look.top?.color + '70'">
+              {{ look.top?.tag.icon }}
+              {{ look.top?.name }}
+            </small>
+          </td>
+          <td>
+            <small class="badge" [style.color]="getTextColor(look?.bottom?.color || '')"
+              [style.background]="look.bottom?.color + '70'">
+              {{ look.bottom?.tag.icon }}
+              {{ look.bottom?.name }}
+            </small>
+          </td>
+          <td>
+            <small class="badge" [style.color]="getTextColor(look?.garb?.color || '')"
+              [style.background]="look.garb?.color + '70'">
+              {{ look.garb?.tag.icon }}
+              {{ look.garb?.name }}
+            </small>
+          </td>
+          <td>
+            <small class="badge" [style.color]="getTextColor(look.shoe.color)"
+              [style.background]="look.shoe?.color + '70'">
+              {{ look.shoe?.category.icon }}
+              {{ look.shoe?.name }}
+            </small>
+          </td>
+
+          <!-- <td (click)="openDialog(look)">
+            <small
+              class="badge"
+              [style.color]="getTextColor(look?.tag?.color || '')"
+              [style.background]="look.tag?.color + '70'"
+            >
+              {{ look.tag?.name }}
+            </small>
+          </td> -->
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="8">Nenhum resultado encontrado.</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        Total: {{ dt1._totalRecords }}
+      </ng-template>
+    </p-table>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+:host {
+  & ::ng-deep {
+    & .clothes__container {
+      h2 {
+        display: flex;
+        justify-content: space-between;
+        padding: 1.5rem 0;
+      }
+    }
+
+    .p-datatable .p-datatable-header {
+      border-radius: 1rem 1rem 0 0;
+      border: none;
+    }
+
+    td {
+      cursor: pointer;
+    }
+
+    .table__actions {
+      display: flex;
+      gap: 1rem;
+    }
+    .p-button.p-button-icon-only {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .badge {
+      font-weight: 800;
+      display: table-cell;
+      text-align: center;
+      padding: 0.3rem 0.5rem;
+    }
+  }
+}
