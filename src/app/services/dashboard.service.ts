@@ -22,15 +22,12 @@ export class DashboardService {
     });
   }
 
-  getUnusedLooks(queryParams?: IGetDashboardParams) {
-    return this._http.get<ILook[]>(`${environment.url}/unused-looks`, {
-      params: (<unknown>queryParams) as HttpParams,
-    });
-  }
-
   getNextPlannedLook(queryParams?: IGetDashboardParams) {
-    return this._http.get<IPlannedLook[]>(`${environment.url}/next-planned-look`, {
-      params: (<unknown>queryParams) as HttpParams,
-    });
+    return this._http.get<IPlannedLook[]>(
+      `${environment.url}/next-planned-look`,
+      {
+        params: (<unknown>queryParams) as HttpParams,
+      }
+    );
   }
 }

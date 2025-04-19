@@ -6,6 +6,7 @@ import { environment } from './../../environments/environment';
 export interface IGetLooksParams {
   createdAfter?: Date;
   inactivated?: boolean;
+  year?: string;
   page?: number;
   pageLimit?: number;
 }
@@ -37,4 +38,12 @@ export class LooksService {
   delete(look: ILook) {
     return this._http.delete<ILook>(`${environment.url}/looks/${look._id}`);
   }
+
+  getUnusedLooks(queryParams?: IGetLooksParams) {
+    return this._http.get<ILook[]>(`${environment.url}/unused-looks`, {
+      params: (<unknown>queryParams) as HttpParams,
+    });
+  }
+
+
 }
