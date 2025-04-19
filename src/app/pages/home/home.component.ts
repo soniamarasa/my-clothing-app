@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   subs = new SubSink();
   dashboard!: IDashboard | null;
   loading: boolean = false;
-  unusedLooks!: ILook[];
   nextPlannedLook!: IPlannedLook[];
 
   readonly dashboard$ = this.dashboardFacade.dashboardState$.pipe(
@@ -50,9 +49,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.dashboardFacade
-        .getUnusedLooks()
-        .subscribe((data) => (this.unusedLooks = data)),
       this.dashboardFacade
         .getNextPlannedLook()
         .subscribe((data) => (this.nextPlannedLook = data))

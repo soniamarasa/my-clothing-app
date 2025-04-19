@@ -18,6 +18,7 @@ import { BandanasComponent } from './bandanas/bandanas.component';
 import { HandbagsComponent } from './handbags/handbags.component';
 import { LooksComponent } from './looks/looks.component';
 import { PlannedLooksComponent } from './planned-looks/planned-looks.component';
+import { UnusedLooksComponent } from './unused-looks/unused-looks.component';
 
 const routes: Routes = [
   {
@@ -75,6 +76,11 @@ const routes: Routes = [
         path: 'looks',
         title: 'Looks',
         component: LooksComponent,
+      },
+      {
+        path: 'unused-looks',
+        title: 'Looks ainda Não Usados Nesse Ano',
+        component: UnusedLooksComponent,
       },
       {
         path: 'planned-looks',

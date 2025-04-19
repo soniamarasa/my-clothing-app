@@ -54,6 +54,7 @@ import { BandanasComponent } from './bandanas/bandanas.component';
 import { ShoesComponent } from './shoes/shoes.component';
 import { LooksComponent } from './looks/looks.component';
 import { PlannedLooksComponent } from './planned-looks/planned-looks.component';
+import { UnusedLooksComponent } from './unused-looks/unused-looks.component';
 
 //Componentes
 import { PasswordRecoverComponent } from './password-recover/password-recover.component';
@@ -92,6 +93,7 @@ import { ListDialog } from '../components/dialogs/list-dialog/list-dialog.compon
     BandanasComponent,
     ShoesComponent,
     LooksComponent,
+    UnusedLooksComponent,
     PlannedLooksComponent,
     ChartComponent,
     PieChartComponent,
