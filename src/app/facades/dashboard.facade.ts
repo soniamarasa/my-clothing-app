@@ -19,7 +19,6 @@ import {
 import { DashboardStore } from '@stores/dashboard.store';
 
 import { IDashboard } from '@root/src/app/interfaces/dashboard';
-import { FilterFacade } from './filter.facade';
 
 const REFRESH_INTERVAL = 600000;
 
@@ -62,10 +61,6 @@ export class DashboardFacade {
     return this.dashboardService
       .getDashboard(queryParams)
       .pipe(tap((dashboard) => this.dashboardStore.updateDashboard(dashboard)));
-  }
-
-  getUnusedLooks() {
-    return this.dashboardService.getUnusedLooks();
   }
 
   getNextPlannedLook() {

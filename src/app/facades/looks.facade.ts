@@ -29,6 +29,9 @@ export class LooksFacade {
   private readonly _filter = new BehaviorSubject<any>({});
   readonly filter$ = this._filter.asObservable().pipe(distinctUntilChanged());
 
+  private readonly _filterUnusedLooks = new BehaviorSubject<any>({});
+  readonly filterUnusedLooks$ = this._filterUnusedLooks.asObservable().pipe(distinctUntilChanged());
+
   private readonly handleRequest$ = combineLatest([
     this.filter$,
     this.autoRefresh$,
@@ -40,6 +43,11 @@ export class LooksFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
+    shareReplay({ refCount: true }),
+  );
+
+  readonly unusedLooksState$ = this.filterUnusedLooks$.pipe(
+    switchMap((filters) => this.getUnusedLooks({ ...filters })),
     shareReplay({ refCount: true }),
   );
 
@@ -78,8 +86,18 @@ export class LooksFacade {
       .pipe(tap((look) => this.looksStore.updateLook(look)));
   }
 
+
+
   filterLooks(filter: IGetLooksParams) {
     this._filter.next({ ...this._filter.value, ...filter });
+  }
+
+  getUnusedLooks(queryParams?: IGetLooksParams) {
+    return this.looksService.getUnusedLooks(queryParams);
+  }
+
+  filterUnusedLooks(filter: IGetLooksParams) {
+    this._filterUnusedLooks.next({ ...this._filter.value, ...filter });
   }
 
   refresh() {
