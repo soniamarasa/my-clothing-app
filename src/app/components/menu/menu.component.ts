@@ -68,14 +68,25 @@ export class MenuComponent implements OnInit {
         routerLink: '/places',
       },
       {
+        label: 'Combinações',
+        icon: ' fa-solid fa-person-half-dress',
+        items: [
+          {
+            label: 'Todas Combinações',
+            icon: 'fa-solid fa-user-tie',
+            routerLink: '/looks',
+          },
+          {
+            label: 'Combinações Não Usadas',
+            icon: 'fa-solid fa-user-tie',
+            routerLink: '/unused-looks',
+          },
+        ],
+      },
+      {
         label: 'Looks',
         icon: 'fa-solid fa-crown',
         items: [
-          {
-            label: 'Combinações',
-            icon: 'fa-solid fa-vest-patches',
-            routerLink: '/looks',
-          },
           {
             label: 'Planejados',
             icon: 'fa-solid fa-calendar-day',
@@ -86,12 +97,6 @@ export class MenuComponent implements OnInit {
             icon: 'fa-solid fa-calendar-check',
             routerLink: '/used-looks',
           },
-        ],
-      },
-      {
-        label: 'Outros',
-        icon: 'fa-brands fa-elementor',
-        items: [
           // {
           //   label: 'Academia',
           //   icon: 'fa-solid fa-dumbbell',

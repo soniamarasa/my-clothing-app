@@ -3,8 +3,6 @@ import { UsersFacade } from '@facades/users.facade';
 import { IUser } from '../../interfaces/user';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
-import { PlannedLooksFacade } from '../../facades/plannedLooks.facade';
-import { DashboardFacade } from '../../facades/dashboard.facade';
 import { FilterFacade } from '../../facades/filter.facade';
 
 @Component({
@@ -22,8 +20,6 @@ export class HeaderComponent implements OnInit {
   constructor(
     private userFacade: UsersFacade,
     public filterFacade: FilterFacade,
-    private plannedLooksFacade: PlannedLooksFacade,
-    private dashboardFacade: DashboardFacade,
     private _router: Router,
   ) {
     this.$user.subscribe((user) => {
