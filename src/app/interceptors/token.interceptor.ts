@@ -5,17 +5,9 @@ import {
   HttpEvent,
   HttpInterceptor,
   HttpErrorResponse,
-  HttpResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import {
-  catchError,
-  finalize,
-  map,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 import { UsersFacade } from '@facades/users.facade';
@@ -35,19 +27,16 @@ export class TokenInterceptor implements HttpInterceptor {
       return {
         token: user?.token,
       };
-    }),
+    })
   );
 
-  constructor(
-    private _router: Router,
-    private facade: UsersFacade,
-  ) {
+  constructor(private _router: Router, private facade: UsersFacade) {
     this.token$.subscribe((token) => (this.tokens = token));
   }
 
   intercept(
     request: HttpRequest<any>,
-    next: HttpHandler,
+    next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const { token } = this.tokens;
 
@@ -67,13 +56,13 @@ export class TokenInterceptor implements HttpInterceptor {
         }
 
         return throwError(() => error);
-      }),
+      })
     );
   }
 
   interceptWithTimeout(
     request: HttpRequest<any>,
-    next: HttpHandler,
+    next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return new Observable((observer) => {
       const { token } = this.tokens;
