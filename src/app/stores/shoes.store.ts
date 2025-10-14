@@ -24,20 +24,18 @@ export class ShoesStore {
   }
 
   updateShoe(shoe: IShoe) {
-    const state = this._shoesState.value;
+    const state = [...this._shoesState.value];
+    const index = state.findIndex(({ _id }) => _id === shoe._id);
 
-    const shoeIndex = state.findIndex(({ _id }) => _id === shoe._id);
-
-    if (shoeIndex >= 0) {
-      state[shoeIndex] = { ...state[shoeIndex], ...shoe };
+    if (index >= 0) {
+      const updated = { ...state[index], ...shoe };
+      state.splice(index, 1);
+      state.unshift(updated);
     } else {
-      state.push(shoe);
+      state.unshift(shoe);
     }
 
-    const data = state;
-
-    this._shoesState.next(data);
-
+    this._shoesState.next([...state]);
     return this._shoesState.asObservable();
   }
 

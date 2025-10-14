@@ -32,7 +32,7 @@ export class UsersStore {
     const userIndex = state.findIndex(({ _id }) => _id === user._id);
 
     if (!userIndex) state[userIndex] = { ...state[userIndex], ...user };
-    else state.push(user);
+    else state.unshift(user);
 
     const data = state;
 

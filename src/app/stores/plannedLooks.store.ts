@@ -9,7 +9,7 @@ export const INITIAL_STATE: IPlannedLook[] = [];
 })
 export class PlannedLooksStore {
   private _plannedLooksState = new BehaviorSubject<IPlannedLook[]>(
-    INITIAL_STATE,
+    INITIAL_STATE
   );
   readonly plannedLooksState$ = this._plannedLooksState.asObservable();
 
@@ -26,22 +26,18 @@ export class PlannedLooksStore {
   }
 
   updatePlannedLook(plannedLook: IPlannedLook) {
-    const state = this._plannedLooksState.value;
+    const state = [...this._plannedLooksState.value];
+    const index = state.findIndex(({ _id }) => _id === plannedLook._id);
 
-    const plannedLookIndex = state.findIndex(
-      ({ _id }) => _id === plannedLook._id,
-    );
-
-    if (plannedLookIndex >= 0) {
-      state[plannedLookIndex] = { ...state[plannedLookIndex], ...plannedLook };
+    if (index >= 0) {
+      const updated = { ...state[index], ...plannedLook };
+      state.splice(index, 1);
+      state.unshift(updated);
     } else {
-      state.push(plannedLook);
+      state.unshift(plannedLook);
     }
 
-    const data = state;
-
-    this._plannedLooksState.next(data);
-
+    this._plannedLooksState.next([...state]);
     return this._plannedLooksState.asObservable();
   }
 
@@ -49,7 +45,7 @@ export class PlannedLooksStore {
     const state = this._plannedLooksState.value;
 
     const plannedLookIndex = state.findIndex(
-      ({ _id }) => _id === plannedLook._id,
+      ({ _id }) => _id === plannedLook._id
     );
 
     state.splice(plannedLookIndex, 1);

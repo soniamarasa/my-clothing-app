@@ -27,13 +27,14 @@ export class BandanasStore {
 
   updateBandana(bandana: IBandana) {
     const state = this._bandanasState.value;
+    const index = state.findIndex(({ _id }) => _id === bandana._id);
 
-    const bandanaIndex = state.findIndex(({ _id }) => _id === bandana._id);
-
-    if (bandanaIndex >= 0) {
-      state[bandanaIndex] = { ...state[bandanaIndex], ...bandana };
+    if (index >= 0) {
+      const updated = { ...state[index], ...bandana };
+      state.splice(index, 1);
+      state.unshift(updated);
     } else {
-      state.push(bandana);
+      state.unshift(bandana);
     }
 
     const data = state;

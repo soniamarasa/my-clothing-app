@@ -23,20 +23,18 @@ export class AccessoriesStore {
   }
 
   updateAccessory(accessory: IAccessory) {
-    const state = this._accessoriesState.value;
+    const state = [...this._accessoriesState.value];
+    const index = state.findIndex(({ _id }) => _id === accessory._id);
 
-    const accessoryIndex = state.findIndex(({ _id }) => _id === accessory._id);
-
-    if (accessoryIndex >= 0) {
-      state[accessoryIndex] = { ...state[accessoryIndex], ...accessory };
+    if (index >= 0) {
+      const updated = { ...state[index], ...accessory };
+      state.splice(index, 1);
+      state.unshift(updated);
     } else {
-      state.push(accessory);
+      state.unshift(accessory);
     }
 
-    const data = state;
-
-    this._accessoriesState.next(data);
-
+    this._accessoriesState.next([...state]);
     return this._accessoriesState.asObservable();
   }
 

@@ -24,20 +24,20 @@ export class LooksStore {
   }
 
   updateLook(look: ILook) {
-    const state = this._looksState.value;
+    const state = [...this._looksState.value];
+    const index = state.findIndex(({ _id }) => _id === look._id);
 
-    const lookIndex = state.findIndex(({ _id }) => _id === look._id);
-
-    if (lookIndex >= 0) {
-      state[lookIndex] = { ...state[lookIndex], ...look };
+    if (index >= 0) {
+      const updated = { ...state[index], ...look };
+      state.splice(index, 1);
+      state.unshift(updated);
     } else {
-      state.push(look);
+      state.unshift(look);
     }
 
-    const data = state;
+    this._looksState.next([...state]);
 
-    this._looksState.next(data);
-
+    console.log(this._looksState.value)
     return this._looksState.asObservable();
   }
 

@@ -26,20 +26,18 @@ export class CategoriesStore {
   }
 
   updateCategory(category: ICategory) {
-    const state = this._categoriesState.value;
+    const state = [...this._categoriesState.value];
+    const index = state.findIndex(({ _id }) => _id === category._id);
 
-    const categoryIndex = state.findIndex(({ _id }) => _id === category._id);
-
-    if (categoryIndex >= 0) {
-      state[categoryIndex] = { ...state[categoryIndex], ...category };
+    if (index >= 0) {
+      const updated = { ...state[index], ...category };
+      state.splice(index, 1);
+      state.unshift(updated);
     } else {
-      state.push(category);
+      state.unshift(category);
     }
 
-    const data = state;
-
-    this._categoriesState.next(data);
-
+    this._categoriesState.next([...state]);
     return this._categoriesState.asObservable();
   }
 

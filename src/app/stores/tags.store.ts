@@ -24,20 +24,18 @@ export class TagsStore {
   }
 
   updateTag(tag: ITag) {
-    const state = this._tagsState.value;
+    const state = [...this._tagsState.value];
+    const index = state.findIndex(({ _id }) => _id === tag._id);
 
-    const tagIndex = state.findIndex(({ _id }) => _id === tag._id);
-
-    if (tagIndex >= 0) {
-      state[tagIndex] = { ...state[tagIndex], ...tag };
+    if (index >= 0) {
+      const updated = { ...state[index], ...tag };
+      state.splice(index, 1);
+      state.unshift(updated);
     } else {
-      state.push(tag);
+      state.unshift(tag);
     }
 
-    const data = state;
-
-    this._tagsState.next(data);
-
+    this._tagsState.next([...state]);
     return this._tagsState.asObservable();
   }
 

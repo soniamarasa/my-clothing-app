@@ -25,20 +25,18 @@ export class HandbagsStore {
   }
 
   updateHandbag(handbag: IHandbag) {
-    const state = this._handbagsState.value;
+    const state = [...this._handbagsState.value];
+    const index = state.findIndex(({ _id }) => _id === handbag._id);
 
-    const handbagIndex = state.findIndex(({ _id }) => _id === handbag._id);
-
-    if (handbagIndex >= 0) {
-      state[handbagIndex] = { ...state[handbagIndex], ...handbag };
+    if (index >= 0) {
+      const updated = { ...state[index], ...handbag };
+      state.splice(index, 1);
+      state.unshift(updated);
     } else {
-      state.push(handbag);
+      state.unshift(handbag);
     }
 
-    const data = state;
-
-    this._handbagsState.next(data);
-
+    this._handbagsState.next([...state]);
     return this._handbagsState.asObservable();
   }
 

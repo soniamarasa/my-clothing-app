@@ -24,20 +24,18 @@ export class PlacesStore {
   }
 
   updatePlace(place: IPlace) {
-    const state = this._placesState.value;
+    const state = [...this._placesState.value];
+    const index = state.findIndex(({ _id }) => _id === place._id);
 
-    const placeIndex = state.findIndex(({ _id }) => _id === place._id);
-
-    if (placeIndex >= 0) {
-      state[placeIndex] = { ...state[placeIndex], ...place };
+    if (index >= 0) {
+      const updated = { ...state[index], ...place };
+      state.splice(index, 1);
+      state.unshift(updated);
     } else {
-      state.push(place);
+      state.unshift(place);
     }
 
-    const data = state;
-
-    this._placesState.next(data);
-
+    this._placesState.next([...state]);
     return this._placesState.asObservable();
   }
 

@@ -26,20 +26,18 @@ export class ClothesStore {
   }
 
   updateClothing(clothing: IClothing) {
-    const state = this._clothesState.value;
+    const state = [...this._clothesState.value];
+    const index = state.findIndex(({ _id }) => _id === clothing._id);
 
-    const clothingIndex = state.findIndex(({ _id }) => _id === clothing._id);
-
-    if (clothingIndex >= 0) {
-      state[clothingIndex] = { ...state[clothingIndex], ...clothing };
+    if (index >= 0) {
+      const updated = { ...state[index], ...clothing };
+      state.splice(index, 1);
+      state.unshift(updated);
     } else {
-      state.push(clothing);
+      state.unshift(clothing);
     }
 
-    const data = state;
-
-    this._clothesState.next(data);
-
+    this._clothesState.next([...state]);
     return this._clothesState.asObservable();
   }
 
