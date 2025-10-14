@@ -166,7 +166,7 @@
                   <p-multiSelect
                     [showHeader]="false"
                     [filter]="false"
-                    [ngModel]="value"
+                    [(ngModel)]="selectedStatus"
                     [options]="status"
                     placeholder="Selecione"
                     (onChange)="filter($event.value)"
@@ -197,7 +197,15 @@
               [style.color]="getTextColor(clothing.color)"
               [style.background]="clothing.color + '80'"
             >
-              {{ clothing.tag.icon }}
+              <img
+                *ngIf="clothing.tag._id === 'customT08'"
+                src="../../../assets/skirt.png"
+                alt="saia"
+                class="icon-skirt"
+              />
+              {{
+                (clothing.tag._id !== "customT08" && clothing.tag.icon) || ""
+              }}
               {{ clothing.name }}
             </span>
           </td>

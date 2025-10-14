@@ -139,6 +139,7 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.looksFacade.updateLook(look).subscribe({
         next: (look) => {
+           this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -156,6 +157,10 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
         },
       })
     );
+  }
+
+  setTableFilters() {
+    this.looks = [...this.looks];
   }
 
   ngOnDestroy(): void {

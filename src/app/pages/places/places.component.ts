@@ -25,14 +25,14 @@ export class PlacesComponent implements OnInit, OnDestroy {
   readonly places$ = this.placesFacade.placesState$.pipe(
     map((places: IPlace[]) => {
       return places;
-    }),
+    })
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
     private _confirmationService: ConfirmationService,
-    private placesFacade: PlacesFacade,
+    private placesFacade: PlacesFacade
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +41,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
         this.places = places;
         this.loading = false;
         this.total = places.length;
-      }),
+      })
     );
   }
 
@@ -58,7 +58,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
         if (placeObj) {
           placeObj._id ? this.updatePlace(placeObj) : this.newPlace(placeObj);
         }
-      }),
+      })
     );
   }
 
@@ -66,6 +66,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.placesFacade.newPlace(place).subscribe({
         next: (place) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -81,7 +82,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
               'Não foi possível criar esse Local. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -93,6 +94,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
         this.subs.add(
           this.placesFacade.delete(place).subscribe({
             next: () => {
+              this.setTableFilters();
               this._messageService.add({
                 key: 'notification',
                 severity: 'success',
@@ -109,7 +111,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
                   'Não foi possível deletar o local. Tente novamente mais tarde.',
               });
             },
-          }),
+          })
         );
       },
     });
@@ -119,6 +121,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.placesFacade.updatePlace(place).subscribe({
         next: (place) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -134,8 +137,12 @@ export class PlacesComponent implements OnInit, OnDestroy {
               'Não foi possível atualizar esse Local. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
+  }
+
+  setTableFilters() {
+    this.places = [...this.places];
   }
 
   ngOnDestroy(): void {

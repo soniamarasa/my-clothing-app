@@ -8,6 +8,12 @@
       }
     }
 
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
     // .p-button.p-button-outlined {
     //   color: #2f2e41;
     // }
@@ -38,6 +44,10 @@
     // .p-datatable > .p-datatable-wrapper {
     //   border-radius: 1rem 1rem 0 0;
     // }
+
+    .icon-skirt {
+      width: 1.1rem;
+    }
 
     .table__actions {
       display: flex;

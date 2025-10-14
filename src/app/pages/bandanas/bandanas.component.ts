@@ -25,14 +25,14 @@ export class BandanasComponent implements OnInit, OnDestroy {
   readonly bandanas$ = this.bandanasFacade.bandanasState$.pipe(
     map((bandanas: IBandana[]) => {
       return bandanas;
-    }),
+    })
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
     private _confirmationService: ConfirmationService,
-    private bandanasFacade: BandanasFacade,
+    private bandanasFacade: BandanasFacade
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +41,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
         this.bandanas = bandanas;
         this.loading = false;
         this.total = bandanas.length;
-      }),
+      })
     );
   }
 
@@ -60,7 +60,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
             ? this.updateBandana(bandanaObj)
             : this.newBandana(bandanaObj);
         }
-      }),
+      })
     );
   }
 
@@ -68,6 +68,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.bandanasFacade.newBandana(bandana).subscribe({
         next: (bandana) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -83,7 +84,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
               'Não foi possível criar essa bandana. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -91,6 +92,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.bandanasFacade.updateBandana(bandana).subscribe({
         next: (bandana) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -106,7 +108,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
               'Não foi possível atualizar essa bandana. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -118,6 +120,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
         this.subs.add(
           this.bandanasFacade.delete(bandana).subscribe({
             next: () => {
+              this.setTableFilters();
               this._messageService.add({
                 key: 'notification',
                 severity: 'success',
@@ -134,10 +137,14 @@ export class BandanasComponent implements OnInit, OnDestroy {
                   'Não foi possível deletar o item. Tente novamente mais tarde.',
               });
             },
-          }),
+          })
         );
       },
     });
+  }
+
+  setTableFilters() {
+    this.bandanas = [...this.bandanas];
   }
 
   ngOnDestroy(): void {

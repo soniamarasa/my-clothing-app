@@ -48,7 +48,7 @@ export class LooksComponent implements OnInit, OnDestroy {
   readonly looks$ = this.looksFacade.looksState$.pipe(
     map((looks: ILook[]) => {
       return looks;
-    }),
+    })
   );
 
   constructor(
@@ -59,7 +59,7 @@ export class LooksComponent implements OnInit, OnDestroy {
     private looksFacade: LooksFacade,
     private clothesFacade: ClothesFacade,
     private shoesFacade: ShoesFacade,
-    private tagsFacade: TagsFacade,
+    private tagsFacade: TagsFacade
   ) {}
 
   ngOnInit(): void {
@@ -73,13 +73,13 @@ export class LooksComponent implements OnInit, OnDestroy {
 
       this.clothesFacade.getClothes().subscribe((clothes: IClothing[]) => {
         this.tops = clothes.filter(
-          (obj) => obj.category.name == 'Peça Superior',
+          (obj) => obj.category.name == 'Peça Superior'
         );
         this.bottoms = clothes.filter(
-          (obj) => obj.category.name == 'Peça Inferior',
+          (obj) => obj.category.name == 'Peça Inferior'
         );
         this.garbs = clothes.filter(
-          (obj) => obj.category.name == 'Traje Completo',
+          (obj) => obj.category.name == 'Traje Completo'
         );
       }),
 
@@ -89,7 +89,7 @@ export class LooksComponent implements OnInit, OnDestroy {
 
       this.shoesFacade.getShoes().subscribe((shoes: IShoe[]) => {
         this.shoes = shoes;
-      }),
+      })
     );
   }
 
@@ -122,7 +122,7 @@ export class LooksComponent implements OnInit, OnDestroy {
         if (lookObj) {
           lookObj._id ? this.updateLook(lookObj) : this.newLook(lookObj);
         }
-      }),
+      })
     );
   }
 
@@ -130,6 +130,7 @@ export class LooksComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.looksFacade.newLook(look).subscribe({
         next: (look) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -145,7 +146,7 @@ export class LooksComponent implements OnInit, OnDestroy {
               'Não foi possível criar esse look. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -153,6 +154,7 @@ export class LooksComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.looksFacade.updateLook(look).subscribe({
         next: (look) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -168,7 +170,7 @@ export class LooksComponent implements OnInit, OnDestroy {
               'Não foi possível atualizar esse look. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -177,6 +179,7 @@ export class LooksComponent implements OnInit, OnDestroy {
       message: 'Tem certeza que você deseja exluir esse look?',
       header: 'Excluir',
       accept: () => {
+        this.setTableFilters();
         this.subs.add(
           this.looksFacade.delete(look).subscribe({
             next: () => {
@@ -196,7 +199,7 @@ export class LooksComponent implements OnInit, OnDestroy {
                   'Não foi possível deletar o look. Tente novamente mais tarde.',
               });
             },
-          }),
+          })
         );
       },
     });
@@ -216,6 +219,10 @@ export class LooksComponent implements OnInit, OnDestroy {
     const inputElement = event.target as HTMLInputElement;
     const filterValue = inputElement.value || '';
     this.tableLooks.filterGlobal(filterValue, 'contains');
+  }
+
+  setTableFilters() {
+    this.looks = [...this.looks];
   }
 
   ngOnDestroy(): void {

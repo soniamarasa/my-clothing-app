@@ -45,7 +45,14 @@
                 class="badge"
                 [style.color]="getTextColor(tag?.color)"
                 [style.background]="tag.color + '80'"
-                >{{ tag.icon }} {{ tag.name }}
+              >
+                <img
+                  *ngIf="tag._id === 'customT08'"
+                  src="../../../assets/skirt.png"
+                  alt="saia"
+                  class="icon-skirt"
+                />
+                {{ (tag._id !== "customT08" && tag.icon) || "" }} {{ tag.name }}
               </span>
             </td>
             <td>

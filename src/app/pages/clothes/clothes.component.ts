@@ -1,4 +1,12 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -29,7 +37,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
   clothesOriginal: IClothing[] = [];
   categories: ICategory[] = [];
   tags: ITag[] = [];
-
+  selectedStatus: boolean[] = [];
   value: boolean[] = [false, true];
   status = [
     { label: 'Ativo', value: false },
@@ -41,27 +49,37 @@ export class ClothesComponent implements OnInit, OnDestroy {
   readonly clothes$ = this.clothesFacade.clothesState$.pipe(
     map((clothes: IClothing[]) => {
       return clothes;
-    }),
+    })
   );
-  filterClothes: any;
 
   constructor(
     public _dialogService: DialogService,
+    private cdr: ChangeDetectorRef,
     private _messageService: MessageService,
     private _confirmationService: ConfirmationService,
     private confirmationService: ConfirmationService,
     private clothesFacade: ClothesFacade,
     private categoriesFacade: CategoriesFacade,
-    private tagsFacade: TagsFacade,
+    private tagsFacade: TagsFacade
   ) {}
 
   ngOnInit(): void {
     this.subs.add(
       this.clothes$.subscribe((clothes: IClothing[]) => {
-        this.clothes = clothes;
+        this.clothes = clothes.sort((a, b) => {
+          return a.inactive === b.inactive ? 0 : a.inactive ? 1 : -1;
+        });
         this.clothesOriginal = clothes;
         this.loading = false;
         this.total = clothes.length;
+
+        // if (this.tableClothes) {
+        //   this.selectedStatus = [false];
+        //   this.tableClothes.filters['inactive'] = {
+        //     value: this.selectedStatus,
+        //     matchMode: 'in',
+        //   };
+        // }
       }),
 
       this.categoriesFacade
@@ -72,7 +90,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
 
       this.tagsFacade.getTags().subscribe((tags: ITag[]) => {
         this.tags = tags.filter((obj) => obj.type === 'Roupa');
-      }),
+      })
     );
   }
 
@@ -96,7 +114,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
               'Não foi possível ativar essa peça de roupa. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -124,7 +142,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
             ? this.updateClothing(clothingObj)
             : this.newClothing(clothingObj);
         }
-      }),
+      })
     );
   }
 
@@ -132,6 +150,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.clothesFacade.newClothing(clothing).subscribe({
         next: (clothing) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -147,7 +166,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
               'Não foi possível criar essa roupa. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -155,6 +174,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.clothesFacade.updateClothing(clothing).subscribe({
         next: (clothing) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -170,7 +190,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
               'Não foi possível atualizar essa roupa. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -188,6 +208,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
         this.subs.add(
           this.clothesFacade.delete(clothing).subscribe({
             next: () => {
+              this.setTableFilters();
               this._messageService.add({
                 key: 'notification',
                 severity: 'success',
@@ -204,7 +225,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
                   'Não foi possível deletar a peça de roupa. Tente novamente mais tarde.',
               });
             },
-          }),
+          })
         );
       },
     });
@@ -218,6 +239,14 @@ export class ClothesComponent implements OnInit, OnDestroy {
 
     const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
     return brightness > 128 ? 'black' : '#D4BE98';
+  }
+
+  setTableFilters() {
+    this.clothes = [...this.clothes];
+    // this.tableClothes.filterGlobal('', 'contains'); // força atualização
+    // this.tableClothes._filter(); // reaplica os filtros ativos
+    // // ou
+    // setTimeout(() => this.tableClothes.filter('', '', ''));
   }
 
   ngOnDestroy(): void {

@@ -25,14 +25,14 @@ export class ShoesComponent implements OnInit, OnDestroy {
   readonly shoes$ = this.shoesFacade.shoesState$.pipe(
     map((shoes: IShoe[]) => {
       return shoes;
-    }),
+    })
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
     private _confirmationService: ConfirmationService,
-    private shoesFacade: ShoesFacade,
+    private shoesFacade: ShoesFacade
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +41,7 @@ export class ShoesComponent implements OnInit, OnDestroy {
         this.shoes = shoes;
         this.loading = false;
         this.total = shoes.length;
-      }),
+      })
     );
   }
 
@@ -58,7 +58,7 @@ export class ShoesComponent implements OnInit, OnDestroy {
         if (shoeObj) {
           shoeObj._id ? this.updateShoe(shoeObj) : this.newShoe(shoeObj);
         }
-      }),
+      })
     );
   }
 
@@ -66,6 +66,7 @@ export class ShoesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.shoesFacade.newShoe(shoe).subscribe({
         next: (shoe) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -81,7 +82,7 @@ export class ShoesComponent implements OnInit, OnDestroy {
               'Não foi possível criar esse sapato. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -89,6 +90,7 @@ export class ShoesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.shoesFacade.updateShoe(shoe).subscribe({
         next: (shoe) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -104,7 +106,7 @@ export class ShoesComponent implements OnInit, OnDestroy {
               'Não foi possível atualizar esse sapato. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -113,6 +115,7 @@ export class ShoesComponent implements OnInit, OnDestroy {
       message: 'Tem certeza que você deseja exluir esse sapato?',
       header: 'Excluir',
       accept: () => {
+        this.setTableFilters();
         this.subs.add(
           this.shoesFacade.delete(shoe).subscribe({
             next: () => {
@@ -132,7 +135,7 @@ export class ShoesComponent implements OnInit, OnDestroy {
                   'Não foi possível deletar o sapato. Tente novamente mais tarde.',
               });
             },
-          }),
+          })
         );
       },
     });
@@ -146,6 +149,10 @@ export class ShoesComponent implements OnInit, OnDestroy {
 
     const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
     return brightness > 128 ? 'black' : '#D4BE98';
+  }
+
+  setTableFilters() {
+    this.shoes = [...this.shoes];
   }
 
   ngOnDestroy(): void {

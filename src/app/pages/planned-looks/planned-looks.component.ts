@@ -158,6 +158,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.plannedLooksFacade.newPlannedLook(plannedLook).subscribe({
         next: (plannedLook) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -180,6 +181,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.plannedLooksFacade.updatePlannedLook(plannedLook).subscribe({
         next: (plannedLook) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -273,6 +275,10 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
     const inputElement = event.target as HTMLInputElement;
     const filterValue = inputElement.value || '';
     this.tablePlannedLooks.filterGlobal(filterValue, 'contains');
+  }
+
+  setTableFilters() {
+    this.plannedLooks = [...this.plannedLooks];
   }
 
   ngOnDestroy(): void {

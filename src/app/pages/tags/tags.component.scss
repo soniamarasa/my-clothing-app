@@ -6,6 +6,17 @@
         justify-content: space-between;
         padding: 1.5rem 0;
       }
+
+      .icon-skirt {
+        width: 1rem;
+      }
+
+      .badge {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        width: fit-content;
+      }
     }
 
     .p-datatable .p-datatable-thead > tr > th:first-child {

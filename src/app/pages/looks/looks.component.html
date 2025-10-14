@@ -31,7 +31,7 @@
         'bottom.name',
         'garb.name',
         'shoe.name',
-        'tag.name',
+        'tag.name'
       ]"
     >
       <ng-template pTemplate="caption">
@@ -253,7 +253,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-look>
-        <tr >
+        <tr>
           <td (click)="openDialog(look)">
             <small
               class="badge"
@@ -270,7 +270,18 @@
               [style.color]="getTextColor(look?.bottom?.color || '')"
               [style.background]="look.bottom?.color + '70'"
             >
-              {{ look.bottom?.tag.icon }}
+              <img
+                *ngIf="look.bottom?.tag._id === 'customT08'"
+                src="../../../assets/skirt.png"
+                alt="saia"
+                class="icon-skirt"
+              />
+              {{
+                (look.bottom?.tag._id !== "customT08" &&
+                  look.bottom?.tag.icon) ||
+                  ""
+              }}
+
               {{ look.bottom?.name }}
             </small>
           </td>

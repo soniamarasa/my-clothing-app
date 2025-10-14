@@ -34,7 +34,7 @@ export class TagsComponent implements OnInit, OnDestroy {
   readonly tags$ = this.tagsFacade.tagsState$.pipe(
     map((tags: ITag[]) => {
       return tags;
-    }),
+    })
   );
 
   constructor(
@@ -42,7 +42,7 @@ export class TagsComponent implements OnInit, OnDestroy {
     private _cdr: ChangeDetectorRef,
     private _messageService: MessageService,
     private _confirmationService: ConfirmationService,
-    private tagsFacade: TagsFacade,
+    private tagsFacade: TagsFacade
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +51,7 @@ export class TagsComponent implements OnInit, OnDestroy {
         this.tags = tags;
         this.loading = false;
         this.total = tags.length;
-      }),
+      })
     );
   }
 
@@ -69,7 +69,7 @@ export class TagsComponent implements OnInit, OnDestroy {
           this.loading = true;
           tagObj._id ? this.updateTag(tagObj) : this.newTag(tagObj);
         }
-      }),
+      })
     );
   }
 
@@ -77,6 +77,7 @@ export class TagsComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.tagsFacade.newTag(tag).subscribe({
         next: (tag) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -92,7 +93,7 @@ export class TagsComponent implements OnInit, OnDestroy {
               'Não foi possível criar essa tag. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -100,6 +101,7 @@ export class TagsComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.tagsFacade.updateTag(tag).subscribe({
         next: (tag) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -115,7 +117,7 @@ export class TagsComponent implements OnInit, OnDestroy {
               'Não foi possível atualizar essa tag. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -127,6 +129,7 @@ export class TagsComponent implements OnInit, OnDestroy {
         this.subs.add(
           this.tagsFacade.delete(tag).subscribe({
             next: () => {
+              this.setTableFilters();
               this._messageService.add({
                 key: 'notification',
                 severity: 'success',
@@ -143,7 +146,7 @@ export class TagsComponent implements OnInit, OnDestroy {
                   'Não foi possível deletar a tag. Tente novamente mais tarde.',
               });
             },
-          }),
+          })
         );
       },
     });
@@ -157,6 +160,10 @@ export class TagsComponent implements OnInit, OnDestroy {
 
     const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
     return brightness > 128 ? 'black' : '#D4BE98';
+  }
+
+  setTableFilters() {
+    this.tags = [...this.tags];
   }
 
   ngOnDestroy(): void {

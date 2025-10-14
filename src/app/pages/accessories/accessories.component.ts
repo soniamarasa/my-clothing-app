@@ -25,14 +25,14 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
   readonly accessories$ = this.accessoriesFacade.accessoriesState$.pipe(
     map((accessories: IAccessory[]) => {
       return accessories;
-    }),
+    })
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
     private _confirmationService: ConfirmationService,
-    private accessoriesFacade: AccessoriesFacade,
+    private accessoriesFacade: AccessoriesFacade
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +41,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
         this.accessories = accessories;
         this.loading = false;
         this.total = accessories.length;
-      }),
+      })
     );
   }
 
@@ -60,7 +60,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
             ? this.updateAccessory(accessoryObj)
             : this.newAccessory(accessoryObj);
         }
-      }),
+      })
     );
   }
 
@@ -68,6 +68,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.accessoriesFacade.newAccessory(accessory).subscribe({
         next: (accessory) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -83,7 +84,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
               'Não foi possível criar esse acessório. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -91,6 +92,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.accessoriesFacade.updateAccessory(accessory).subscribe({
         next: (accessory) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -106,7 +108,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
               'Não foi possível atualizar esse acessório. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -118,6 +120,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
         this.subs.add(
           this.accessoriesFacade.deleteAccessory(accessory).subscribe({
             next: () => {
+              this.setTableFilters();
               this._messageService.add({
                 key: 'notification',
                 severity: 'success',
@@ -134,7 +137,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
                   'Não foi possível deletar o acessório. Tente novamente mais tarde.',
               });
             },
-          }),
+          })
         );
       },
     });
@@ -148,6 +151,10 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
 
     const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
     return brightness > 128 ? 'black' : '#D4BE98';
+  }
+
+  setTableFilters() {
+    this.accessories = [...this.accessories];
   }
 
   ngOnDestroy(): void {

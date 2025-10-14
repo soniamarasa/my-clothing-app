@@ -25,14 +25,14 @@ export class HandbagsComponent implements OnInit, OnDestroy {
   readonly handbags$ = this.handbagsFacade.handbagsState$.pipe(
     map((handbags: IHandbag[]) => {
       return handbags;
-    }),
+    })
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
     private _confirmationService: ConfirmationService,
-    private handbagsFacade: HandbagsFacade,
+    private handbagsFacade: HandbagsFacade
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +41,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
         this.handbags = handbags;
         this.loading = false;
         this.total = handbags.length;
-      }),
+      })
     );
   }
 
@@ -60,7 +60,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
             ? this.updateHandbag(handbagsObj)
             : this.newHandbag(handbagsObj);
         }
-      }),
+      })
     );
   }
 
@@ -68,6 +68,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.handbagsFacade.newHandbag(handbags).subscribe({
         next: (handbags) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -83,7 +84,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
               'Não foi possível criar essa bolsa. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -91,6 +92,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.handbagsFacade.updateHandbag(handbags).subscribe({
         next: (handbags) => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -106,7 +108,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
               'Não foi possível atualizar essa bolsa. Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -118,6 +120,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
         this.subs.add(
           this.handbagsFacade.delete(handbag).subscribe({
             next: () => {
+              this.setTableFilters();
               this._messageService.add({
                 key: 'notification',
                 severity: 'success',
@@ -134,10 +137,14 @@ export class HandbagsComponent implements OnInit, OnDestroy {
                   'Não foi possível deletar a bolsa. Tente novamente mais tarde.',
               });
             },
-          }),
+          })
         );
       },
     });
+  }
+
+  setTableFilters() {
+    this.handbags = [...this.handbags];
   }
 
   ngOnDestroy(): void {

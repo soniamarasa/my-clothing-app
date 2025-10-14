@@ -346,7 +346,17 @@
                 [style.color]="getTextColor(plannedLook?.look.bottom?.color)"
                 [style.background]="plannedLook.look.bottom?.color + '70'"
               >
-                {{ plannedLook.look.bottom.category.icon }}
+                <img
+                  *ngIf="plannedLook.look.bottom?.tag._id === 'customT08'"
+                  src="../../../assets/skirt.png"
+                  alt="saia"
+                  class="icon-skirt"
+                />
+                {{
+                  (plannedLook.look.bottom?.tag._id !== "customT08" &&
+                    plannedLook.look.bottom.category.icon) ||
+                    ""
+                }}
                 {{ plannedLook.look.bottom.name }}
               </small>
               <small

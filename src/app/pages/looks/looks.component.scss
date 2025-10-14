@@ -28,9 +28,16 @@
 
     .badge {
       font-weight: 800;
-      display: table-cell;
       text-align: center;
       padding: 0.3rem 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      width: fit-content;
+    }
+
+    .icon-skirt {
+      width: 1rem;
     }
   }
 }
