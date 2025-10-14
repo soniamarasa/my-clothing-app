@@ -17,6 +17,7 @@ import { IPlace } from '@interfaces/place';
 import { IAccessory } from '@interfaces/accessory';
 import { IBandana } from '@interfaces/bandana';
 import { statusLook } from '@root/src/app/utils/valueTypes';
+import { ClothesFacade } from '@root/src/app/facades/clothes.facade';
 
 @Component({
   selector: 'app-planned-look-dialog',
@@ -26,7 +27,7 @@ import { statusLook } from '@root/src/app/utils/valueTypes';
 export class PlannedLookDialog implements OnInit, OnDestroy {
   private subs = new SubSink();
   isNew: boolean = false;
-  coats: IClothing[] = [];
+  outerwear: IClothing[] = [];
   looks: IClothing[] = [];
   handbags: IHandbag[] = [];
   places: IPlace[] = [];
@@ -51,10 +52,11 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
     public _ref: DynamicDialogRef,
     public _config: DynamicDialogConfig,
     public _dialogService: DialogService,
-    private _fb: UntypedFormBuilder,
     public categoriesFacade: CategoriesFacade,
     public tagsFacade: TagsFacade,
-  ) {}
+    private _fb: UntypedFormBuilder,
+    private clothesFacade: ClothesFacade,
+  ) { }
 
   get dialogData(): any {
     return this._config.data;
@@ -63,6 +65,11 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.unboxPlannedLookForm();
     this.status = statusLook;
+    this.subs.add(
+      this.clothesFacade
+        .getClothes({ categoryId: 'customC04' })
+        .subscribe((data) => (this.outerwear = data))
+    );
   }
 
   get formValue() {
@@ -72,7 +79,7 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
   private unboxPlannedLookForm() {
     return new Promise<void>((resolve) => {
       if (this.dialogData) {
-        this.coats = this.dialogData.coats;
+
         this.looks = this.dialogData.looks;
         this.handbags = this.dialogData.handbags;
         this.bandanas = this.dialogData.bandanas;
@@ -90,7 +97,7 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
 
           this.plannedLookForm.addControl(
             '_id',
-            this._fb.control(itemData._id, [Validators.required]),
+            this._fb.control(itemData._id, [Validators.required])
           );
 
           this.plannedLookForm.patchValue(itemData);

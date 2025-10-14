@@ -3,21 +3,19 @@ import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 
 import { LooksFacade } from '@facades/looks.facade';
+import { ShoesFacade } from '@facades/shoes.facade';
+import { ClothesFacade } from '@facades/clothes.facade';
+import { TagsFacade } from '@facades/tags.facade';
+import { FilterFacade } from '@facades/filter.facade';
 import { ILook } from '@interfaces/look';
-
 import { IClothing } from '@interfaces/clothing';
 import { IShoe } from '@interfaces/shoe';
+import { ITag } from '@interfaces/tag';
 
-import { ShoesFacade } from '../../facades/shoes.facade';
-import { ClothesFacade } from '../../facades/clothes.facade';
-import { TagsFacade } from '../../facades/tags.facade';
-import { ITag } from '../../interfaces/tag';
-import { FilterFacade } from '../../facades/filter.facade';
-
+import { LookDialog } from '../../components/dialogs/look-dialog/look-dialog.component';
 
 @Component({
   selector: 'app-unused-looks',
@@ -49,11 +47,12 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
 
   constructor(
     public _dialogService: DialogService,
+    private _messageService: MessageService,
     private looksFacade: LooksFacade,
     private clothesFacade: ClothesFacade,
     private shoesFacade: ShoesFacade,
     private tagsFacade: TagsFacade,
-    public filterFacade: FilterFacade,
+    public filterFacade: FilterFacade
   ) {}
 
   ngOnInit(): void {
@@ -98,7 +97,6 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
     this.tableLooks.value = this.looksOriginal;
   }
 
-
   getTextColor(bgColor: string): string {
     const rgb = parseInt(bgColor.replace('#', ''), 16);
     const r = (rgb >> 16) & 0xff;
@@ -113,6 +111,51 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
     const inputElement = event.target as HTMLInputElement;
     const filterValue = inputElement.value || '';
     this.tableLooks.filterGlobal(filterValue, 'contains');
+  }
+
+  openDialog(look?: ILook) {
+    const ref = this._dialogService.open(LookDialog, {
+      header: look ? ' Editar' : 'Novo ' + 'Look',
+      width: '450px',
+      data: {
+        item: look,
+        clothes: [this.tops, this.bottoms, this.garbs],
+        shoes: this.shoes,
+        tags: this.tags,
+      },
+      appendTo: 'body',
+    });
+
+    this.subs.add(
+      (ref as DynamicDialogRef).onClose.subscribe((lookObj) => {
+        if (lookObj) {
+          lookObj._id ? this.updateLook(lookObj) : null;
+        }
+      })
+    );
+  }
+
+  updateLook(look: ILook) {
+    this.subs.add(
+      this.looksFacade.updateLook(look).subscribe({
+        next: (look) => {
+          this._messageService.add({
+            key: 'notification',
+            severity: 'success',
+            summary: 'Look atualizado com sucesso!',
+          });
+        },
+        error: () => {
+          this._messageService.add({
+            key: 'notification',
+            severity: 'error',
+            summary: 'Houve um problema!',
+            detail:
+              'Não foi possível atualizar esse look. Tente novamente mais tarde.',
+          });
+        },
+      })
+    );
   }
 
   ngOnDestroy(): void {

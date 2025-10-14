@@ -58,13 +58,13 @@
 
     <div class="formgrid grid">
       <div class="field col-6">
-        <label for="garb">Casaco?</label>
+        <label for="garb">Terceira Peça?</label>
         <p-dropdown
           formControlName="coat"
           inputId="coat"
           name="coat"
-          [options]="coats"
-          placeholder="Selecione o casaco"
+          [options]="outerwear"
+          placeholder="Selecione..."
           optionLabel="name"
           appendTo="body"
         ></p-dropdown>
@@ -77,7 +77,7 @@
           inputId="handbag"
           name="handbag"
           [options]="handbags"
-          placeholder="Selecione o sapato"
+          placeholder="Selecione..."
           optionLabel="name"
           appendTo="body"
           [filter]="true"
