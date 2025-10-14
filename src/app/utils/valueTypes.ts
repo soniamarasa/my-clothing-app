@@ -18,10 +18,7 @@ export const categoryTypes = [
   { name: 'Acessório' },
 ];
 
-export const tagTypes = [
-  { name: 'Roupa' },
-  { name: 'Usos' },
-];
+export const tagTypes = [{ name: 'Roupa' }, { name: 'Usos' }];
 
 export const clothesTypes = [
   { name: 'Peça Superior', value: 1 },
@@ -183,7 +180,7 @@ export const fixedTags = [
   {
     _id: 'customT08',
     name: 'Saia',
-    color: '',
+    color: '#fff4b4',
     type: 'Roupa',
     icon: '',
   },
