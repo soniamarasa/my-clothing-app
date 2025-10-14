@@ -1,32 +1,29 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 
 import { PlannedLooksFacade } from '@facades/plannedLooks.facade';
 import { PlacesFacade } from '@facades/places.facade';
-import { TagsFacade } from '@facades/tags.facade';
 import { HandbagsFacade } from '@facades/handbags.facade';
 import { ClothesFacade } from '@facades/clothes.facade';
 import { LooksFacade } from '@facades/looks.facade';
+import { AccessoriesFacade } from '@facades/accessories.facade';
+import { BandanasFacade } from '@facades/bandanas.facade';
 
 import { statusLook } from '../../utils/valueTypes';
-
 import { PlannedLookDialog } from '@components/dialogs/planned-look-dialog/planned-look-dialog.component';
 
 import { ILook } from '@interfaces/look';
 import { IClothing } from '@interfaces/clothing';
 import { IHandbag } from '@interfaces/handbag';
 import { IPlace } from '@interfaces/place';
-import { IPlannedLook } from '../../interfaces/plannedLook';
-import { AccessoriesFacade } from '../../facades/accessories.facade';
-import { BandanasFacade } from '../../facades/bandanas.facade';
-import { IBandana } from '../../interfaces/bandana';
-import { IAccessory } from '../../interfaces/accessory';
-import { ActivatedRoute, Router } from '@angular/router';
+import { IPlannedLook } from '@interfaces/plannedLook';
+import { IBandana } from '@interfaces/bandana';
+import { IAccessory } from '@interfaces/accessory';
 
 @Component({
   selector: 'app-planned-looks',
@@ -43,9 +40,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
 
   plannedLooksOriginal: IPlannedLook[] = [];
   plannedLooks: IPlannedLook[] = [];
-
   filterAccessories = [];
-
   coats: IClothing[] = [];
   status = statusLook;
   places: IPlace[] = [];
@@ -53,7 +48,6 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
   accessories: IAccessory[] = [];
   bandanas: IBandana[] = [];
   looks: ILook[] = [];
-
   filterPlaces = [];
 
   @ViewChild('dt1') tablePlannedLooks!: Table;
@@ -61,23 +55,20 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
   readonly plannedLooks$ = this.plannedLooksFacade.plannedLooksState$.pipe(
     map((plannedLooks: IPlannedLook[]) => {
       return plannedLooks;
-    }),
+    })
   );
 
   constructor(
     public _dialogService: DialogService,
     private _messageService: MessageService,
-    private _confirmationService: ConfirmationService,
     private _router: Router,
-    private _route: ActivatedRoute,
-    private confirmationService: ConfirmationService,
     private plannedLooksFacade: PlannedLooksFacade,
     private looksFacade: LooksFacade,
     private clothesFacade: ClothesFacade,
     private placesFacade: PlacesFacade,
     private accessoriesFacade: AccessoriesFacade,
     private bandanasFacade: BandanasFacade,
-    private handbagsFacade: HandbagsFacade,
+    private handbagsFacade: HandbagsFacade
   ) {}
 
   ngOnInit(): void {
@@ -122,7 +113,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
 
       this.handbagsFacade.getHandbags().subscribe((handbags: IHandbag[]) => {
         this.handbags = handbags;
-      }),
+      })
     );
   }
 
@@ -159,7 +150,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
         if (lookObj) {
           lookObj._id ? this.updateLook(lookObj) : this.newLook(lookObj);
         }
-      }),
+      })
     );
   }
 
@@ -178,11 +169,10 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'error',
             summary: 'Houve um problema!',
-            detail:
-              'Tente novamente mais tarde.',
+            detail: 'Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -201,11 +191,10 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'error',
             summary: 'Houve um problema!',
-            detail:
-              'Tente novamente mais tarde.',
+            detail: 'Tente novamente mais tarde.',
           });
         },
-      }),
+      })
     );
   }
 
@@ -216,14 +205,14 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
       const selectedIds = e.value.map((el: any) => el._id);
 
       this.plannedLooks = this.plannedLooks.filter((look: any) =>
-        look.places.some((place: any) => selectedIds.includes(place._id)),
+        look.places.some((place: any) => selectedIds.includes(place._id))
       );
     } else {
       this.plannedLooks = this.plannedLooksOriginal;
     }
 
     (this.tablePlannedLooks.filters['places'] as any)[0].value = e.value.map(
-      (v: any) => [v],
+      (v: any) => [v]
     );
 
     this.filterPlaces = e.value;
@@ -235,10 +224,10 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
 
       const selectedIds = e.value.map((el: any) => el._id);
 
-      this.looks = this.looks.filter((look: any) =>
-        look.accessories.some((accessory: any) =>
-          selectedIds.includes(accessory._id),
-        ),
+      this.plannedLooks = this.plannedLooks.filter((look: any) =>
+        look.accessories.filter((accessory: any) => {
+          return selectedIds.includes(accessory._id);
+        })
       );
     } else {
       this.plannedLooks = this.plannedLooksOriginal;

@@ -32,7 +32,7 @@
     >
   </div>
   <p-card
-    *ngIf="nextPlannedLook.length"
+    *ngIf="nextPlannedLook?.length"
     [header]="'Próximo Look - ' + (nextPlannedLook[0].date | date)"
     class="indicadores col-12 sm:col-6 md:col-4 lg:col"
   >

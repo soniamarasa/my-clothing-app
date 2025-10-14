@@ -56,7 +56,7 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
     public tagsFacade: TagsFacade,
     private _fb: UntypedFormBuilder,
     private clothesFacade: ClothesFacade,
-  ) { }
+  ) {}
 
   get dialogData(): any {
     return this._config.data;
