@@ -51,7 +51,7 @@ export class ItemDialog implements OnInit, OnDestroy {
     public _dialogService: DialogService,
     private _fb: UntypedFormBuilder,
     public categoriesFacade: CategoriesFacade,
-    public tagsFacade: TagsFacade,
+    public tagsFacade: TagsFacade
   ) {}
 
   ngOnInit(): void {
@@ -72,14 +72,14 @@ export class ItemDialog implements OnInit, OnDestroy {
           this.subs.add(
             this.tagsFacade.getTags().subscribe((tags: ITag[]) => {
               this.tags = tags.filter(
-                (obj) => obj.type === this.dialogData.category,
+                (obj) => obj.type === this.dialogData.category
               );
-            }),
+            })
           );
 
           this.itemForm.addControl(
             'tag',
-            this._fb.control(null, [Validators.required]),
+            this._fb.control(null, [Validators.required])
           );
 
           this.itemForm.addControl('inactive', this._fb.control(false));
@@ -95,15 +95,15 @@ export class ItemDialog implements OnInit, OnDestroy {
               .getCategories()
               .subscribe((categories: ICategory[]) => {
                 this.categories = categories.filter(
-                  (obj) => obj.type === this.dialogData.category,
+                  (obj) => obj.type === this.dialogData.category
                 );
-              }),
+              })
           );
 
           this.showCategory = true;
           this.itemForm.addControl(
             'category',
-            this._fb.control(null, [Validators.required]),
+            this._fb.control(null, [Validators.required])
           );
         }
 
@@ -114,13 +114,13 @@ export class ItemDialog implements OnInit, OnDestroy {
           this.showType = true;
           this.itemForm.addControl(
             'type',
-            this._fb.control(null, [Validators.required]),
+            this._fb.control(null, [Validators.required])
           );
 
           if (this.dialogData.type === 'tag') {
             this.itemForm.addControl(
               'clothesType',
-              this._fb.control(null, [Validators.required]),
+              this._fb.control(null, [Validators.required])
             );
           }
         }
@@ -133,7 +133,7 @@ export class ItemDialog implements OnInit, OnDestroy {
           this.showIcon = true;
           this.itemForm.addControl(
             'icon',
-            this._fb.control(null, [Validators.required]),
+            this._fb.control('🏷️', [Validators.required])
           );
         }
 
@@ -141,7 +141,7 @@ export class ItemDialog implements OnInit, OnDestroy {
           this.isClothing(this.dialogData.item.type);
           this.itemForm.addControl(
             '_id',
-            this._fb.control(this.dialogData.item._id, [Validators.required]),
+            this._fb.control(this.dialogData.item._id, [Validators.required])
           );
 
           this.itemForm.patchValue(this.dialogData.item);
@@ -156,7 +156,7 @@ export class ItemDialog implements OnInit, OnDestroy {
       this.showClothesType = true;
       this.itemForm.addControl(
         'clothesType',
-        this._fb.control(null, [Validators.required]),
+        this._fb.control(null, [Validators.required])
       );
     } else {
       this.showClothesType = false;

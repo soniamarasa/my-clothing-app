@@ -37,7 +37,6 @@ export class LooksStore {
 
     this._looksState.next([...state]);
 
-    console.log(this._looksState.value)
     return this._looksState.asObservable();
   }
 
