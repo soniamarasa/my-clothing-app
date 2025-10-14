@@ -4,6 +4,7 @@ import { IClothing } from '@interfaces/clothing';
 import { environment } from './../../environments/environment';
 
 export interface IGetClothesParams {
+  categoryId: string;
   createdAfter?: Date;
   inactivated?: boolean;
   page?: number;
