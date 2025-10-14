@@ -89,7 +89,7 @@ export class AccessoriesFacade {
     return this.accessoriesService
       .deleteAccessory(accessory)
       .pipe(
-        tap((accessory) => this.accessoriesStore.deleteAccessory(accessory)),
+        tap(() => this.accessoriesStore.deleteAccessory(accessory)),
       );
   }
 

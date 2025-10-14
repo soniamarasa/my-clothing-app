@@ -75,7 +75,7 @@ export class ShoesFacade {
   delete(shoe: IShoe) {
     return this.shoesService
       .delete(shoe)
-      .pipe(tap((shoe) => this.shoesStore.deleteShoe(shoe)));
+      .pipe(tap(() => this.shoesStore.deleteShoe(shoe)));
   }
 
   filterShoes(filter: IGetShoesParams) {

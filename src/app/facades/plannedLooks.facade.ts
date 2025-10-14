@@ -101,7 +101,7 @@ export class PlannedLooksFacade {
     return this.plannedLooksService
       .delete(plannedLook)
       .pipe(
-        tap((plannedLook) =>
+        tap(() =>
           this.plannedLooksStore.deletePlannedLook(plannedLook),
         ),
       );

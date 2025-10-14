@@ -75,7 +75,7 @@ export class PlacesFacade {
   delete(place: IPlace) {
     return this.placesService
       .delete(place)
-      .pipe(tap((place) => this.placesStore.deletePlace(place)));
+      .pipe(tap(() => this.placesStore.deletePlace(place)));
   }
 
   filterPlaces(filter: IGetPlacesParams) {

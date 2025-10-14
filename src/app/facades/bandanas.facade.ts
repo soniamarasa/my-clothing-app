@@ -78,7 +78,7 @@ export class BandanasFacade {
   delete(bandana: IBandana) {
     return this.bandanasService
       .delete(bandana)
-      .pipe(tap((bandana) => this.bandanasStore.deleteBandana(bandana)));
+      .pipe(tap(() => this.bandanasStore.deleteBandana(bandana)));
   }
 
   filterBandanas(filter: IGetBandanasParams) {

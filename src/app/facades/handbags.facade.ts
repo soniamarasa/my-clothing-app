@@ -78,7 +78,7 @@ export class HandbagsFacade {
   delete(handbag: IHandbag) {
     return this.handbagsService
       .delete(handbag)
-      .pipe(tap((handbag) => this.handbagsStore.deleteHandbag(handbag)));
+      .pipe(tap(() => this.handbagsStore.deleteHandbag(handbag)));
   }
 
   filterHandbags(filter: IGetHandbagsParams) {

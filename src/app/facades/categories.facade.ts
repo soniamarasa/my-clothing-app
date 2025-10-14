@@ -83,7 +83,7 @@ export class CategoriesFacade {
   delete(category: ICategory) {
     return this.categoriesService
       .delete(category)
-      .pipe(tap((category) => this.categoriesStore.deleteCategory(category)));
+      .pipe(tap(() => this.categoriesStore.deleteCategory(category)));
   }
 
   filterCategories(filter: IGetCategoriesParams) {

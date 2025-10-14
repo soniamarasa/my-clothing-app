@@ -79,7 +79,7 @@ export class TagsFacade {
   delete(tag: ITag) {
     return this.tagsService
       .delete(tag)
-      .pipe(tap((tag) => this.tagsStore.deleteTag(tag)));
+      .pipe(tap(() => this.tagsStore.deleteTag(tag)));
   }
 
   filterTags(filter: IGetTagsParams) {
