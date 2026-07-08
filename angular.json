@@ -26,7 +26,6 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "src/styles.scss",
-              "./node_modules/primeng/resources/primeng.css",
               "./node_modules/primeicons/primeicons.css",
               "./node_modules/primeflex/primeflex.css"
             ],
@@ -72,10 +71,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "my-clothing-app:build:production"
+              "buildTarget": "my-clothing-app:build:production"
             },
             "development": {
-              "browserTarget": "my-clothing-app:build:development"
+              "buildTarget": "my-clothing-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "my-clothing-app:build"
+            "buildTarget": "my-clothing-app:build"
           }
         },
         "test": {
