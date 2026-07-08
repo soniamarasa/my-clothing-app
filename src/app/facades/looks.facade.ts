@@ -97,7 +97,7 @@ export class LooksFacade {
   }
 
   filterUnusedLooks(filter: IGetLooksParams) {
-    this._filterUnusedLooks.next({ ...this._filter.value, ...filter });
+    this._filterUnusedLooks.next({ ...this._filterUnusedLooks.value, ...filter });
   }
 
   refresh() {

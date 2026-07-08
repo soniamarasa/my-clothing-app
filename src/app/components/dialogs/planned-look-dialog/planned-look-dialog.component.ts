@@ -20,6 +20,7 @@ import { statusLook } from '@root/src/app/utils/valueTypes';
 import { ClothesFacade } from '@root/src/app/facades/clothes.facade';
 
 @Component({
+  standalone: false,
   selector: 'app-planned-look-dialog',
   templateUrl: './planned-look-dialog.component.html',
   styleUrls: ['./planned-look-dialog.component.scss'],

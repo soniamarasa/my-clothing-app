@@ -22,6 +22,11 @@ import { IDashboard } from '@root/src/app/interfaces/dashboard';
 
 const REFRESH_INTERVAL = 600000;
 
+const sameDashboardFilter = (
+  previous: IGetDashboardParams,
+  current: IGetDashboardParams
+) => previous.year === current.year;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -29,19 +34,19 @@ export class DashboardFacade {
   private readonly autoRefresh$ = interval(REFRESH_INTERVAL).pipe(startWith(0));
   private readonly _refresh = new BehaviorSubject(undefined);
 
-  private readonly _filter = new BehaviorSubject<any>({});
-  readonly filter$ = this._filter.asObservable().pipe(distinctUntilChanged());
+  private readonly _filter = new BehaviorSubject<IGetDashboardParams>({
+    year: new Date().getFullYear().toString(),
+  });
+  readonly filter$ = this._filter
+    .asObservable()
+    .pipe(distinctUntilChanged(sameDashboardFilter));
 
   private readonly handleRequest$ = combineLatest([
     this.filter$,
     this.autoRefresh$,
     this._refresh.asObservable(),
   ]).pipe(
-    switchMap(() =>
-      this.getDashboard({
-        ...this._filter.value,
-      })
-    )
+    switchMap(([filter]) => this.getDashboard({ ...filter }))
   );
 
   readonly dashboardState$ = combineLatest([
@@ -49,8 +54,12 @@ export class DashboardFacade {
     this.handleRequest$,
   ]).pipe(
     map(([state]) => state),
-    shareReplay({ refCount: true })
+    shareReplay({ bufferSize: 1, refCount: true })
   );
+
+  private readonly nextPlannedLook$ = this.dashboardService
+    .getNextPlannedLook()
+    .pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   constructor(
     private dashboardService: DashboardService,
@@ -64,7 +73,7 @@ export class DashboardFacade {
   }
 
   getNextPlannedLook() {
-    return this.dashboardService.getNextPlannedLook();
+    return this.nextPlannedLook$;
   }
 
   filter(filter: IGetDashboardParams) {

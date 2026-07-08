@@ -1,8 +1,13 @@
 <ng-container *ngIf="!email.length; else gravatar">
   <div class="user__default">
-    <i  class="fa-solid fa-user"></i>
+    <i class="fa-solid fa-user"></i>
   </div>
 </ng-container>
 <ng-template #gravatar>
-  <img ngxGravatar [email]="email" [size]="100" />
+  <img
+    [src]="gravatarUrl"
+    alt=""
+    [style.width.px]="size"
+    [style.height.px]="size"
+  />
 </ng-template>

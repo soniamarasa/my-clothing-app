@@ -14,6 +14,7 @@ import { ITag } from '@interfaces/tag';
 import { IShoe } from '@interfaces/shoe';
 
 @Component({
+  standalone: false,
   selector: 'app-look-dialog',
   templateUrl: './look-dialog.component.html',
   styleUrls: ['./look-dialog.component.scss'],

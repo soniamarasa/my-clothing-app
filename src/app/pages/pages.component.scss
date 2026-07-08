@@ -1,12 +1,14 @@
 :host {
-  & ::ng-deep {
-    min-width: 500px;
+  display: block;
 
-    & .pages {
+  ::ng-deep {
+    min-width: 320px;
+
+    .pages {
+      position: relative;
+      z-index: 1;
       min-height: calc(100vh - 190px);
-      max-width: 1500px;
-      margin: 0 auto;
-      padding: 1rem;
+      padding-block: 1rem 2rem;
     }
   }
 }

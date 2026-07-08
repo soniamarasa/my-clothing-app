@@ -13,6 +13,7 @@ import { CustomValidationService } from '@root/src/app/services/customValidation
 import { UsersFacade } from 'src/app/facades/users.facade';
 
 @Component({
+  standalone: false,
   selector: 'app-password-recover',
   templateUrl: './password-recover.component.html',
   styleUrls: ['./password-recover.component.scss'],
@@ -86,7 +87,7 @@ export class PasswordRecoverComponent implements OnInit {
           error: (error: any) => {
             this._messageService.add({
               key: 'notification',
-              severity: 'error',
+              severity: 'danger',
               summary: 'An error has occurred!',
               detail: error.error.error,
             });

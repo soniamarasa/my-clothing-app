@@ -23,6 +23,7 @@ import { ICategory } from '@interfaces/category';
 import { ITag } from '@interfaces/tag';
 
 @Component({
+  standalone: false,
   selector: 'app-clothes',
   templateUrl: './clothes.component.html',
   styleUrls: ['./clothes.component.scss'],
@@ -72,14 +73,6 @@ export class ClothesComponent implements OnInit, OnDestroy {
         this.clothesOriginal = clothes;
         this.loading = false;
         this.total = clothes.length;
-
-        // if (this.tableClothes) {
-        //   this.selectedStatus = [false];
-        //   this.tableClothes.filters['inactive'] = {
-        //     value: this.selectedStatus,
-        //     matchMode: 'in',
-        //   };
-        // }
       }),
 
       this.categoriesFacade
@@ -108,7 +101,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível ativar essa peça de roupa. Tente novamente mais tarde.',
@@ -119,7 +112,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
   }
 
   getSeverity(status: boolean) {
-    if (status) return 'error';
+    if (status) return 'danger';
     else return 'success';
   }
 
@@ -160,7 +153,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar essa roupa. Tente novamente mais tarde.',
@@ -184,7 +177,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar essa roupa. Tente novamente mais tarde.',
@@ -219,7 +212,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
             error: () => {
               this._messageService.add({
                 key: 'notification',
-                severity: 'error',
+                severity: 'danger',
                 summary: 'Houve um problema!',
                 detail:
                   'Não foi possível deletar a peça de roupa. Tente novamente mais tarde.',

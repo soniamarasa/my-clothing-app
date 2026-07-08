@@ -5,6 +5,7 @@ import {
   Input,
   SimpleChanges,
   OnChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { SubSink } from 'subsink';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -12,6 +13,7 @@ import { IDashboardItem } from '../../interfaces/dashboard';
 import { ListDialog } from '../dialogs/list-dialog/list-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'app-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
@@ -27,17 +29,18 @@ export class ChartComponent implements OnInit, OnDestroy, OnChanges {
   @Input() chartType?: string;
   showChart = true;
 
-  constructor(public _dialogService: DialogService) {}
+  constructor(
+    public _dialogService: DialogService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes?.['data'] && this.data) {
-      this.loading = true;
-      setTimeout(() => {
-        this.showChart = this.data.result.length > 0;
-        this.loading = false;
-      }, 500);
+      this.showChart = this.data.result.length > 0;
+      this.loading = false;
+      this.cdr.detectChanges();
     }
   }
 

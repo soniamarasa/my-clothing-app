@@ -24,7 +24,7 @@
     <div class="formgrid grid">
       <div *ngIf="showC1" class="field col-6">
         <label for="tag">Tag</label>
-        <p-dropdown
+        <p-select
           formControlName="tag"
           inputId="tag"
           name="tag"
@@ -32,7 +32,7 @@
           placeholder="Selecione a tag"
           optionLabel="name"
           appendTo="body"
-        ></p-dropdown>
+        ></p-select>
 
         <ng-container *ngIf="itemForm.get('tag')?.touched">
           <small class="p-error" *ngIf="itemForm.get('tag')?.errors">
@@ -47,7 +47,7 @@
         class="field col"
       >
         <label for="category">Categoria</label>
-        <p-dropdown
+        <p-select
           formControlName="category"
           inputId="category"
           name="category"
@@ -55,7 +55,7 @@
           placeholder="Selecione a categoria"
           optionLabel="name"
           appendTo="body"
-        ></p-dropdown>
+        ></p-select>
 
         <ng-container *ngIf="itemForm.get('type')?.touched">
           <small class="p-error" *ngIf="itemForm.get('type')?.errors">
@@ -68,7 +68,7 @@
     <div class="formgrid grid">
       <div *ngIf="showType" class="field col">
         <ng-container>
-          <p-dropdown
+          <p-select
             formControlName="type"
             inputId="type"
             name="type"
@@ -78,7 +78,7 @@
             optionLabel="name"
             appendTo="body"
             (onChange)="isClothing($event.value)"
-          ></p-dropdown>
+          ></p-select>
         </ng-container>
         <ng-container *ngIf="itemForm.get('type')?.touched">
           <small class="p-error" *ngIf="itemForm.get('type')?.errors">
@@ -89,7 +89,7 @@
 
       <div *ngIf="showClothesType" class="field col">
         <ng-container>
-          <p-dropdown
+          <p-select
             formControlName="clothesType"
             inputId="clothesType"
             name="clothesType"
@@ -98,7 +98,7 @@
             optionValue="value"
             optionLabel="name"
             appendTo="body"
-          ></p-dropdown>
+          ></p-select>
         </ng-container>
         <ng-container *ngIf="itemForm.get('clothesType')?.touched">
           <small class="p-error" *ngIf="itemForm.get('clothesType')?.errors">
@@ -117,9 +117,9 @@
         <span id="current__emoji" (click)="op.toggle($event)">{{
           itemForm.get("icon")?.value || "🏷️"
         }}</span>
-        <p-overlayPanel appendTo="body" #op>
+        <p-popover appendTo="body" #op>
           <app-emoji (currentEmoji)="emoji($event)"></app-emoji>
-        </p-overlayPanel>
+        </p-popover>
       </div>
     </div>
 

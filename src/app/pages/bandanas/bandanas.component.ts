@@ -10,6 +10,7 @@ import { IBandana } from '@interfaces/bandana';
 import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'app-bandanas',
   templateUrl: './bandanas.component.html',
   styleUrls: ['./bandanas.component.scss'],
@@ -78,7 +79,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar essa bandana. Tente novamente mais tarde.',
@@ -102,7 +103,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar essa bandana. Tente novamente mais tarde.',
@@ -131,7 +132,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
             error: () => {
               this._messageService.add({
                 key: 'notification',
-                severity: 'error',
+                severity: 'danger',
                 summary: 'Houve um problema!',
                 detail:
                   'Não foi possível deletar o item. Tente novamente mais tarde.',

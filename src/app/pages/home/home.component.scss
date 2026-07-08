@@ -1,32 +1,40 @@
-// @import "../../styles/mixins.scss";
-
 :host {
-  & ::ng-deep {
-    &.home {
-      & .indicadores {
+  ::ng-deep {
+    .home {
+      p-card.indicadores {
         text-align: center;
+        min-height: 5.5rem;
       }
 
-      .p-card-title {
-        font-size: 0.9rem;
+      p-card.indicadores .p-card-title {
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        opacity: 0.92;
       }
 
-      .p-card-content {
+      p-card.indicadores .p-card-content {
         font-size: 2rem !important;
         font-weight: bold;
+        color: var(--closet-text) !important;
+        text-shadow: 0 0 20px rgba(222, 163, 123, 0.12);
       }
 
       .charts-grid {
-        margin-top: 0.2rem;
-        align-items: stretch;
+        margin-top: 0.75rem;
+      }
+
+      .grid {
+        gap: 0.75rem;
       }
     }
 
-    & .next_look_container {
+    .next_look_container {
       display: flex;
       gap: 0.5rem;
       align-items: center;
       flex-wrap: wrap;
+
       img {
         width: 1.5rem;
         height: 1.5rem;
@@ -36,29 +44,31 @@
         display: flex;
         gap: 0.5rem;
         align-items: center;
-        font-size: 1rem;
-        border-radius: 6px;
-        padding: 6px 10px;
+        font-size: 0.95rem;
+        border-radius: 999px;
+        padding: 6px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(6px);
       }
 
       .item-2 {
         color: #77835c;
-        background-color: #77835c30;
+        background-color: rgba(119, 131, 92, 0.18);
       }
 
       .item-1 {
         color: #de615d;
-        background-color: #de615d30;
+        background-color: rgba(222, 97, 93, 0.16);
       }
 
       .item-3 {
         color: #708a81;
-        background-color: #708a8130;
+        background-color: rgba(112, 138, 129, 0.18);
       }
 
       .item-4 {
         color: #cda64e;
-        background-color: #cda64e30;
+        background-color: rgba(205, 166, 78, 0.16);
         flex-wrap: wrap;
       }
     }

@@ -11,6 +11,7 @@ import { ICategory } from '@interfaces/category';
 import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'app-categories',
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss'],
@@ -79,7 +80,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar essa categoria. Tente novamente mais tarde.',
@@ -103,7 +104,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar essa categoria. Tente novamente mais tarde.',
@@ -132,7 +133,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
             error: () => {
               this._messageService.add({
                 key: 'notification',
-                severity: 'error',
+                severity: 'danger',
                 summary: 'Houve um problema!',
                 detail:
                   'Não foi possível deletar a categoria. Tente novamente mais tarde.',

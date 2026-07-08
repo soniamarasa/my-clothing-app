@@ -26,6 +26,7 @@ import { IBandana } from '@interfaces/bandana';
 import { IAccessory } from '@interfaces/accessory';
 
 @Component({
+  standalone: false,
   selector: 'app-planned-looks',
   templateUrl: './planned-looks.component.html',
   styleUrls: ['./planned-looks.component.scss'],
@@ -118,7 +119,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
   }
 
   getSeverity(status: boolean) {
-    if (status) return 'error';
+    if (status) return 'danger';
     else return 'success';
   }
 
@@ -168,7 +169,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail: 'Tente novamente mais tarde.',
           });
@@ -191,7 +192,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail: 'Tente novamente mais tarde.',
           });

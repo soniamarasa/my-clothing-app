@@ -3,7 +3,7 @@
     <div class="formgrid grid">
       <div class="field col-6">
         <label for="top">Parte de Cima</label>
-        <p-dropdown
+        <p-select
           formControlName="top"
           inputId="top"
           name="top"
@@ -14,12 +14,12 @@
           [showClear]="true"
           [filter]="true"
           filterBy="name"
-        ></p-dropdown>
+        ></p-select>
       </div>
 
       <div class="field col-6">
         <label for="bottom">Parte de baixo</label>
-        <p-dropdown
+        <p-select
           formControlName="bottom"
           inputId="bottom"
           name="bottom"
@@ -30,14 +30,14 @@
           [showClear]="true"
           [filter]="true"
           filterBy="name"
-        ></p-dropdown>
+        ></p-select>
       </div>
     </div>
 
     <div class="formgrid grid">
       <div class="field col-6">
         <label for="garb">Traje</label>
-        <p-dropdown
+        <p-select
           [showClear]="true"
           formControlName="garb"
           inputId="garb"
@@ -48,12 +48,12 @@
           appendTo="body"
           [filter]="true"
           filterBy="name"
-        ></p-dropdown>
+        ></p-select>
       </div>
 
       <div class="field col-6">
         <label for="shoe">Sapato</label>
-        <p-dropdown
+        <p-select
           formControlName="shoe"
           inputId="shoe"
           name="shoe"
@@ -63,7 +63,7 @@
           appendTo="body"
           [filter]="true"
           filterBy="name"
-        ></p-dropdown>
+        ></p-select>
 
         <ng-container *ngIf="lookForm.get('shoe')?.touched">
           <small class="p-error" *ngIf="lookForm.get('shoe')?.errors">
@@ -76,7 +76,7 @@
     <div class="formgrid grid">
       <div class="field col-6">
         <label for="tag">Tag</label>
-        <p-dropdown
+        <p-select
           formControlName="tag"
           inputId="tag"
           name="tag"
@@ -84,7 +84,7 @@
           placeholder="Selecione a tag"
           optionLabel="name"
           appendTo="body"
-        ></p-dropdown>
+        ></p-select>
       </div>
     </div>
   </form>

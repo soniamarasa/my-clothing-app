@@ -10,6 +10,7 @@ import { IHandbag } from '@interfaces/handbag';
 import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'app-handbags',
   templateUrl: './handbags.component.html',
   styleUrls: ['./handbags.component.scss'],
@@ -78,7 +79,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar essa bolsa. Tente novamente mais tarde.',
@@ -102,7 +103,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar essa bolsa. Tente novamente mais tarde.',
@@ -131,7 +132,7 @@ export class HandbagsComponent implements OnInit, OnDestroy {
             error: () => {
               this._messageService.add({
                 key: 'notification',
-                severity: 'error',
+                severity: 'danger',
                 summary: 'Houve um problema!',
                 detail:
                   'Não foi possível deletar a bolsa. Tente novamente mais tarde.',

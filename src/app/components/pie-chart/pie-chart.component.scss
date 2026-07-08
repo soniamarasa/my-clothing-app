@@ -1,15 +1,16 @@
 :host {
-  & ::ng-deep {
-    & canvas {
-      height: max-content !important;
-    }
+  display: block;
+  min-width: 0;
+
+  #chart-container {
+    width: 100% !important;
+    min-height: 400px;
   }
 
-  @media screen and (max-width: 900px) {
-    & canvas {
+  ::ng-deep {
+    .highcharts-container,
+    .highcharts-root {
       width: 100% !important;
-      max-width: 500px;
-      height: max-content !important;
     }
   }
 }

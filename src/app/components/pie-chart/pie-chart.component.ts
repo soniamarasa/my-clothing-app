@@ -15,6 +15,7 @@ import { IDashboardItem } from '../../interfaces/dashboard';
 import { colors } from '../../utils/colors';
 
 @Component({
+  standalone: false,
   selector: 'app-pie-chart',
   templateUrl: './pie-chart.component.html',
   styleUrls: ['./pie-chart.component.scss'],
@@ -135,8 +136,7 @@ export class PieChartComponent implements OnDestroy, AfterViewInit {
       },
       plotOptions: {
         pie: {
-          size: '250px', // Reduz o tamanho do gráfico
-          // center: ['50%', '50%'], // Centraliza o gráfico
+          size: '72%',
         },
       },
       credits: { enabled: false },

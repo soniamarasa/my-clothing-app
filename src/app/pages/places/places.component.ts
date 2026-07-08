@@ -10,6 +10,7 @@ import { IPlace } from '@interfaces/place';
 import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'app-places',
   templateUrl: './places.component.html',
   styleUrls: ['./places.component.scss'],
@@ -76,7 +77,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar esse Local. Tente novamente mais tarde.',
@@ -105,7 +106,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
             error: () => {
               this._messageService.add({
                 key: 'notification',
-                severity: 'error',
+                severity: 'danger',
                 summary: 'Houve um problema!',
                 detail:
                   'Não foi possível deletar o local. Tente novamente mais tarde.',
@@ -131,7 +132,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar esse Local. Tente novamente mais tarde.',

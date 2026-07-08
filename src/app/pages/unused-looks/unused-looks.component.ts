@@ -18,6 +18,7 @@ import { ITag } from '@interfaces/tag';
 import { LookDialog } from '../../components/dialogs/look-dialog/look-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'app-unused-looks',
   templateUrl: './unused-looks.component.html',
   styleUrls: ['./unused-looks.component.scss'],
@@ -87,7 +88,7 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
   }
 
   getSeverity(status: boolean) {
-    if (status) return 'error';
+    if (status) return 'danger';
     else return 'success';
   }
 
@@ -149,7 +150,7 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar esse look. Tente novamente mais tarde.',

@@ -1,16 +1,19 @@
 @import "../../../app/styles/variables.scss";
 
-footer {
+footer.closet-footer {
   text-align: center;
   box-sizing: border-box;
   width: 100%;
   height: max-content;
-  padding: 10px;
-  margin-top: 20px;
-  background-color: $quinary-color;
+  padding: 1rem 1.25rem;
+  color: var(--closet-text-muted);
 }
 
 a {
-  color: $primary-color !important;
+  color: var(--closet-primary) !important;
   text-decoration: none;
+
+  &:hover {
+    opacity: 0.85;
+  }
 }

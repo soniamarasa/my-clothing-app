@@ -8,6 +8,7 @@ import {
 } from 'primeng/dynamicdialog';
 
 @Component({
+  standalone: false,
   selector: 'app-list-dialog',
   templateUrl: './list-dialog.component.html',
   styleUrls: ['./list-dialog.component.scss'],

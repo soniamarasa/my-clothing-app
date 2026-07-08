@@ -17,6 +17,7 @@ import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.com
 import { Table } from 'primeng/table';
 
 @Component({
+  standalone: false,
   selector: 'app-tags',
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.scss'],
@@ -87,7 +88,7 @@ export class TagsComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar essa tag. Tente novamente mais tarde.',
@@ -111,7 +112,7 @@ export class TagsComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar essa tag. Tente novamente mais tarde.',
@@ -140,7 +141,7 @@ export class TagsComponent implements OnInit, OnDestroy {
             error: () => {
               this._messageService.add({
                 key: 'notification',
-                severity: 'error',
+                severity: 'danger',
                 summary: 'Houve um problema!',
                 detail:
                   'Não foi possível deletar a tag. Tente novamente mais tarde.',

@@ -1,0 +1,402 @@
+@import "./variables.scss";
+
+@mixin closet-glass-surface($strong: false) {
+  background: if(
+    $strong,
+    var(--closet-surface-strong),
+    var(--closet-surface)
+  ) !important;
+  backdrop-filter: blur(var(--closet-blur));
+  -webkit-backdrop-filter: blur(var(--closet-blur));
+  border: 1px solid var(--closet-surface-border) !important;
+  box-shadow: var(--closet-shadow-soft);
+}
+
+.theme-butterfly {
+  color-scheme: dark;
+  min-height: 100vh;
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(
+      circle at 12% 8%,
+      rgba(112, 138, 129, 0.2),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 92% 4%,
+      rgba(222, 163, 123, 0.22),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 48% 92%,
+      rgba(222, 97, 93, 0.1),
+      transparent 36%
+    ),
+    linear-gradient(
+      165deg,
+      var(--closet-bg-deep) 0%,
+      var(--closet-bg) 44%,
+      var(--closet-bg-alt) 100%
+    );
+
+  .closet-shell {
+    width: calc(100% - (var(--closet-gutter) * 2));
+    max-width: var(--closet-max-width);
+    margin-inline: auto;
+    box-sizing: border-box;
+  }
+
+  .p-menubar {
+    @include closet-glass-surface(true);
+    border-radius: var(--closet-radius-md) !important;
+    color: var(--closet-text) !important;
+    padding: 0.35rem 0.65rem !important;
+    margin-inline: auto;
+    width: max-content;
+    max-width: 100%;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover {
+      border-color: var(--closet-surface-border-hover) !important;
+      box-shadow: var(--closet-shadow-lift);
+    }
+  }
+
+  .p-menubar-root-list > .p-menubar-item > .p-menubar-item-content,
+  .p-menubar-item-link,
+  .p-menubar-item-content {
+    color: var(--closet-text) !important;
+    border-radius: 8px;
+  }
+
+  .p-menubar-item:not(.p-disabled) > .p-menubar-item-content:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  .p-menubar-item-icon,
+  .p-menubar-submenu-icon {
+    color: var(--closet-text-muted) !important;
+  }
+
+  .p-menubar-submenu {
+    @include closet-glass-surface(true);
+    border-radius: var(--closet-radius-md) !important;
+    overflow: hidden;
+  }
+
+  .p-card {
+    @include closet-glass-surface();
+    border-radius: var(--closet-radius-lg) !important;
+    color: var(--closet-text) !important;
+    transition:
+      border-color 0.22s ease,
+      box-shadow 0.22s ease,
+      transform 0.22s ease;
+
+    &:hover {
+      border-color: var(--closet-surface-border-hover) !important;
+      box-shadow: var(--closet-shadow-lift);
+    }
+  }
+
+  .p-card-title,
+  .p-card-header {
+    color: var(--closet-primary) !important;
+    letter-spacing: 0.02em;
+  }
+
+  .p-card-body,
+  .p-card-content {
+    color: var(--closet-text) !important;
+  }
+
+  .p-datatable {
+    @include closet-glass-surface(true);
+    border-radius: var(--closet-radius-lg) !important;
+    overflow: hidden;
+
+    .p-datatable-header {
+      background: rgba(255, 255, 255, 0.02) !important;
+      border: none !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+      color: var(--closet-text) !important;
+    }
+
+    .p-datatable-table-container,
+    .p-datatable-wrapper {
+      border: none !important;
+    }
+
+    .p-datatable-thead > tr > th {
+      background: transparent !important;
+      color: var(--closet-primary) !important;
+      border: none !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+      font-weight: 600;
+    }
+
+    .p-datatable-thead > tr > th:first-child {
+      border-top-left-radius: 0;
+    }
+
+    .p-datatable-thead > tr > th:last-child {
+      border-top-right-radius: 0;
+    }
+
+    .p-datatable-tbody > tr {
+      background: transparent !important;
+      color: var(--closet-text) !important;
+      transition: background-color 0.15s ease;
+    }
+
+    .p-datatable-tbody > tr > td {
+      border: none !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+    }
+
+    .p-datatable-tbody > tr:last-child > td {
+      border-bottom: none !important;
+    }
+
+    .p-datatable-tbody > tr:hover {
+      background: rgba(222, 163, 123, 0.06) !important;
+    }
+
+    .p-paginator {
+      background: transparent !important;
+      border: none !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+      border-radius: 0 !important;
+      margin-top: 0 !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      padding: 0.55rem 0.85rem !important;
+      gap: 0.35rem;
+      flex-wrap: nowrap;
+      justify-content: center;
+    }
+
+    .p-paginator-content,
+    .p-paginator-content-start,
+    .p-paginator-content-end {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 0.35rem;
+      width: auto;
+    }
+
+    .p-paginator-rpp-dropdown,
+    .p-paginator-rpp-dropdown .p-select,
+    .p-paginator-jtp-dropdown,
+    .p-paginator-jtp-dropdown .p-select {
+      width: auto !important;
+      min-width: 4.25rem !important;
+      max-width: 5.5rem !important;
+      flex: 0 0 auto !important;
+    }
+
+    .p-paginator-rpp-dropdown .p-select-label,
+    .p-paginator-jtp-dropdown .p-select-label {
+      padding: 0.35rem 0.5rem !important;
+    }
+
+    .p-paginator-current {
+      color: var(--closet-text-muted) !important;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .p-paginator-first,
+    .p-paginator-prev,
+    .p-paginator-next,
+    .p-paginator-last,
+    .p-paginator-page {
+      border: none !important;
+      background: transparent !important;
+      color: var(--closet-text-muted) !important;
+      min-width: 2rem;
+      height: 2rem;
+
+      &:not(.p-disabled):hover {
+        background: rgba(255, 255, 255, 0.06) !important;
+        color: var(--closet-text) !important;
+      }
+    }
+
+    .p-paginator-page-selected {
+      background: rgba(222, 163, 123, 0.16) !important;
+      color: var(--closet-primary) !important;
+    }
+  }
+
+  .p-dialog-mask {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(26, 25, 24, 0.58) !important;
+  }
+
+  .p-dialog {
+    @include closet-glass-surface(true);
+    border-radius: var(--closet-radius-lg) !important;
+    overflow: hidden;
+    box-shadow: var(--closet-shadow-lift) !important;
+  }
+
+  .p-dialog-header,
+  .p-dialog-content,
+  .p-dialog-footer {
+    background: transparent !important;
+    color: var(--closet-text) !important;
+  }
+
+  .p-dialog-title {
+    color: var(--closet-primary) !important;
+  }
+
+  .p-inputtext,
+  .p-select,
+  .p-multiselect,
+  .p-multiselect-label,
+  .p-datepicker-input,
+  .p-password input {
+    background: rgba(41, 40, 40, 0.72) !important;
+    border: 1px solid var(--closet-surface-border) !important;
+    border-radius: var(--closet-radius-md) !important;
+    color: var(--closet-text) !important;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:enabled:focus {
+      border-color: color-mix(in srgb, var(--closet-primary) 55%, transparent) !important;
+      box-shadow: 0 0 0 3px rgba(222, 163, 123, 0.14) !important;
+    }
+  }
+
+  .p-select-overlay,
+  .p-multiselect-overlay,
+  .p-datepicker-panel,
+  .p-popover {
+    @include closet-glass-surface(true);
+    border-radius: var(--closet-radius-md) !important;
+    color: var(--closet-text) !important;
+  }
+
+  .p-select-option,
+  .p-multiselect-option {
+    color: var(--closet-text) !important;
+    border-radius: 8px;
+
+    &.p-select-option-selected,
+    &.p-multiselect-option-selected {
+      background: rgba(222, 163, 123, 0.16) !important;
+      color: var(--closet-primary) !important;
+    }
+  }
+
+  .p-button.p-button-text {
+    color: var(--closet-text) !important;
+  }
+
+  .p-button:not(.p-button-danger):not(.p-button-success):not(.p-button-text) {
+    background: linear-gradient(
+      135deg,
+      var(--closet-primary),
+      color-mix(in srgb, var(--closet-primary) 72%, #f2d0b3)
+    ) !important;
+    border: none !important;
+    color: var(--closet-bg-deep) !important;
+    border-radius: var(--closet-radius-md) !important;
+    box-shadow: 0 4px 14px rgba(222, 163, 123, 0.28);
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+
+    &:enabled:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(222, 163, 123, 0.34);
+    }
+  }
+
+  .p-tag {
+    font-family: "DM Mono", monospace !important;
+    border-radius: 999px;
+  }
+
+  .p-toast .p-toast-message {
+    @include closet-glass-surface(true);
+    border-radius: var(--closet-radius-md) !important;
+    color: var(--closet-text) !important;
+  }
+
+  .p-checkbox-box {
+    background: rgba(41, 40, 40, 0.72) !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    border-radius: 6px !important;
+  }
+
+  .p-checkbox-checked .p-checkbox-box {
+    background: var(--closet-primary) !important;
+    border-color: var(--closet-primary) !important;
+  }
+
+  .year_select {
+    .p-datepicker-input,
+    .p-datepicker-dropdown {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      color: var(--closet-text-muted) !important;
+    }
+  }
+
+  .closet-footer {
+    @include closet-glass-surface();
+    border-radius: var(--closet-radius-md) var(--closet-radius-md) 0 0;
+    border-bottom: none !important;
+    margin-top: 2rem;
+  }
+
+  .closet-header__user {
+    @include closet-glass-surface();
+    border-radius: 999px !important;
+    padding: 0.35rem 0.85rem 0.35rem 0.45rem !important;
+  }
+
+  .charts-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    width: 100%;
+
+    &__cell {
+      min-width: 0;
+    }
+
+    app-chart {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .charts-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .theme-butterfly {
+    --closet-gutter: 0.75rem;
+
+    .p-menubar {
+      width: 100%;
+    }
+  }
+}

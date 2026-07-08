@@ -4,13 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import { DividerModule } from 'primeng/divider';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -18,21 +18,17 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ColorPickerModule } from 'primeng/colorpicker';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PopoverModule } from 'primeng/popover';
 import { FocusTrapModule } from 'primeng/focustrap';
 import { StyleClassModule } from 'primeng/styleclass';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
-import { GravatarModule } from 'ngx-gravatar';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
-import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 
 import { UsersFacade } from '@facades/users.facade';
 
@@ -118,33 +114,30 @@ import { ListDialog } from '../components/dialogs/list-dialog/list-dialog.compon
     ReactiveFormsModule,
     ButtonModule,
     CardModule,
-    CalendarModule,
+    DatePickerModule,
     DividerModule,
     SpeedDialModule,
     TooltipModule,
     DialogModule,
     DynamicDialogModule,
     ConfirmDialogModule,
-    DropdownModule,
+    SelectModule,
     InputTextModule,
     PasswordModule,
     MultiSelectModule,
     CheckboxModule,
     ToastModule,
     MessageModule,
-    MessagesModule,
     MenuModule,
     MenubarModule,
     TableModule,
     TagModule,
     ColorPickerModule,
-    OverlayPanelModule,
+    PopoverModule,
     FocusTrapModule,
     StyleClassModule,
     ProgressSpinnerModule,
-    GravatarModule,
     PickerComponent,
-    EmojiModule,
     PagesRoutingModule,
   ],
   providers: [DialogService, ConfirmationService, MessageService],

@@ -10,6 +10,7 @@ import { IAccessory } from '@interfaces/accessory';
 import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'app-accessories',
   templateUrl: './accessories.component.html',
   styleUrls: ['./accessories.component.scss'],
@@ -78,7 +79,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar esse acessório. Tente novamente mais tarde.',
@@ -102,7 +103,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar esse acessório. Tente novamente mais tarde.',
@@ -131,7 +132,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
             error: () => {
               this._messageService.add({
                 key: 'notification',
-                severity: 'error',
+                severity: 'danger',
                 summary: 'Houve um problema!',
                 detail:
                   'Não foi possível deletar o acessório. Tente novamente mais tarde.',

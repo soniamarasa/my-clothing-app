@@ -15,6 +15,7 @@ import { SubSink } from 'subsink';
 import { colors } from '../../utils/colors';
 
 @Component({
+  standalone: false,
   selector: 'app-bar-chart',
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.scss'],

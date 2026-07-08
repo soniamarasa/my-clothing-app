@@ -1,6 +1,12 @@
 :host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+
   & ::ng-deep {
     .p-card {
+      width: 100%;
       height: 100%;
     }
 
@@ -13,7 +19,9 @@
     }
 
     .p-card-content {
-      height: 100% !important;
+      height: auto !important;
+      min-height: 22rem;
+      font-size: 1rem !important;
     }
     .doughnut {
       display: flex;

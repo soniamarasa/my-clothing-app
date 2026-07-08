@@ -1,132 +1,140 @@
-<div *ngIf="dashboard" class="home">
-  <div class="grid">
-    <p-card
-      header="Looks Usados"
-      class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-      >{{ dashboard.totalLooks.total }}</p-card
-    >
-    <p-card
-      header="Total Vestidos"
-      class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-      >{{ dashboard.garbs.total }}</p-card
-    >
-    <p-card
-      header="Total Tops"
-      class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-      >{{ dashboard.tops.total }}</p-card
-    >
-    <p-card
-      header="Total Bottons"
-      class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-      >{{ dashboard.bottoms.total }}</p-card
-    >
-    <p-card
-      header="Total Bolsas"
-      class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-      >{{ dashboard.handbags.total }}</p-card
-    >
-    <p-card
-      header="Total Sapatos"
-      class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-      >{{ dashboard.shoes.total }}</p-card
-    >
+<ng-container *ngIf="dashboardView$ | async as view">
+  <div *ngIf="view.data as dashboard" class="home">
+    <div class="grid">
+      <p-card
+        header="Looks Usados"
+        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+        >{{ dashboard.totalLooks.total }}</p-card
+      >
+      <p-card
+        header="Total Vestidos"
+        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+        >{{ dashboard.garbs.total }}</p-card
+      >
+      <p-card
+        header="Total Tops"
+        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+        >{{ dashboard.tops.total }}</p-card
+      >
+      <p-card
+        header="Total Bottons"
+        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+        >{{ dashboard.bottoms.total }}</p-card
+      >
+      <p-card
+        header="Total Bolsas"
+        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+        >{{ dashboard.handbags.total }}</p-card
+      >
+      <p-card
+        header="Total Sapatos"
+        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+        >{{ dashboard.shoes.total }}</p-card
+      >
+    </div>
+
+    <ng-container *ngIf="nextPlannedLook$ | async as nextPlannedLook">
+      <p-card
+        *ngIf="nextPlannedLook.length"
+        [header]="'Próximo Look - ' + (nextPlannedLook[0].date | date)"
+        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
+      >
+        <div *ngFor="let look of nextPlannedLook" class="next_look_container">
+          <span pTooltip="Roupa" tooltipPosition="bottom" class="item-1">
+            <img src="../../../assets/clothes.png" />
+
+            <span *ngIf="look.look.garb">
+              {{ look.look.garb.name }}
+            </span>
+
+            <span *ngIf="!look.look.garb">
+              {{ look.look.top?.name }} +
+              {{ look.look.bottom?.name }}
+            </span>
+          </span>
+
+          <span pTooltip="Sapato" tooltipPosition="bottom" class="item-2">
+            <img src="../../../assets/shoe1.png" />
+
+            {{ look.look.shoe?.name }}
+          </span>
+
+          <span
+            pTooltip="Bolsa"
+            tooltipPosition="bottom"
+            class="item-3"
+            *ngIf="look.handbag"
+          >
+            <img src="../../../assets/bag.png" />
+
+            {{ look.handbag.name }}
+          </span>
+
+          <ng-container *ngIf="look.accessories.length">
+            <span
+              pTooltip="Acessórios"
+              tooltipPosition="bottom"
+              *ngFor="let accessory of look.accessories"
+              class="item-4"
+            >
+              <img src="../../../assets/accessory.png" />
+
+              <small>{{ accessory.name }}</small>
+            </span>
+          </ng-container>
+        </div>
+      </p-card>
+    </ng-container>
+
+    <div class="charts-grid">
+      <div class="charts-grid__cell">
+        <app-chart
+          [data]="dashboard.totalLooks"
+          header="Combinações Mais Usadas"
+          [loading]="view.loading"
+          chartType="pie"
+        ></app-chart>
+      </div>
+      <div class="charts-grid__cell">
+        <app-chart
+          [data]="dashboard.garbs"
+          header="Vestidos"
+          [loading]="view.loading"
+          chartType="bar"
+        ></app-chart>
+      </div>
+      <div class="charts-grid__cell">
+        <app-chart
+          [data]="dashboard.tops"
+          header="Tops"
+          [loading]="view.loading"
+          chartType="bar"
+        ></app-chart>
+      </div>
+      <div class="charts-grid__cell">
+        <app-chart
+          [data]="dashboard.bottoms"
+          header="Bottons"
+          [loading]="view.loading"
+          chartType="bar"
+        ></app-chart>
+      </div>
+      <div class="charts-grid__cell">
+        <app-chart
+          [data]="dashboard.handbags"
+          header="Bolsas"
+          [loading]="view.loading"
+          chartType="pie"
+        ></app-chart>
+      </div>
+      <div class="charts-grid__cell">
+        <app-chart
+          [data]="dashboard.shoes"
+          header="Sapatos"
+          [loading]="view.loading"
+          chartType="pie"
+        ></app-chart>
+      </div>
+    </div>
   </div>
-  <p-card
-    *ngIf="nextPlannedLook?.length"
-    [header]="'Próximo Look - ' + (nextPlannedLook[0].date | date)"
-    class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-  >
-    <div *ngFor="let look of nextPlannedLook" class="next_look_container">
-      <span pTooltip="Roupa" tooltipPosition="bottom" class="item-1">
-        <img src="../../../assets/clothes.png" />
-
-        <span *ngIf="look.look.garb">
-          {{ look.look.garb.name }}
-        </span>
-
-        <span *ngIf="!look.look.garb">
-          {{ look.look.top?.name }} +
-          {{ look.look.bottom?.name }}
-        </span>
-      </span>
-
-      <span pTooltip="Sapato" tooltipPosition="bottom" class="item-2">
-        <img src="../../../assets/shoe1.png" />
-
-        {{ look.look.shoe?.name }}
-      </span>
-
-      <span pTooltip="Bolsa" tooltipPosition="bottom" class="item-3" *ngIf="look.handbag">
-        <img src="../../../assets/bag.png" />
-
-        {{ look.handbag.name }}
-      </span>
-
-      <ng-container *ngIf="look.accessories.length">
-        <span
-          pTooltip="Acessórios"
-          tooltipPosition="bottom"
-          *ngFor="let accessory of look.accessories"
-          class="item-4"
-        >
-          <img src="../../../assets/accessory.png" />
-
-          <small>{{ accessory.name }}</small>
-        </span>
-      </ng-container>
-    </div>
-  </p-card>
-
-  <div class="grid charts-grid">
-    <div class="indicadores col-12 lg:col-6">
-      <!-- <app-chart></app-chart> -->
-
-      <app-chart
-        [data]="dashboard.totalLooks"
-        header="Combinações Mais Usadas"
-        [loading]="loading"
-        chartType="pie"
-      ></app-chart>
-    </div>
-    <div class="indicadores col-12 lg:col-6">
-      <app-chart
-        [data]="dashboard.garbs"
-        header="Vestidos"
-        [loading]="loading"
-        chartType="bar"
-      ></app-chart>
-    </div>
-    <div class="indicadores col-12 lg:col-6">
-      <app-chart
-        [data]="dashboard.tops"
-        header="Tops"
-        [loading]="loading"
-        chartType="bar"
-      ></app-chart>
-    </div>
-    <div class="indicadores col-12 lg:col-6">
-      <app-chart
-        [data]="dashboard.bottoms"
-        header="Bottons"
-        [loading]="loading"
-        chartType="bar"
-      ></app-chart>
-    </div>
-    <div class="indicadores col-12 lg:col-6">
-      <app-chart
-        [data]="dashboard.handbags"
-        header="Bolsas"
-        [loading]="loading"
-        chartType="pie"
-      ></app-chart>
-    </div>
-    <div class="indicadores col-12 lg:col-6">
-      <app-chart
-        [data]="dashboard.shoes"
-        header="Sapatos"
-        [loading]="loading"
-        chartType="pie"
-      ></app-chart>
-    </div>
-  </div>
-</div>
+</ng-container>

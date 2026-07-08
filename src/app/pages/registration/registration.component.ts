@@ -17,6 +17,7 @@ import { UsersFacade } from '@facades/users.facade';
 import { IUser } from '../../interfaces/user';
 
 @Component({
+  standalone: false,
   selector: 'app-registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
@@ -107,7 +108,7 @@ export class RegistrationComponent implements OnInit {
           error: (error: any) =>
             this._messageService.add({
               key: 'notification',
-              severity: 'error',
+              severity: 'danger',
               summary: 'An error has occurred!',
               detail: error.error.error,
             }),

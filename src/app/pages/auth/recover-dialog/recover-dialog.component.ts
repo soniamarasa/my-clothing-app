@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { SubSink } from 'subsink';
 
 @Component({
+  standalone: false,
   selector: 'app-recover-dialog',
   templateUrl: './recover-dialog.component.html',
   styleUrls: ['./recover-dialog.component.scss'],

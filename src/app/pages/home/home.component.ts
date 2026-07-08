@@ -1,36 +1,29 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable, startWith, tap } from 'rxjs';
+import { map, startWith } from 'rxjs';
 import { DialogService } from 'primeng/dynamicdialog';
 import { SubSink } from 'subsink';
 import { DashboardFacade } from '../../facades/dashboard.facade';
 import { IDashboard } from '../../interfaces/dashboard';
-import { ILook } from '../../interfaces/look';
-import { IPlannedLook } from '../../interfaces/plannedLook';
 
 @Component({
+  standalone: false,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  subs = new SubSink();
-  dashboard!: IDashboard | null;
-  loading: boolean = false;
-  nextPlannedLook!: IPlannedLook[];
+  private subs = new SubSink();
 
-  readonly dashboard$ = this.dashboardFacade.dashboardState$.pipe(
-    tap(() => {
-      this.loading = true;
-    }),
-    map((dashboard: IDashboard) => {
-      return {
-        loading: false,
-        data: dashboard,
-      };
-    }),
-    startWith({ loading: true, data: null })
+  readonly dashboardView$ = this.dashboardFacade.dashboardState$.pipe(
+    map((dashboard: IDashboard) => ({
+      loading: false,
+      data: dashboard,
+    })),
+    startWith({ loading: true, data: null as IDashboard | null })
   );
+
+  readonly nextPlannedLook$ = this.dashboardFacade.getNextPlannedLook();
 
   constructor(
     public _dialogService: DialogService,
@@ -38,22 +31,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     private dashboardFacade: DashboardFacade
   ) {}
 
-  ngOnInit(): void {
-    this.dashboardFacade.filter({ year: new Date().getFullYear().toString() });
+  ngOnInit(): void {}
 
-    this.subs.add(
-      this.dashboard$.subscribe((state) => {
-        this.dashboard = state.data!;
-        this.loading = state.loading;
-      })
-    );
-
-    this.subs.add(
-      this.dashboardFacade
-        .getNextPlannedLook()
-        .subscribe((data) => (this.nextPlannedLook = data))
-    );
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
-
-  ngOnDestroy(): any {}
 }

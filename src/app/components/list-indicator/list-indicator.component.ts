@@ -12,6 +12,7 @@ import { IDashboardItem } from '../../interfaces/dashboard';
 import { colors } from '../../utils/colors';
 
 @Component({
+  standalone: false,
   selector: 'app-list-indicator',
   templateUrl: './list-indicator.component.html',
   styleUrls: ['./list-indicator.component.scss'],

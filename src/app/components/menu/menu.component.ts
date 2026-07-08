@@ -3,6 +3,7 @@ import { UsersFacade } from '@facades/users.facade';
 import { MenuItem } from 'primeng/api';
 
 @Component({
+  standalone: false,
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],

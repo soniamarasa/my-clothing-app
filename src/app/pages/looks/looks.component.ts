@@ -24,6 +24,7 @@ import { ITag } from '../../interfaces/tag';
 // import { FilterUtils } from "primeng/utils";
 
 @Component({
+  standalone: false,
   selector: 'app-looks',
   templateUrl: './looks.component.html',
   styleUrls: ['./looks.component.scss'],
@@ -94,7 +95,7 @@ export class LooksComponent implements OnInit, OnDestroy {
   }
 
   getSeverity(status: boolean) {
-    if (status) return 'error';
+    if (status) return 'danger';
     else return 'success';
   }
 
@@ -140,7 +141,7 @@ export class LooksComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível criar esse look. Tente novamente mais tarde.',
@@ -164,7 +165,7 @@ export class LooksComponent implements OnInit, OnDestroy {
         error: () => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'Houve um problema!',
             detail:
               'Não foi possível atualizar esse look. Tente novamente mais tarde.',
@@ -193,7 +194,7 @@ export class LooksComponent implements OnInit, OnDestroy {
             error: () => {
               this._messageService.add({
                 key: 'notification',
-                severity: 'error',
+                severity: 'danger',
                 summary: 'Houve um problema!',
                 detail:
                   'Não foi possível deletar o look. Tente novamente mais tarde.',

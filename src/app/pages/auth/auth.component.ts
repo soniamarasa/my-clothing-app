@@ -11,6 +11,7 @@ import { IUser } from '../../interfaces/user';
 import { RecoverDialogComponent } from './recover-dialog/recover-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
@@ -80,7 +81,7 @@ export class AuthComponent implements OnInit {
         error: (error) => {
           this._messageService.add({
             key: 'notification',
-            severity: 'error',
+            severity: 'danger',
             summary: 'An error has occurred!',
             detail: error.error.error,
           });
@@ -103,7 +104,7 @@ export class AuthComponent implements OnInit {
           error: (error) =>
             this._messageService.add({
               key: 'notification',
-              severity: 'error',
+              severity: 'danger',
               summary: 'An error has occurred!',
               detail: error.error.error,
             }),

@@ -7,52 +7,35 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 import { UsersFacade } from '@facades/users.facade';
-
-import { Tokens } from '@interfaces/auth';
-
-const INITIAL_STATE = {
-  token: null,
-};
+import { LocalStorageService } from '@services/local-storage.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  private tokens: Tokens = INITIAL_STATE;
-
-  private readonly token$ = this.facade.authState$.pipe(
-    map(({ user }) => {
-      return {
-        token: user?.token,
-      };
-    })
-  );
-
-  constructor(private _router: Router, private facade: UsersFacade) {
-    this.token$.subscribe((token) => (this.tokens = token));
-  }
+  constructor(
+    private _router: Router,
+    private facade: UsersFacade,
+    private localStorageService: LocalStorageService
+  ) {}
 
   intercept(
-    request: HttpRequest<any>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    const { token } = this.tokens;
+  ): Observable<HttpEvent<unknown>> {
+    const token = this.getToken();
+    const authorizedRequest = token
+      ? this.addTokenToHeader(request, token)
+      : request;
 
-    if (!token) return this.interceptWithTimeout(request, next);
-
-    request = this.addTokenToHeader(request, token);
-
-    return next.handle(request).pipe(
-      catchError((error: any) => {
-        if (error instanceof HttpErrorResponse) {
-          console.log(error);
-          if (error.status === 401) {
-            this.facade.logout().subscribe(() => {
-              this._router.navigate(['/auth']);
-            });
-          }
+    return next.handle(authorizedRequest).pipe(
+      catchError((error: unknown) => {
+        if (error instanceof HttpErrorResponse && error.status === 401) {
+          this.facade.logout().subscribe(() => {
+            this._router.navigate(['/auth']);
+          });
         }
 
         return throwError(() => error);
@@ -60,38 +43,15 @@ export class TokenInterceptor implements HttpInterceptor {
     );
   }
 
-  interceptWithTimeout(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    return new Observable((observer) => {
-      const { token } = this.tokens;
-
-      setTimeout(() => {
-        if (token) request = this.addTokenToHeader(request, token);
-
-        next.handle(request).subscribe({
-          next: (event) => observer.next(event),
-          error: (error) => {
-            if (error instanceof HttpErrorResponse) {
-              if (error.status === 401) {
-                this.facade.logout();
-                this._router.navigate(['/auth']);
-              }
-            }
-            // this._router.navigate(['/auth']);
-            return observer.error(error);
-          },
-          complete: () => observer.complete(),
-        });
-      });
-    });
+  private getToken(): string | null {
+    const auth = this.localStorageService.get('auth');
+    return auth?.user?.token ?? auth?.token ?? null;
   }
 
-  addTokenToHeader(request: HttpRequest<any>, token: Tokens['token']) {
+  private addTokenToHeader(request: HttpRequest<unknown>, token: string) {
     return request.clone({
       setHeaders: {
-        Authorization: `${token}`,
+        Authorization: token,
       },
     });
   }

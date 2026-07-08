@@ -37,13 +37,13 @@
             <div class="col-12 md:col-6">
               <div class="field">
                 <label for="gender" class="block">Gênero</label>
-                <p-dropdown
+                <p-select
                   [options]="gender"
                   placeholder="Selecione o seu gênero"
                   optionLabel="name"
                   optionValue="code"
                   formControlName="gender"
-                ></p-dropdown>
+                ></p-select>
                 <small
                   class="p-error"
                   *ngIf="
@@ -59,13 +59,13 @@
             <div class="col-12 md:col-6">
               <div class="field">
                 <label for="birthdate" class="block">Data de Nascimento</label>
-                <p-calendar
+                <p-datepicker
                   formControlName="birthdate"
                   dateFormat="dd.mm.yy"
                   [showIcon]="true"
                   inputId="icon"
                   placeholder="Selecione a data"
-                ></p-calendar>
+                ></p-datepicker>
                 <small
                   class="p-error"
                   *ngIf="

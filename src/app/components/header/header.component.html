@@ -1,23 +1,35 @@
 <div class="home">
-  <ng-container>
-    <p-calendar (ngModelChange)="setYear($event)" styleClass="year_select" [(ngModel)]="this.filterFacade.year"
-      [readonlyInput]="true" [yearNavigator]="true" view="year" dateFormat="yy" [showIcon]="true"
-      inputId="icondisplay" />
+  <div class="closet-header-bar">
+    <div class="closet-header-bar__inner closet-shell">
+      <div class="closet-header-bar__year">
+        <p-datepicker
+          (ngModelChange)="setYear($event)"
+          styleClass="year_select"
+          [(ngModel)]="this.filterFacade.year"
+          [readonlyInput]="true"
+          view="year"
+          dateFormat="yy"
+          [showIcon]="true"
+          inputId="icondisplay"
+        />
+      </div>
 
-    <h4 id="username" (click)="menu.toggle($event)">
-      <app-user-img [email]="user.email"> </app-user-img> Hello,
-      {{ user.userName[0] }}
-    </h4>
-    <p-menu #menu [model]="items" [popup]="true"></p-menu>
+      <div class="closet-header-bar__profile">
+        <h4 id="username" class="closet-header__user" (click)="menu.toggle($event)">
+          <app-user-img [email]="user.email"></app-user-img>
+          <span class="closet-header__greeting">Hello, {{ user.userName[0] }}</span>
+        </h4>
+        <p-menu #menu [model]="items" [popup]="true"></p-menu>
+      </div>
+    </div>
+  </div>
 
-  </ng-container>
-
-  <div class="title-container ">
+  <div class="title-container closet-shell">
     <h1 [routerLink]="['/']">Meu Closet</h1>
     <p id="date">{{ todayIs | date: "longDate" : "" : "pt-BR" }}</p>
   </div>
 
-  <div class="menu__pages">
+  <div class="menu__pages closet-shell">
     <app-menu></app-menu>
   </div>
 </div>

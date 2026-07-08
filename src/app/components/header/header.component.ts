@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { FilterFacade } from '../../facades/filter.facade';
 
 @Component({
+  standalone: false,
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
