@@ -25,6 +25,7 @@
     "@ctrl/ngx-emoji-mart": "^9.3.0",
     "@primeuix/themes": "^2.0.3",
     "highcharts": "^11.4.8",
+    "iconify-icon": "^3.0.2",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^21.1.7",

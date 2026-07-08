@@ -3,6 +3,7 @@ import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { openClosetDialog } from '../../utils/closet-dialog';
 
 import { CategoriesFacade } from '@facades/categories.facade';
 import { categoryTypes } from '@utils/valueTypes';
@@ -48,7 +49,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   }
 
   openDialog(category?: ICategory) {
-    const ref = this._dialogService.open(ItemDialog, {
+    const ref = openClosetDialog(this._dialogService, ItemDialog, {
       header: category ? ' Editar' : 'Nova' + ' categoria',
       width: '450px',
       data: { type: 'category', item: category, types: categoryTypes },

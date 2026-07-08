@@ -3,6 +3,7 @@ import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { openClosetDialog } from '../../utils/closet-dialog';
 
 import { AccessoriesFacade } from '@facades/accessories.facade';
 import { IAccessory } from '@interfaces/accessory';
@@ -47,7 +48,7 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
   }
 
   openDialog(accessory?: IAccessory) {
-    const ref = this._dialogService.open(ItemDialog, {
+    const ref = openClosetDialog(this._dialogService, ItemDialog, {
       header: accessory ? ' Editar' : 'Novo' + ' acessório',
       width: '450px',
       data: { type: 'accessory', item: accessory, category: 'Acessório' },

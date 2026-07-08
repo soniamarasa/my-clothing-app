@@ -3,6 +3,7 @@ import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { openClosetDialog } from '../../utils/closet-dialog';
 import { Table } from 'primeng/table';
 
 import { LooksFacade } from '@facades/looks.facade';
@@ -115,7 +116,7 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
   }
 
   openDialog(look?: ILook) {
-    const ref = this._dialogService.open(LookDialog, {
+    const ref = openClosetDialog(this._dialogService, LookDialog, {
       header: look ? ' Editar' : 'Novo ' + 'Look',
       width: '450px',
       data: {

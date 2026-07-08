@@ -3,6 +3,7 @@ import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { openClosetDialog } from '../../utils/closet-dialog';
 
 import { ShoesFacade } from '@facades/shoes.facade';
 import { IShoe } from '@interfaces/shoe';
@@ -47,7 +48,7 @@ export class ShoesComponent implements OnInit, OnDestroy {
   }
 
   openDialog(shoe?: IShoe) {
-    const ref = this._dialogService.open(ItemDialog, {
+    const ref = openClosetDialog(this._dialogService, ItemDialog, {
       header: shoe ? ' Editar' : 'Novo' + ' sapato',
       width: '450px',
       data: { type: 'shoe', item: shoe, category: 'Sapato' },

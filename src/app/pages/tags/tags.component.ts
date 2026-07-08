@@ -9,6 +9,7 @@ import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { openClosetDialog } from '../../utils/closet-dialog';
 
 import { TagsFacade } from '@facades/tags.facade';
 import { ITag } from '@interfaces/tag';
@@ -57,7 +58,7 @@ export class TagsComponent implements OnInit, OnDestroy {
   }
 
   openDialog(tag?: ITag) {
-    const ref = this._dialogService.open(ItemDialog, {
+    const ref = openClosetDialog(this._dialogService, ItemDialog, {
       header: tag ? ' Editar' : 'Nova' + ' tag',
       width: '450px',
       data: { type: 'tag', item: tag, types: tagTypes },

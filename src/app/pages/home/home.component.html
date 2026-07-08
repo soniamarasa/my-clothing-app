@@ -6,7 +6,9 @@
   <div *ngIf="view.data as dashboard" class="home">
     <section class="home-hero card">
       <div class="home-hero__content">
-        <p class="home-hero__eyebrow">Meu Closet</p>
+        <p class="home-hero__eyebrow">
+          Meu Closet · {{ today | date : "d 'de' MMMM 'de' y" : "" : "pt-BR" }}
+        </p>
         <h1 class="home-hero__title">
           {{ userName ? 'Olá, ' + userName + '!' : 'Seu armário, organizado' }}
         </h1>
@@ -38,7 +40,12 @@
           [style.background]="stat.accent + '22'"
           [style.color]="stat.accent"
         >
-          <i [class]="stat.icon"></i>
+          <iconify-icon
+            class="home-stat__iconify"
+            [attr.icon]="stat.icon"
+            [style.fontSize.px]="18"
+            aria-hidden="true"
+          ></iconify-icon>
         </div>
         <div class="home-stat__body">
           <span class="home-stat__value">{{ stat.value }}</span>

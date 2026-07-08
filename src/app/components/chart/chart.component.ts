@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { SubSink } from 'subsink';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { openClosetDialog } from '../../utils/closet-dialog';
 import { IDashboardItem } from '../../interfaces/dashboard';
 import { ListDialog } from '../dialogs/list-dialog/list-dialog.component';
 
@@ -49,7 +50,7 @@ export class ChartComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   openDialog() {
-    const ref = this._dialogService.open(ListDialog, {
+    const ref = openClosetDialog(this._dialogService, ListDialog, {
       header: this.header,
       width: '500px',
       data: this.data,

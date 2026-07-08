@@ -27,6 +27,7 @@ interface StatCard {
 export class HomeComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   userName = '';
+  today = new Date();
 
   readonly dashboardView$ = this.dashboardFacade.dashboardState$.pipe(
     map((dashboard: IDashboard) => ({
@@ -106,37 +107,37 @@ export class HomeComponent implements OnInit, OnDestroy {
       {
         label: 'Looks usados',
         value: dashboard.totalLooks.total,
-        icon: 'pi pi-check-circle',
+        icon: 'mdi:calendar-check',
         accent: '#de615d',
       },
       {
         label: 'Vestidos',
         value: dashboard.garbs.total,
-        icon: 'pi pi-user',
+        icon: 'game-icons:dress',
         accent: '#708a81',
       },
       {
         label: 'Tops',
         value: dashboard.tops.total,
-        icon: 'pi pi-arrow-up',
+        icon: 'mdi:tshirt-crew',
         accent: '#cda64e',
       },
       {
         label: 'Partes de baixo',
         value: dashboard.bottoms.total,
-        icon: 'pi pi-arrow-down',
+        icon: 'game-icons:trousers',
         accent: '#77835c',
       },
       {
         label: 'Bolsas',
         value: dashboard.handbags.total,
-        icon: 'pi pi-shopping-bag',
+        icon: 'game-icons:hand-bag',
         accent: '#866d9b',
       },
       {
         label: 'Sapatos',
         value: dashboard.shoes.total,
-        icon: 'pi pi-directions',
+        icon: 'mdi:shoe-sneaker',
         accent: '#dea37b',
       },
     ];

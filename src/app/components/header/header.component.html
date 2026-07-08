@@ -1,7 +1,15 @@
-<div class="home">
-  <div class="closet-header-bar">
-    <div class="closet-header-bar__inner closet-shell">
-      <div class="closet-header-bar__year">
+<header class="app-header">
+  <div class="app-header__inner closet-shell">
+    <a routerLink="/" class="app-header__brand" aria-label="Meu Closet — início">
+      Meu Closet
+    </a>
+
+    <nav class="app-header__nav" aria-label="Navegação principal">
+      <app-menu></app-menu>
+    </nav>
+
+    <div class="app-header__actions">
+      <div class="app-header__year">
         <p-datepicker
           (ngModelChange)="setYear($event)"
           styleClass="year_select"
@@ -11,25 +19,20 @@
           dateFormat="yy"
           [showIcon]="true"
           inputId="icondisplay"
+          [attr.aria-label]="'Filtrar por ano'"
         />
       </div>
 
-      <div class="closet-header-bar__profile">
-        <h4 id="username" class="closet-header__user" (click)="menu.toggle($event)">
-          <app-user-img [email]="user?.email ?? ''"></app-user-img>
-          <span class="closet-header__greeting">Olá, {{ displayName }}</span>
-        </h4>
-        <p-menu #menu [model]="items" [popup]="true"></p-menu>
-      </div>
+      <button
+        type="button"
+        id="username"
+        class="closet-header__user app-header__profile"
+        (click)="menu.toggle($event)"
+      >
+        <app-user-img [email]="user?.email ?? ''"></app-user-img>
+        <span class="closet-header__greeting">{{ displayName }}</span>
+      </button>
+      <p-menu #menu [model]="items" [popup]="true"></p-menu>
     </div>
   </div>
-
-  <div class="title-container closet-shell">
-    <h1 [routerLink]="['/']">Meu Closet</h1>
-    <p id="date">{{ todayIs | date: "longDate" : "" : "pt-BR" }}</p>
-  </div>
-
-  <div class="menu__pages closet-shell">
-    <app-menu></app-menu>
-  </div>
-</div>
+</header>

@@ -4,6 +4,7 @@ import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PaginatorState } from 'primeng/paginator';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { openClosetDialog } from '../../utils/closet-dialog';
 import { Table } from 'primeng/table';
 
 import { LooksFacade } from '@facades/looks.facade';
@@ -138,7 +139,7 @@ export class LooksComponent implements OnInit, OnDestroy {
   }
 
   openDialog(look?: ILook): void {
-    const ref = this._dialogService.open(LookDialog, {
+    const ref = openClosetDialog(this._dialogService, LookDialog, {
       header: look ? 'Editar Look' : 'Novo Look',
       width: '520px',
       data: {

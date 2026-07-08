@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SubSink } from 'subsink';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { openClosetDialog } from '../../utils/closet-dialog';
 import { finalize } from 'rxjs';
 
 import { UsersFacade } from '@facades/users.facade';
@@ -53,7 +54,7 @@ export class AuthComponent implements OnInit {
   }
 
   openDialogRecover() {
-    const ref = this._dialogService.open(RecoverDialogComponent, {
+    const ref = openClosetDialog(this._dialogService, RecoverDialogComponent, {
       header: 'Esqueceu a sua senha?',
     });
 

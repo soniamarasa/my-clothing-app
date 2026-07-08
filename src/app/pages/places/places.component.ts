@@ -3,6 +3,7 @@ import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { openClosetDialog } from '../../utils/closet-dialog';
 
 import { PlacesFacade } from '@facades/places.facade';
 import { IPlace } from '@interfaces/place';
@@ -47,7 +48,7 @@ export class PlacesComponent implements OnInit, OnDestroy {
   }
 
   openDialog(place?: IPlace) {
-    const ref = this._dialogService.open(ItemDialog, {
+    const ref = openClosetDialog(this._dialogService, ItemDialog, {
       header: place ? ' Editar' : 'Novo' + ' Local',
       width: '450px',
       data: { type: 'place', item: place, types: [] },

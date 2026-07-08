@@ -3,6 +3,7 @@ import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { openClosetDialog } from '../../utils/closet-dialog';
 
 import { BandanasFacade } from '@facades/bandanas.facade';
 import { IBandana } from '@interfaces/bandana';
@@ -47,7 +48,7 @@ export class BandanasComponent implements OnInit, OnDestroy {
   }
 
   openDialog(bandana?: IBandana) {
-    const ref = this._dialogService.open(ItemDialog, {
+    const ref = openClosetDialog(this._dialogService, ItemDialog, {
       header: bandana ? 'Editar' : 'Novo',
       width: '450px',
       data: { type: 'bandana', item: bandana },

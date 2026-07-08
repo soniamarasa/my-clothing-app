@@ -11,6 +11,7 @@ import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { openClosetDialog } from '../../utils/closet-dialog';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 
@@ -121,7 +122,7 @@ export class ClothesComponent implements OnInit, OnDestroy {
   }
 
   openDialog(clothing?: IClothing) {
-    const ref = this._dialogService.open(ItemDialog, {
+    const ref = openClosetDialog(this._dialogService, ItemDialog, {
       header: clothing ? ' Editar ' : 'Nova ' + 'Peça de Roupa',
       width: '450px',
       data: { type: 'clothing', item: clothing, category: 'Roupa' },

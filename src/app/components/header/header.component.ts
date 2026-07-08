@@ -15,8 +15,6 @@ import { SubSink } from 'subsink';
 export class HeaderComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
-  todayIs = new Date();
-  isHome = window.location.pathname === '/';
   user: IUser | null = null;
   displayName = 'Visitante';
   items: MenuItem[] | undefined;

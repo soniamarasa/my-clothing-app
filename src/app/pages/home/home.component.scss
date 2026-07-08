@@ -27,11 +27,12 @@
 
       &__eyebrow {
         margin: 0 0 0.35rem;
-        font-size: 0.75rem;
-        letter-spacing: 0.12em;
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
         color: var(--closet-accent, #dea37b);
         font-weight: 700;
+        line-height: 1.35;
       }
 
       &__title {
@@ -116,8 +117,11 @@
         place-items: center;
         flex-shrink: 0;
 
-        i {
-          font-size: 1.1rem;
+        i,
+        iconify-icon.home-stat__iconify {
+          font-size: 1.05rem;
+          line-height: 1;
+          display: block;
         }
       }
 

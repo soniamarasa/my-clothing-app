@@ -4,6 +4,7 @@ import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { openClosetDialog } from '../../utils/closet-dialog';
 import { Table } from 'primeng/table';
 
 import { PlannedLooksFacade } from '@facades/plannedLooks.facade';
@@ -164,7 +165,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
   }
 
   openDialog(plannedLook?: IPlannedLook, presetDate?: Date): void {
-    const ref = this._dialogService.open(PlannedLookDialog, {
+    const ref = openClosetDialog(this._dialogService, PlannedLookDialog, {
       header: plannedLook ? 'Editar look planejado' : 'Novo look planejado',
       width: '500px',
       data: {

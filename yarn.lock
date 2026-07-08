@@ -1236,6 +1236,11 @@
   resolved "https://registry.npmjs.org/@hono/node-server/-/node-server-1.19.14.tgz"
   integrity sha512-GwtvgtXxnWsucXvbQXkRgqksiH2Qed37H9xHZocE5sA3N8O8O8/8FA3uclQXxXVzc9XBZuEOMK7+r02FmSpHtw==
 
+"@iconify/types@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@iconify/types/-/types-2.0.0.tgz"
+  integrity sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==
+
 "@inquirer/ansi@^1.0.2":
   version "1.0.2"
   resolved "https://registry.npmjs.org/@inquirer/ansi/-/ansi-1.0.2.tgz"
@@ -4002,6 +4007,13 @@ hyperdyperid@^1.2.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/hyperdyperid/-/hyperdyperid-1.2.0.tgz"
   integrity sha512-Y93lCzHYgGWdrJ66yIktxiaGULYc6oGiABxhcO5AufBeOyoIdZF7bIfLaOrbM0iGIOXQQgxxRrFEnb+Y6w1n4A==
+
+iconify-icon@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.npmjs.org/iconify-icon/-/iconify-icon-3.0.2.tgz"
+  integrity sha512-DYPAumiUeUeT/GHT8x2wrAVKn1FqZJqFH0Y5pBefapWRreV1BBvqBVMb0020YQ2njmbR59r/IathL2d2OrDrxA==
+  dependencies:
+    "@iconify/types" "^2.0.0"
 
 iconv-lite@^0.6.3:
   version "0.6.3"
