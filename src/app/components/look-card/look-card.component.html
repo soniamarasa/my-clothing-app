@@ -1,0 +1,79 @@
+<article class="look-card" (click)="onEdit()" role="button" tabindex="0">
+  <header class="look-card__header">
+    <span
+      *ngIf="look.tag"
+      class="look-card__tag"
+      [style.color]="textColor(look.tag.color)"
+      [style.background]="look.tag.color + '55'"
+    >
+      {{ look.tag.name }}
+    </span>
+    <p-button
+      icon="pi pi-trash"
+      [rounded]="true"
+      [text]="true"
+      severity="danger"
+      pTooltip="Excluir"
+      tooltipPosition="left"
+      (onClick)="onRemove($event)"
+    ></p-button>
+  </header>
+
+  <div class="look-card__body">
+    <ng-container *ngIf="look.garb; else topBottom">
+      <div
+        class="look-card__piece look-card__piece--main"
+        [style.color]="textColor(look.garb.color)"
+        [style.background]="look.garb.color + '70'"
+      >
+        <span class="look-card__piece-icon">{{ look.garb.tag?.icon }}</span>
+        <span class="look-card__piece-name">{{ look.garb.name }}</span>
+      </div>
+    </ng-container>
+
+    <ng-template #topBottom>
+      <div
+        *ngIf="look.top"
+        class="look-card__piece"
+        [style.color]="textColor(look.top.color)"
+        [style.background]="look.top.color + '70'"
+      >
+        <span class="look-card__piece-icon">{{ look.top.tag?.icon }}</span>
+        <span class="look-card__piece-name">{{ look.top.name }}</span>
+      </div>
+
+      <span *ngIf="look.top && look.bottom" class="look-card__plus">+</span>
+
+      <div
+        *ngIf="look.bottom"
+        class="look-card__piece"
+        [style.color]="textColor(look.bottom.color)"
+        [style.background]="look.bottom.color + '70'"
+      >
+        <img
+          *ngIf="look.bottom.tag?._id === 'customT08'"
+          src="assets/skirt.png"
+          alt=""
+          class="look-card__skirt"
+        />
+        <span
+          *ngIf="look.bottom.tag?._id !== 'customT08'"
+          class="look-card__piece-icon"
+          >{{ look.bottom.tag?.icon }}</span
+        >
+        <span class="look-card__piece-name">{{ look.bottom.name }}</span>
+      </div>
+    </ng-template>
+  </div>
+
+  <footer *ngIf="look.shoe" class="look-card__footer">
+    <span
+      class="look-card__shoe"
+      [style.color]="textColor(look.shoe.color)"
+      [style.background]="look.shoe.color + '70'"
+    >
+      <span class="look-card__piece-icon">{{ look.shoe.categoria?.icon }}</span>
+      {{ look.shoe.name }}
+    </span>
+  </footer>
+</article>

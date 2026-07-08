@@ -79,4 +79,8 @@ export class DashboardFacade {
   filter(filter: IGetDashboardParams) {
     this._filter.next({ ...this._filter.value, ...filter });
   }
+
+  refresh() {
+    this._refresh.next(undefined);
+  }
 }

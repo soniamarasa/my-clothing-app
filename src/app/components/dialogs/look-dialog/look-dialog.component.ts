@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
-import { filter, map } from 'rxjs';
 import { SubSink } from 'subsink';
 import {
   DialogService,
@@ -12,6 +11,9 @@ import { TagsFacade } from '@facades/tags.facade';
 import { IClothing } from '@interfaces/clothing';
 import { ITag } from '@interfaces/tag';
 import { IShoe } from '@interfaces/shoe';
+import { getLookOutfitLabel } from '../../../utils/planned-look-label';
+
+type OutfitMode = 'separate' | 'garb';
 
 @Component({
   standalone: false,
@@ -27,6 +29,14 @@ export class LookDialog implements OnInit, OnDestroy {
   garbs: IClothing[] = [];
   shoes: IShoe[] = [];
   tags: ITag[] = [];
+  activeStep = 0;
+  outfitMode: OutfitMode = 'separate';
+
+  readonly steps = [
+    { label: 'Base' },
+    { label: 'Sapato' },
+    { label: 'Tag' },
+  ];
 
   formHasChanged = false;
   ref?: DynamicDialogRef;
@@ -49,7 +59,7 @@ export class LookDialog implements OnInit, OnDestroy {
     public _dialogService: DialogService,
     private _fb: UntypedFormBuilder,
     public categoriesFacade: CategoriesFacade,
-    public tagsFacade: TagsFacade,
+    public tagsFacade: TagsFacade
   ) {}
 
   ngOnInit(): void {
@@ -58,6 +68,58 @@ export class LookDialog implements OnInit, OnDestroy {
 
   get formValue() {
     return this.lookForm?.value;
+  }
+
+  get previewLabel(): string {
+    const value = this.lookForm.value;
+    return getLookOutfitLabel({
+      top: value.top,
+      bottom: value.bottom,
+      garb: value.garb,
+      shoe: value.shoe,
+      tag: value.tag,
+    });
+  }
+
+  setOutfitMode(mode: OutfitMode): void {
+    this.outfitMode = mode;
+
+    if (mode === 'garb') {
+      this.lookForm.patchValue({ top: null, bottom: null });
+      return;
+    }
+
+    this.lookForm.patchValue({ garb: null });
+  }
+
+  canAdvance(): boolean {
+    if (this.activeStep === 0) {
+      if (this.outfitMode === 'garb') {
+        return !!this.lookForm.value.garb;
+      }
+
+      return !!this.lookForm.value.top && !!this.lookForm.value.bottom;
+    }
+
+    if (this.activeStep === 1) {
+      return this.lookForm.get('shoe')?.valid ?? false;
+    }
+
+    return this.lookForm.valid;
+  }
+
+  nextStep(): void {
+    if (!this.canAdvance() || this.activeStep >= this.steps.length - 1) {
+      return;
+    }
+
+    this.activeStep += 1;
+  }
+
+  prevStep(): void {
+    if (this.activeStep > 0) {
+      this.activeStep -= 1;
+    }
   }
 
   private unboxLookForm() {
@@ -69,16 +131,17 @@ export class LookDialog implements OnInit, OnDestroy {
         this.shoes = this.dialogData.shoes;
 
         this.tags = this.dialogData.tags.filter(
-          (item: ITag) => item.type === 'Usos',
+          (item: ITag) => item.type === 'Usos'
         );
 
         if (this.dialogData?.item) {
           this.lookForm.addControl(
             '_id',
-            this._fb.control(this.dialogData.item._id, [Validators.required]),
+            this._fb.control(this.dialogData.item._id, [Validators.required])
           );
 
           this.lookForm.patchValue({ ...this.dialogData.item });
+          this.outfitMode = this.dialogData.item.garb ? 'garb' : 'separate';
         }
       }
       resolve();
@@ -88,15 +151,19 @@ export class LookDialog implements OnInit, OnDestroy {
   onClose(confirmed?: boolean) {
     if (!confirmed) {
       this._ref.close();
-    } else {
-      let data = this.lookForm.value;
-
-      this._ref.close(data);
+      return;
     }
-  }
 
-  compareIds(obj1: any, obj2: any) {
-    return obj1 && obj2 && obj1.id == obj2.id;
+    const data = { ...this.lookForm.value };
+
+    if (this.outfitMode === 'garb') {
+      data.top = null;
+      data.bottom = null;
+    } else {
+      data.garb = null;
+    }
+
+    this._ref.close(data);
   }
 
   ngOnDestroy(): void {

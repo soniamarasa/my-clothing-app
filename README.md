@@ -1,27 +1,118 @@
-# MyClothingApp
+# Meu Closet
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+Aplicação web para **organizar o guarda-roupa**, **montar combinações de looks** e **planejar o que vestir** — com dashboard analítico de uso ao longo do ano.
 
-## Development server
+Projeto full-stack pensado como produto pessoal, com visual dark/glass e foco em usabilidade.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Funcionalidades
 
-## Code scaffolding
+- Cadastro de peças (roupas, sapatos, bolsas, acessórios, bandanas)
+- Montagem de looks combinando peças por tag/ocasião
+- Planejamento de looks por data (trabalho, academia, ocasiões especiais)
+- Dashboard com estatísticas de uso (tops, bottoms, vestidos, sapatos, bolsas)
+- Looks não utilizados no ano corrente
+- Autenticação JWT com recuperação de senha
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Stack
 
-## Build
+| Camada | Tecnologias |
+|--------|-------------|
+| Frontend | Angular 21, PrimeNG 21, PrimeFlex, RxJS, Highcharts |
+| Backend | Node.js, Express, MongoDB, JWT |
+| Padrões | Facades, stores reativos, tema customizado (`ClosetTheme`) |
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Arquitetura
 
-## Running unit tests
+```
+my-clothing-app (Angular)  →  my-clothing-api (Express)  →  MongoDB
+        │                              │
+   Components/Pages              Routes/Services
+   Facades + Stores              Models + Controllers
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Pré-requisitos
 
-## Running end-to-end tests
+- Node.js >= 24.15
+- npm >= 11.12
+- MongoDB (Atlas ou local)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Como rodar localmente
 
-## Further help
+### 1. API
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+cd my-clothing-api
+cp .env.example .env
+# Edite .env com suas credenciais MongoDB e SMTP
+npm install
+npm start
+```
+
+A API sobe em `http://localhost:3001`.
+
+> **Windows:** se `mongodb+srv://` falhar, use a connection string `mongodb://` padrão (veja comentário no `.env.example`).
+
+### 2. App
+
+```bash
+cd my-clothing-app
+npm install
+npm start
+```
+
+O app abre em `http://localhost:1104`.
+
+Configure a URL da API em `src/environments/environment.ts` se necessário:
+
+```ts
+export const environment = {
+  production: false,
+  url: 'http://localhost:3001/api',
+};
+```
+
+## Scripts úteis
+
+```bash
+# Frontend
+npm start          # dev server (porta 1104)
+npm run build      # build de produção
+
+# Backend
+npm start          # API (porta 3001)
+```
+
+## Estrutura do frontend (principais pastas)
+
+```
+src/app/
+├── components/     # UI reutilizável (look-card, charts, dialogs)
+├── facades/        # Orquestração de dados
+├── pages/          # Telas (home, looks, planned-looks, …)
+├── services/       # HTTP clients
+├── stores/         # Estado reativo
+└── styles/         # Tema ClosetTheme + overrides glass
+```
+
+## Screenshots
+
+> Adicione capturas em `docs/screenshots/` e referencie aqui antes de publicar no portfolio.
+
+| Tela | Descrição |
+|------|-----------|
+| Home | Dashboard com stats, próximo look e gráficos |
+| Looks | Grid de cards com combinações coloridas |
+| Planejados | Agenda de looks por data |
+
+## Próximos passos (roadmap)
+
+- [ ] Deploy demo (Vercel + Render)
+- [x] Calendário mensal para looks planejados
+- [x] Wizard de montagem de look (3 passos)
+- [x] Ação "Usar hoje" + página Meu Armário unificada
+- [ ] Modo vitrine pública para portfolio
+- [ ] Ícones Iconify unificados (`feature/closet-iconify`)
+
+## Licença
+
+Projeto pessoal — uso livre para referência de portfolio.

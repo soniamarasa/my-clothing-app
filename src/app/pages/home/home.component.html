@@ -1,61 +1,79 @@
 <ng-container *ngIf="dashboardView$ | async as view">
+  <div *ngIf="view.loading" class="home-loading">
+    <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+  </div>
+
   <div *ngIf="view.data as dashboard" class="home">
-    <div class="grid">
-      <p-card
-        header="Looks Usados"
-        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-        >{{ dashboard.totalLooks.total }}</p-card
-      >
-      <p-card
-        header="Total Vestidos"
-        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-        >{{ dashboard.garbs.total }}</p-card
-      >
-      <p-card
-        header="Total Tops"
-        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-        >{{ dashboard.tops.total }}</p-card
-      >
-      <p-card
-        header="Total Bottons"
-        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-        >{{ dashboard.bottoms.total }}</p-card
-      >
-      <p-card
-        header="Total Bolsas"
-        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-        >{{ dashboard.handbags.total }}</p-card
-      >
-      <p-card
-        header="Total Sapatos"
-        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-        >{{ dashboard.shoes.total }}</p-card
-      >
-    </div>
+    <section class="home-hero card">
+      <div class="home-hero__content">
+        <p class="home-hero__eyebrow">Meu Closet</p>
+        <h1 class="home-hero__title">
+          {{ userName ? 'Olá, ' + userName + '!' : 'Seu armário, organizado' }}
+        </h1>
+        <p class="home-hero__insight">{{ view.insight }}</p>
+        <div class="home-hero__actions">
+          <p-button
+            label="Montar look"
+            icon="pi pi-plus"
+            (onClick)="goToLooks()"
+          ></p-button>
+          <p-button
+            label="Planejar look"
+            icon="pi pi-calendar"
+            styleClass="p-button-outlined"
+            (onClick)="goToPlannedLooks()"
+          ></p-button>
+        </div>
+      </div>
+      <div class="home-hero__stat">
+        <span class="home-hero__stat-value">{{ view.wardrobeTotal }}</span>
+        <span class="home-hero__stat-label">peças no closet</span>
+      </div>
+    </section>
+
+    <section class="home-stats">
+      <article *ngFor="let stat of view.stats" class="home-stat">
+        <div
+          class="home-stat__icon"
+          [style.background]="stat.accent + '22'"
+          [style.color]="stat.accent"
+        >
+          <i [class]="stat.icon"></i>
+        </div>
+        <div class="home-stat__body">
+          <span class="home-stat__value">{{ stat.value }}</span>
+          <span class="home-stat__label">{{ stat.label }}</span>
+        </div>
+      </article>
+    </section>
 
     <ng-container *ngIf="nextPlannedLook$ | async as nextPlannedLook">
-      <p-card
-        *ngIf="nextPlannedLook.length"
-        [header]="'Próximo Look - ' + (nextPlannedLook[0].date | date)"
-        class="indicadores col-12 sm:col-6 md:col-4 lg:col"
-      >
+      <section *ngIf="nextPlannedLook.length" class="home-next card">
+        <header class="home-next__header">
+          <div>
+            <p class="home-next__eyebrow">Próximo look planejado</p>
+            <h2>{{ nextPlannedLook[0].date | date : 'fullDate' : '' : 'pt-BR' }}</h2>
+          </div>
+          <p-button
+            label="Ver agenda"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            styleClass="p-button-text"
+            (onClick)="goToPlannedLooks()"
+          ></p-button>
+        </header>
+
         <div *ngFor="let look of nextPlannedLook" class="next_look_container">
           <span pTooltip="Roupa" tooltipPosition="bottom" class="item-1">
-            <img src="../../../assets/clothes.png" />
-
-            <span *ngIf="look.look.garb">
-              {{ look.look.garb.name }}
-            </span>
-
+            <img src="assets/clothes.png" alt="" />
+            <span *ngIf="look.look.garb">{{ look.look.garb.name }}</span>
             <span *ngIf="!look.look.garb">
-              {{ look.look.top?.name }} +
-              {{ look.look.bottom?.name }}
+              {{ look.look.top?.name }} + {{ look.look.bottom?.name }}
             </span>
           </span>
 
           <span pTooltip="Sapato" tooltipPosition="bottom" class="item-2">
-            <img src="../../../assets/shoe1.png" />
-
+            <img src="assets/shoe1.png" alt="" />
             {{ look.look.shoe?.name }}
           </span>
 
@@ -65,8 +83,7 @@
             class="item-3"
             *ngIf="look.handbag"
           >
-            <img src="../../../assets/bag.png" />
-
+            <img src="assets/bag.png" alt="" />
             {{ look.handbag.name }}
           </span>
 
@@ -77,20 +94,27 @@
               *ngFor="let accessory of look.accessories"
               class="item-4"
             >
-              <img src="../../../assets/accessory.png" />
-
+              <img src="assets/accessory.png" alt="" />
               <small>{{ accessory.name }}</small>
             </span>
           </ng-container>
+
+          <p-button
+            *ngIf="canMarkAsUsed(look)"
+            label="Usar hoje"
+            icon="pi pi-check"
+            size="small"
+            (onClick)="markAsUsed(look)"
+          ></p-button>
         </div>
-      </p-card>
+      </section>
     </ng-container>
 
-    <div class="charts-grid">
+    <section class="charts-grid">
       <div class="charts-grid__cell">
         <app-chart
           [data]="dashboard.totalLooks"
-          header="Combinações Mais Usadas"
+          header="Combinações mais usadas"
           [loading]="view.loading"
           chartType="pie"
         ></app-chart>
@@ -114,7 +138,7 @@
       <div class="charts-grid__cell">
         <app-chart
           [data]="dashboard.bottoms"
-          header="Bottons"
+          header="Partes de baixo"
           [loading]="view.loading"
           chartType="bar"
         ></app-chart>
@@ -135,6 +159,6 @@
           chartType="pie"
         ></app-chart>
       </div>
-    </div>
+    </section>
   </div>
 </ng-container>

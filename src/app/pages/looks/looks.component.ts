@@ -2,26 +2,22 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { PaginatorState } from 'primeng/paginator';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 
 import { LooksFacade } from '@facades/looks.facade';
 import { ILook } from '@interfaces/look';
-
-import { AccessoriesFacade } from '@facades/accessories.facade';
 import { IClothing } from '@interfaces/clothing';
-import { IAccessory } from '@interfaces/accessory';
 import { IShoe } from '@interfaces/shoe';
-
-import { IBandana } from '@interfaces/bandana';
-import { BandanasFacade } from '../../facades/bandanas.facade';
-import { ShoesFacade } from '../../facades/shoes.facade';
-import { ClothesFacade } from '../../facades/clothes.facade';
-import { LookDialog } from '../../components/dialogs/look-dialog/look-dialog.component';
-import { TagsFacade } from '../../facades/tags.facade';
 import { ITag } from '../../interfaces/tag';
-// import { FilterUtils } from "primeng/utils";
+import { ClothesFacade } from '../../facades/clothes.facade';
+import { ShoesFacade } from '../../facades/shoes.facade';
+import { TagsFacade } from '../../facades/tags.facade';
+import { LookDialog } from '../../components/dialogs/look-dialog/look-dialog.component';
+import { getContrastTextColor } from '../../utils/color-contrast';
+
+type LooksViewMode = 'grid' | 'list';
 
 @Component({
   standalone: false,
@@ -33,24 +29,33 @@ import { ITag } from '../../interfaces/tag';
 export class LooksComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   ref?: DynamicDialogRef;
-  loading: boolean = true;
-  total: number = 0;
+  loading = true;
+  total = 0;
   looksOriginal: ILook[] = [];
   looks: ILook[] = [];
-  clothes: IClothing[] = [];
+  filteredLooks: ILook[] = [];
+  paginatedLooks: ILook[] = [];
   tops: IClothing[] = [];
   bottoms: IClothing[] = [];
   garbs: IClothing[] = [];
   shoes: IShoe[] = [];
   tags: ITag[] = [];
+  searchQuery = '';
+  viewMode: LooksViewMode = 'grid';
+  gridFirst = 0;
+  gridRows = 12;
+
+  readonly viewOptions = [
+    { label: 'Cards', value: 'grid' as LooksViewMode, icon: 'pi pi-th-large' },
+    { label: 'Lista', value: 'list' as LooksViewMode, icon: 'pi pi-list' },
+  ];
+
+  readonly pageReportTemplate =
+    'Mostrando {first} a {last} de {totalRecords} looks';
 
   @ViewChild('dt1') tableLooks!: Table;
 
-  readonly looks$ = this.looksFacade.looksState$.pipe(
-    map((looks: ILook[]) => {
-      return looks;
-    })
-  );
+  readonly looks$ = this.looksFacade.looksState$.pipe(map((looks: ILook[]) => looks));
 
   constructor(
     public _dialogService: DialogService,
@@ -70,18 +75,13 @@ export class LooksComponent implements OnInit, OnDestroy {
         this.looks = looks;
         this.loading = false;
         this.total = looks.length;
+        this.applyFilters();
       }),
 
       this.clothesFacade.getClothes().subscribe((clothes: IClothing[]) => {
-        this.tops = clothes.filter(
-          (obj) => obj.category.name == 'Peça Superior'
-        );
-        this.bottoms = clothes.filter(
-          (obj) => obj.category.name == 'Peça Inferior'
-        );
-        this.garbs = clothes.filter(
-          (obj) => obj.category.name == 'Traje Completo'
-        );
+        this.tops = clothes.filter((obj) => obj.category.name == 'Peça Superior');
+        this.bottoms = clothes.filter((obj) => obj.category.name == 'Peça Inferior');
+        this.garbs = clothes.filter((obj) => obj.category.name == 'Traje Completo');
       }),
 
       this.tagsFacade.getTags().subscribe((tags: ITag[]) => {
@@ -94,21 +94,53 @@ export class LooksComponent implements OnInit, OnDestroy {
     );
   }
 
-  getSeverity(status: boolean) {
-    if (status) return 'danger';
-    else return 'success';
+  getTextColor(bgColor: string): string {
+    return getContrastTextColor(bgColor);
   }
 
-  clear(table: Table) {
+  onViewModeChange(): void {
+    if (this.viewMode === 'grid') {
+      this.applyFilters();
+    }
+  }
+
+  onSearchChange(): void {
+    if (this.viewMode === 'grid') {
+      this.applyFilters();
+      return;
+    }
+
+    this.tableLooks?.filterGlobal(this.searchQuery, 'contains');
+  }
+
+  clearFilters(): void {
+    this.searchQuery = '';
+
+    if (this.viewMode === 'list' && this.tableLooks) {
+      this.tableLooks.clear();
+      this.tableLooks.value = this.looksOriginal;
+      return;
+    }
+
+    this.applyFilters();
+  }
+
+  onGridPageChange(event: PaginatorState): void {
+    this.gridFirst = event.first ?? 0;
+    this.gridRows = event.rows ?? this.gridRows;
+    this.updatePaginatedLooks();
+  }
+
+  clear(table: Table): void {
+    this.clearFilters();
     table.clear();
-
-    this.tableLooks.value = this.looksOriginal;
+    table.value = this.looksOriginal;
   }
 
-  openDialog(look?: ILook) {
+  openDialog(look?: ILook): void {
     const ref = this._dialogService.open(LookDialog, {
-      header: look ? ' Editar' : 'Novo ' + 'Look',
-      width: '450px',
+      header: look ? 'Editar Look' : 'Novo Look',
+      width: '520px',
       data: {
         item: look,
         clothes: [this.tops, this.bottoms, this.garbs],
@@ -127,10 +159,10 @@ export class LooksComponent implements OnInit, OnDestroy {
     );
   }
 
-  newLook(look: ILook) {
+  newLook(look: ILook): void {
     this.subs.add(
       this.looksFacade.newLook(look).subscribe({
-        next: (look) => {
+        next: () => {
           this.setTableFilters();
           this._messageService.add({
             key: 'notification',
@@ -143,18 +175,17 @@ export class LooksComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'danger',
             summary: 'Houve um problema!',
-            detail:
-              'Não foi possível criar esse look. Tente novamente mais tarde.',
+            detail: 'Não foi possível criar esse look. Tente novamente mais tarde.',
           });
         },
       })
     );
   }
 
-  updateLook(look: ILook) {
+  updateLook(look: ILook): void {
     this.subs.add(
       this.looksFacade.updateLook(look).subscribe({
-        next: (look) => {
+        next: () => {
           this.setTableFilters();
           this._messageService.add({
             key: 'notification',
@@ -167,17 +198,16 @@ export class LooksComponent implements OnInit, OnDestroy {
             key: 'notification',
             severity: 'danger',
             summary: 'Houve um problema!',
-            detail:
-              'Não foi possível atualizar esse look. Tente novamente mais tarde.',
+            detail: 'Não foi possível atualizar esse look. Tente novamente mais tarde.',
           });
         },
       })
     );
   }
 
-  confirm(look: ILook) {
+  confirm(look: ILook): void {
     this._confirmationService.confirm({
-      message: 'Tem certeza que você deseja exluir esse look?',
+      message: 'Tem certeza que você deseja excluir esse look?',
       header: 'Excluir',
       accept: () => {
         this.setTableFilters();
@@ -188,7 +218,7 @@ export class LooksComponent implements OnInit, OnDestroy {
                 key: 'notification',
                 severity: 'success',
                 summary: 'Look excluído.',
-                detail: 'O Look foi deletado com sucesso!',
+                detail: 'O look foi deletado com sucesso!',
               });
             },
             error: () => {
@@ -196,8 +226,7 @@ export class LooksComponent implements OnInit, OnDestroy {
                 key: 'notification',
                 severity: 'danger',
                 summary: 'Houve um problema!',
-                detail:
-                  'Não foi possível deletar o look. Tente novamente mais tarde.',
+                detail: 'Não foi possível deletar o look. Tente novamente mais tarde.',
               });
             },
           })
@@ -206,24 +235,44 @@ export class LooksComponent implements OnInit, OnDestroy {
     });
   }
 
-  getTextColor(bgColor: string): string {
-    const rgb = parseInt(bgColor.replace('#', ''), 16);
-    const r = (rgb >> 16) & 0xff;
-    const g = (rgb >> 8) & 0xff;
-    const b = (rgb >> 0) & 0xff;
-
-    const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-    return brightness > 128 ? 'black' : '#D4BE98';
-  }
-
-  filterGlobal(event: any) {
+  filterGlobal(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    const filterValue = inputElement.value || '';
-    this.tableLooks.filterGlobal(filterValue, 'contains');
+    this.searchQuery = inputElement.value || '';
+    this.onSearchChange();
   }
 
-  setTableFilters() {
+  setTableFilters(): void {
     this.looks = [...this.looks];
+    this.applyFilters();
+  }
+
+  private applyFilters(): void {
+    const query = this.searchQuery.trim().toLowerCase();
+
+    this.filteredLooks = !query
+      ? [...this.looks]
+      : this.looks.filter((look) => this.matchesSearch(look, query));
+
+    this.total = this.filteredLooks.length;
+    this.gridFirst = 0;
+    this.updatePaginatedLooks();
+  }
+
+  private updatePaginatedLooks(): void {
+    const end = this.gridFirst + this.gridRows;
+    this.paginatedLooks = this.filteredLooks.slice(this.gridFirst, end);
+  }
+
+  private matchesSearch(look: ILook, query: string): boolean {
+    const parts = [
+      look.top?.name,
+      look.bottom?.name,
+      look.garb?.name,
+      look.shoe?.name,
+      look.tag?.name,
+    ];
+
+    return parts.some((part) => part?.toLowerCase().includes(query));
   }
 
   ngOnDestroy(): void {

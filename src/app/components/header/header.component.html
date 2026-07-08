@@ -16,8 +16,8 @@
 
       <div class="closet-header-bar__profile">
         <h4 id="username" class="closet-header__user" (click)="menu.toggle($event)">
-          <app-user-img [email]="user.email"></app-user-img>
-          <span class="closet-header__greeting">Hello, {{ user.userName[0] }}</span>
+          <app-user-img [email]="user?.email ?? ''"></app-user-img>
+          <span class="closet-header__greeting">Olá, {{ displayName }}</span>
         </h4>
         <p-menu #menu [model]="items" [popup]="true"></p-menu>
       </div>

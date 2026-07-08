@@ -1,0 +1,34 @@
+<div class="wardrobe-page">
+  <header class="wardrobe-page__header">
+    <div>
+      <h2 class="wardrobe-page__title">
+        <i class="pi pi-box"></i>
+        Meu Armário
+      </h2>
+      <p class="wardrobe-page__subtitle">
+        Todas as peças do closet em um só lugar
+      </p>
+    </div>
+  </header>
+
+  <div class="wardrobe-page__tabs card">
+    <p-selectButton
+      [options]="tabs"
+      [(ngModel)]="activeTab"
+      optionLabel="label"
+      optionValue="id"
+    >
+      <ng-template let-item pTemplate>
+        <i [class]="item.icon"></i>
+        <span class="wardrobe-page__tab-label">{{ item.label }}</span>
+      </ng-template>
+    </p-selectButton>
+  </div>
+
+  <div class="wardrobe-page__panel">
+    <app-clothes *ngIf="activeTab === 'clothes'"></app-clothes>
+    <app-shoes *ngIf="activeTab === 'shoes'"></app-shoes>
+    <app-handbags *ngIf="activeTab === 'handbags'"></app-handbags>
+    <app-accessories *ngIf="activeTab === 'accessories'"></app-accessories>
+  </div>
+</div>

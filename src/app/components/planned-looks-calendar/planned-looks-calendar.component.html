@@ -1,0 +1,86 @@
+<div class="planned-calendar card">
+  <header class="planned-calendar__nav">
+    <p-button
+      icon="pi pi-chevron-left"
+      [rounded]="true"
+      [text]="true"
+      (onClick)="prevMonth.emit()"
+    ></p-button>
+    <div class="planned-calendar__title">
+      <h3>{{ monthLabel }}</h3>
+      <p-button
+        label="Hoje"
+        styleClass="p-button-text p-button-sm"
+        (onClick)="today.emit()"
+      ></p-button>
+    </div>
+    <p-button
+      icon="pi pi-chevron-right"
+      [rounded]="true"
+      [text]="true"
+      (onClick)="nextMonth.emit()"
+    ></p-button>
+  </header>
+
+  <div class="planned-calendar__weekdays">
+    <span *ngFor="let day of weekDays">{{ day }}</span>
+  </div>
+
+  <div class="planned-calendar__grid">
+    <button
+      *ngFor="let day of days"
+      type="button"
+      class="planned-calendar__day"
+      [class.planned-calendar__day--muted]="!day.inMonth"
+      [class.planned-calendar__day--today]="day.isToday"
+      [class.planned-calendar__day--selected]="isSelected(day)"
+      [class.planned-calendar__day--has-looks]="day.looks.length"
+      (click)="onSelectDay(day)"
+    >
+      <span class="planned-calendar__day-number">{{ day.date.getDate() }}</span>
+      <span *ngIf="day.looks.length" class="planned-calendar__dots">
+        <span
+          *ngFor="let look of day.looks | slice : 0 : 3"
+          class="planned-calendar__dot"
+          [style.background]="look.place?.color || 'var(--closet-accent)'"
+        ></span>
+      </span>
+    </button>
+  </div>
+</div>
+
+<aside *ngIf="selectedDate" class="planned-calendar-side card">
+  <header class="planned-calendar-side__header">
+    <h3>{{ selectedDate | date : 'fullDate' : '' : 'pt-BR' }}</h3>
+    <span>{{ selectedDayLooks.length }} look(s)</span>
+  </header>
+
+  <div *ngIf="!selectedDayLooks.length" class="planned-calendar-side__empty">
+    Nenhum look neste dia.
+  </div>
+
+  <article
+    *ngFor="let plannedLook of selectedDayLooks"
+    class="planned-calendar-side__item"
+    (click)="onOpenLook($event, plannedLook)"
+  >
+    <div class="planned-calendar-side__item-main">
+      <span
+        class="planned-calendar-side__place"
+        [style.background]="(plannedLook.place?.color || '#708a81') + '55'"
+      >
+        {{ plannedLook.place?.icon }} {{ plannedLook.place?.name }}
+      </span>
+      <p>{{ summary(plannedLook) }}</p>
+      <small>{{ isUsed(plannedLook) ? 'Usado' : 'Planejado' }}</small>
+    </div>
+
+    <p-button
+      *ngIf="canMarkAsUsed && !isUsed(plannedLook)"
+      label="Usar hoje"
+      icon="pi pi-check"
+      size="small"
+      (onClick)="onMarkAsUsed($event, plannedLook)"
+    ></p-button>
+  </article>
+</aside>

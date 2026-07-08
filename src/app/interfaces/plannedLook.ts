@@ -12,7 +12,7 @@ export interface IPlannedLook {
   coat: IClothing;
   handbag: IHandbag;
   date: Date;
-  status: string;
+  status: { name: string; id: number } | string;
   place: IPlace;
 
   accessories: IAccessory[];

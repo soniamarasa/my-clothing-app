@@ -28,6 +28,8 @@ import { PopoverModule } from 'primeng/popover';
 import { FocusTrapModule } from 'primeng/focustrap';
 import { StyleClassModule } from 'primeng/styleclass';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { PaginatorModule } from 'primeng/paginator';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
 import { UsersFacade } from '@facades/users.facade';
@@ -51,6 +53,7 @@ import { ShoesComponent } from './shoes/shoes.component';
 import { LooksComponent } from './looks/looks.component';
 import { PlannedLooksComponent } from './planned-looks/planned-looks.component';
 import { UnusedLooksComponent } from './unused-looks/unused-looks.component';
+import { WardrobeComponent } from './wardrobe/wardrobe.component';
 
 //Componentes
 import { PasswordRecoverComponent } from './password-recover/password-recover.component';
@@ -70,6 +73,8 @@ import { ItemDialog } from '@components/dialogs/item-dialog/item-dialog.componen
 import { LookDialog } from '@components/dialogs/look-dialog/look-dialog.component';
 import { PlannedLookDialog } from '@components/dialogs/planned-look-dialog/planned-look-dialog.component';
 import { ListDialog } from '../components/dialogs/list-dialog/list-dialog.component';
+import { LookCardComponent } from '../components/look-card/look-card.component';
+import { PlannedLooksCalendarComponent } from '../components/planned-looks-calendar/planned-looks-calendar.component';
 
 @NgModule({
   declarations: [
@@ -91,10 +96,13 @@ import { ListDialog } from '../components/dialogs/list-dialog/list-dialog.compon
     LooksComponent,
     UnusedLooksComponent,
     PlannedLooksComponent,
+    WardrobeComponent,
     ChartComponent,
     PieChartComponent,
     BarChartComponent,
     ListIndicatorComponent,
+    LookCardComponent,
+    PlannedLooksCalendarComponent,
 
     RecoverDialogComponent,
     ItemDialog,
@@ -137,6 +145,8 @@ import { ListDialog } from '../components/dialogs/list-dialog/list-dialog.compon
     FocusTrapModule,
     StyleClassModule,
     ProgressSpinnerModule,
+    SelectButtonModule,
+    PaginatorModule,
     PickerComponent,
     PagesRoutingModule,
   ],

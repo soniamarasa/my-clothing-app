@@ -7,6 +7,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Table } from 'primeng/table';
 
 import { PlannedLooksFacade } from '@facades/plannedLooks.facade';
+import { DashboardFacade } from '@facades/dashboard.facade';
 import { PlacesFacade } from '@facades/places.facade';
 import { HandbagsFacade } from '@facades/handbags.facade';
 import { ClothesFacade } from '@facades/clothes.facade';
@@ -16,6 +17,13 @@ import { BandanasFacade } from '@facades/bandanas.facade';
 
 import { statusLook } from '../../utils/valueTypes';
 import { PlannedLookDialog } from '@components/dialogs/planned-look-dialog/planned-look-dialog.component';
+import { getContrastTextColor } from '../../utils/color-contrast';
+import {
+  buildCalendarDays,
+  CalendarDay,
+  toDateKey,
+} from '../../utils/calendar';
+import { isPlannedLookUsed } from '../../utils/planned-look-label';
 
 import { ILook } from '@interfaces/look';
 import { IClothing } from '@interfaces/clothing';
@@ -24,6 +32,8 @@ import { IPlace } from '@interfaces/place';
 import { IPlannedLook } from '@interfaces/plannedLook';
 import { IBandana } from '@interfaces/bandana';
 import { IAccessory } from '@interfaces/accessory';
+
+type PlannedViewMode = 'calendar' | 'list';
 
 @Component({
   standalone: false,
@@ -35,13 +45,15 @@ import { IAccessory } from '@interfaces/accessory';
 export class PlannedLooksComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   ref?: DynamicDialogRef;
-  loading: boolean = true;
-  total: number = 0;
-  statusId: number = 1;
+  loading = true;
+  total = 0;
+  statusId = 1;
+  viewMode: PlannedViewMode = 'calendar';
 
   plannedLooksOriginal: IPlannedLook[] = [];
   plannedLooks: IPlannedLook[] = [];
-  filterAccessories = [];
+  filterAccessories: IAccessory[] = [];
+  filterPlaces: IPlace[] = [];
   coats: IClothing[] = [];
   status = statusLook;
   places: IPlace[] = [];
@@ -49,14 +61,30 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
   accessories: IAccessory[] = [];
   bandanas: IBandana[] = [];
   looks: ILook[] = [];
-  filterPlaces = [];
+
+  calendarMonth = new Date().getMonth();
+  calendarYear = new Date().getFullYear();
+  calendarDays: CalendarDay[] = [];
+  selectedDate: Date | null = new Date();
+  selectedDayLooks: IPlannedLook[] = [];
+
+  readonly viewOptions = [
+    { label: 'Calendário', value: 'calendar' as PlannedViewMode, icon: 'pi pi-calendar' },
+    { label: 'Lista', value: 'list' as PlannedViewMode, icon: 'pi pi-list' },
+  ];
+
+  readonly pageTitle = {
+    1: 'Looks Planejados',
+    2: 'Looks Usados',
+  };
+
+  readonly pageReportTemplate =
+    'Mostrando {first} a {last} de {totalRecords} looks';
 
   @ViewChild('dt1') tablePlannedLooks!: Table;
 
   readonly plannedLooks$ = this.plannedLooksFacade.plannedLooksState$.pipe(
-    map((plannedLooks: IPlannedLook[]) => {
-      return plannedLooks;
-    })
+    map((plannedLooks: IPlannedLook[]) => plannedLooks)
   );
 
   constructor(
@@ -64,6 +92,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
     private _messageService: MessageService,
     private _router: Router,
     private plannedLooksFacade: PlannedLooksFacade,
+    private dashboardFacade: DashboardFacade,
     private looksFacade: LooksFacade,
     private clothesFacade: ClothesFacade,
     private placesFacade: PlacesFacade,
@@ -74,10 +103,10 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const currentRoute = this._router.url;
-    if (currentRoute.includes('/planned-looks')) {
-      this.statusId = 1;
-    } else if (currentRoute.includes('/used-looks')) {
+    if (currentRoute.includes('/used-looks')) {
       this.statusId = 2;
+    } else {
+      this.statusId = 1;
     }
 
     this.plannedLooksFacade.filterPlannedLooks({ status: this.statusId });
@@ -88,6 +117,7 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
         this.plannedLooks = plannedLooks;
         this.loading = false;
         this.total = plannedLooks.length;
+        this.refreshCalendar();
       }),
 
       this.looksFacade.getLooks().subscribe((looks: ILook[]) => {
@@ -118,24 +148,28 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
     );
   }
 
-  getSeverity(status: boolean) {
-    if (status) return 'danger';
-    else return 'success';
+  get canMarkAsUsed(): boolean {
+    return this.statusId === 1;
   }
 
-  clear(table: Table) {
+  get pageHeading(): string {
+    return this.pageTitle[this.statusId as 1 | 2] ?? 'Looks';
+  }
+
+  clear(table: Table): void {
     table.clear();
     this.filterPlaces = [];
     this.filterAccessories = [];
     this.tablePlannedLooks.value = this.plannedLooksOriginal;
   }
 
-  openDialog(plannedLook?: ILook) {
+  openDialog(plannedLook?: IPlannedLook, presetDate?: Date): void {
     const ref = this._dialogService.open(PlannedLookDialog, {
-      header: plannedLook ? ' Editar' : 'Novo',
+      header: plannedLook ? 'Editar look planejado' : 'Novo look planejado',
       width: '500px',
       data: {
         item: plannedLook,
+        presetDate,
         looks: this.looks,
         handbags: this.handbags,
         bandanas: this.bandanas,
@@ -155,101 +189,123 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
     );
   }
 
-  newLook(plannedLook: IPlannedLook) {
+  newLook(plannedLook: IPlannedLook): void {
     this.subs.add(
       this.plannedLooksFacade.newPlannedLook(plannedLook).subscribe({
-        next: (plannedLook) => {
-          this.setTableFilters();
-          this._messageService.add({
-            key: 'notification',
-            severity: 'success',
-            summary: 'Registro salvo com sucesso!',
-          });
+        next: () => {
+          this.afterMutation('Registro salvo com sucesso!');
         },
-        error: () => {
-          this._messageService.add({
-            key: 'notification',
-            severity: 'danger',
-            summary: 'Houve um problema!',
-            detail: 'Tente novamente mais tarde.',
-          });
-        },
+        error: () => this.showError(),
       })
     );
   }
 
-  updateLook(plannedLook: IPlannedLook) {
+  updateLook(plannedLook: IPlannedLook): void {
     this.subs.add(
       this.plannedLooksFacade.updatePlannedLook(plannedLook).subscribe({
-        next: (plannedLook) => {
-          this.setTableFilters();
-          this._messageService.add({
-            key: 'notification',
-            severity: 'success',
-            summary: 'Registro atualizado com sucesso!',
-          });
+        next: () => {
+          this.afterMutation('Registro atualizado com sucesso!');
         },
-        error: () => {
-          this._messageService.add({
-            key: 'notification',
-            severity: 'danger',
-            summary: 'Houve um problema!',
-            detail: 'Tente novamente mais tarde.',
-          });
-        },
+        error: () => this.showError(),
       })
     );
   }
 
-  filterPlace(e: any) {
+  markAsUsed(plannedLook: IPlannedLook, event?: Event): void {
+    event?.stopPropagation();
+
+    if (isPlannedLookUsed(plannedLook)) {
+      return;
+    }
+
+    const updated: IPlannedLook = {
+      ...plannedLook,
+      status: this.status[1],
+      date: new Date(),
+    };
+
+    this.subs.add(
+      this.plannedLooksFacade.updatePlannedLook(updated).subscribe({
+        next: () => {
+          this.afterMutation('Look marcado como usado!');
+        },
+        error: () => this.showError('Não foi possível marcar o look como usado.'),
+      })
+    );
+  }
+
+  prevCalendarMonth(): void {
+    if (this.calendarMonth === 0) {
+      this.calendarMonth = 11;
+      this.calendarYear -= 1;
+    } else {
+      this.calendarMonth -= 1;
+    }
+    this.refreshCalendar();
+  }
+
+  nextCalendarMonth(): void {
+    if (this.calendarMonth === 11) {
+      this.calendarMonth = 0;
+      this.calendarYear += 1;
+    } else {
+      this.calendarMonth += 1;
+    }
+    this.refreshCalendar();
+  }
+
+  goToToday(): void {
+    const now = new Date();
+    this.calendarMonth = now.getMonth();
+    this.calendarYear = now.getFullYear();
+    this.selectCalendarDay({
+      date: now,
+      inMonth: true,
+      isToday: true,
+      looks: [],
+    });
+    this.refreshCalendar();
+  }
+
+  selectCalendarDay(day: CalendarDay): void {
+    this.selectedDate = day.date;
+    this.selectedDayLooks = day.looks;
+  }
+
+  createLookForSelectedDay(): void {
+    this.openDialog(undefined, this.selectedDate ?? new Date());
+  }
+
+  filterPlace(e: { value: IPlace[] }): void {
     if (e.value.length) {
       this.plannedLooks = this.plannedLooksOriginal;
-
-      const selectedIds = e.value.map((el: any) => el._id);
-
-      this.plannedLooks = this.plannedLooks.filter((look: any) =>
-        look.places.some((place: any) => selectedIds.includes(place._id))
+      const selectedIds = e.value.map((el) => el._id);
+      this.plannedLooks = this.plannedLooks.filter(
+        (look) => look.place && selectedIds.includes(look.place._id)
       );
     } else {
       this.plannedLooks = this.plannedLooksOriginal;
     }
-
-    (this.tablePlannedLooks.filters['places'] as any)[0].value = e.value.map(
-      (v: any) => [v]
-    );
 
     this.filterPlaces = e.value;
   }
 
-  filterAccessory(e: any) {
+  filterAccessory(e: { value: IAccessory[] }): void {
     if (e.value.length) {
       this.plannedLooks = this.plannedLooksOriginal;
-
-      const selectedIds = e.value.map((el: any) => el._id);
-
-      this.plannedLooks = this.plannedLooks.filter((look: any) =>
-        look.accessories.filter((accessory: any) => {
-          return selectedIds.includes(accessory._id);
-        })
+      const selectedIds = e.value.map((el) => el._id);
+      this.plannedLooks = this.plannedLooks.filter((look) =>
+        look.accessories?.some((accessory) => selectedIds.includes(accessory._id))
       );
     } else {
       this.plannedLooks = this.plannedLooksOriginal;
     }
-
-    (this.tablePlannedLooks.filters['accessories'] as any)[0].value =
-      e.value.map((v: any) => [v]);
 
     this.filterAccessories = e.value;
   }
 
   getTextColor(bgColor: string): string {
-    const rgb = parseInt(bgColor.replace('#', ''), 16);
-    const r = (rgb >> 16) & 0xff;
-    const g = (rgb >> 8) & 0xff;
-    const b = (rgb >> 0) & 0xff;
-
-    const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-    return brightness > 128 ? 'black' : '#D4BE98';
+    return getContrastTextColor(bgColor);
   }
 
   darkenColor(hex: string, percent: number): string {
@@ -263,23 +319,64 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
     const newG = Math.max(0, g - (g * percent) / 100);
     const newB = Math.max(0, b - (b * percent) / 100);
 
-    const darkenedColor =
+    return (
       '#' +
       [newR, newG, newB]
         .map((channel) => Math.round(channel).toString(16).padStart(2, '0'))
-        .join('');
-
-    return darkenedColor;
+        .join('')
+    );
   }
 
-  filterGlobal(event: any) {
+  filterGlobal(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const filterValue = inputElement.value || '';
     this.tablePlannedLooks.filterGlobal(filterValue, 'contains');
   }
 
-  setTableFilters() {
+  setTableFilters(): void {
     this.plannedLooks = [...this.plannedLooks];
+    this.refreshCalendar();
+  }
+
+  private refreshCalendar(): void {
+    this.calendarDays = buildCalendarDays(
+      this.calendarMonth,
+      this.calendarYear,
+      this.plannedLooks
+    );
+
+    const selected = this.selectedDate ?? new Date();
+    const key = toDateKey(selected);
+    const day =
+      this.calendarDays.find((item) => toDateKey(item.date) === key) ??
+      this.calendarDays.find((item) => item.isToday);
+
+    if (day) {
+      this.selectedDate = day.date;
+      this.selectedDayLooks = day.looks;
+    }
+  }
+
+  private afterMutation(summary: string): void {
+    this.setTableFilters();
+    this.plannedLooksFacade.refresh();
+    this.dashboardFacade.refresh();
+    this._messageService.add({
+      key: 'notification',
+      severity: 'success',
+      summary,
+    });
+  }
+
+  private showError(
+    detail = 'Tente novamente mais tarde.'
+  ): void {
+    this._messageService.add({
+      key: 'notification',
+      severity: 'danger',
+      summary: 'Houve um problema!',
+      detail,
+    });
   }
 
   ngOnDestroy(): void {

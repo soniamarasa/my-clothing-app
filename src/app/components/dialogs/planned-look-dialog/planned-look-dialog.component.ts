@@ -93,7 +93,7 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
 
           const itemData = {
             ...this.dialogData.item,
-            date: new Date(this.dialogData.item.date), // Conversão aqui
+            date: new Date(this.dialogData.item.date),
           };
 
           this.plannedLookForm.addControl(
@@ -104,7 +104,10 @@ export class PlannedLookDialog implements OnInit, OnDestroy {
           this.plannedLookForm.patchValue(itemData);
         } else {
           this.isNew = true;
-          this.plannedLookForm.patchValue({ date: new Date() });
+          const presetDate = this.dialogData.presetDate
+            ? new Date(this.dialogData.presetDate)
+            : new Date();
+          this.plannedLookForm.patchValue({ date: presetDate });
         }
       }
       resolve();

@@ -1,62 +1,98 @@
 <div *ngIf="dialogData">
+  <div class="look-wizard__steps">
+    <span
+      *ngFor="let step of steps; let index = index"
+      class="look-wizard__step"
+      [class.look-wizard__step--active]="index === activeStep"
+      [class.look-wizard__step--done]="index < activeStep"
+    >
+      <span class="look-wizard__step-index">{{ index + 1 }}</span>
+      {{ step.label }}
+    </span>
+  </div>
+
   <form class="p-dialog-content-wrapper" [formGroup]="lookForm">
-    <div class="formgrid grid">
-      <div class="field col-6">
-        <label for="top">Parte de Cima</label>
-        <p-select
-          formControlName="top"
-          inputId="top"
-          name="top"
-          [options]="tops"
-          placeholder="Selecione a parte superior"
-          optionLabel="name"
-          appendTo="body"
-          [showClear]="true"
-          [filter]="true"
-          filterBy="name"
-        ></p-select>
+    <ng-container *ngIf="activeStep === 0">
+      <p class="look-wizard__hint">Escolha a base do look.</p>
+
+      <div class="look-wizard__mode">
+        <button
+          type="button"
+          class="look-wizard__mode-btn"
+          [class.look-wizard__mode-btn--active]="outfitMode === 'separate'"
+          (click)="setOutfitMode('separate')"
+        >
+          Top + Bottom
+        </button>
+        <button
+          type="button"
+          class="look-wizard__mode-btn"
+          [class.look-wizard__mode-btn--active]="outfitMode === 'garb'"
+          (click)="setOutfitMode('garb')"
+        >
+          Traje completo
+        </button>
       </div>
 
-      <div class="field col-6">
-        <label for="bottom">Parte de baixo</label>
-        <p-select
-          formControlName="bottom"
-          inputId="bottom"
-          name="bottom"
-          [options]="bottoms"
-          placeholder="Selecione a parte inferior"
-          optionLabel="name"
-          appendTo="body"
-          [showClear]="true"
-          [filter]="true"
-          filterBy="name"
-        ></p-select>
-      </div>
-    </div>
+      <ng-container *ngIf="outfitMode === 'separate'; else garbStep">
+        <div class="formgrid grid">
+          <div class="field col-12 md:col-6">
+            <label for="top">Parte de cima</label>
+            <p-select
+              formControlName="top"
+              inputId="top"
+              [options]="tops"
+              placeholder="Selecione"
+              optionLabel="name"
+              appendTo="body"
+              [showClear]="true"
+              [filter]="true"
+              filterBy="name"
+            ></p-select>
+          </div>
 
-    <div class="formgrid grid">
-      <div class="field col-6">
-        <label for="garb">Traje</label>
-        <p-select
-          [showClear]="true"
-          formControlName="garb"
-          inputId="garb"
-          name="garb"
-          [options]="garbs"
-          placeholder="Selecione o traje"
-          optionLabel="name"
-          appendTo="body"
-          [filter]="true"
-          filterBy="name"
-        ></p-select>
-      </div>
+          <div class="field col-12 md:col-6">
+            <label for="bottom">Parte de baixo</label>
+            <p-select
+              formControlName="bottom"
+              inputId="bottom"
+              [options]="bottoms"
+              placeholder="Selecione"
+              optionLabel="name"
+              appendTo="body"
+              [showClear]="true"
+              [filter]="true"
+              filterBy="name"
+            ></p-select>
+          </div>
+        </div>
+      </ng-container>
 
-      <div class="field col-6">
+      <ng-template #garbStep>
+        <div class="field">
+          <label for="garb">Traje</label>
+          <p-select
+            formControlName="garb"
+            inputId="garb"
+            [options]="garbs"
+            placeholder="Selecione o traje"
+            optionLabel="name"
+            appendTo="body"
+            [showClear]="true"
+            [filter]="true"
+            filterBy="name"
+          ></p-select>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <ng-container *ngIf="activeStep === 1">
+      <p class="look-wizard__hint">Escolha o sapato para fechar o look.</p>
+      <div class="field">
         <label for="shoe">Sapato</label>
         <p-select
           formControlName="shoe"
           inputId="shoe"
-          name="shoe"
           [options]="shoes"
           placeholder="Selecione o sapato"
           optionLabel="name"
@@ -64,43 +100,70 @@
           [filter]="true"
           filterBy="name"
         ></p-select>
-
-        <ng-container *ngIf="lookForm.get('shoe')?.touched">
-          <small class="p-error" *ngIf="lookForm.get('shoe')?.errors">
-            Selecione o sapato.
-          </small>
-        </ng-container>
+        <small
+          class="p-error"
+          *ngIf="lookForm.get('shoe')?.touched && lookForm.get('shoe')?.invalid"
+        >
+          Selecione o sapato.
+        </small>
       </div>
-    </div>
+    </ng-container>
 
-    <div class="formgrid grid">
-      <div class="field col-6">
-        <label for="tag">Tag</label>
+    <ng-container *ngIf="activeStep === 2">
+      <p class="look-wizard__hint">Defina a ocasião e confira o resumo.</p>
+      <div class="field">
+        <label for="tag">Tag / ocasião</label>
         <p-select
           formControlName="tag"
           inputId="tag"
-          name="tag"
           [options]="tags"
           placeholder="Selecione a tag"
           optionLabel="name"
           appendTo="body"
         ></p-select>
       </div>
-    </div>
+
+      <div class="look-wizard__preview card">
+        <span class="look-wizard__preview-label">Resumo</span>
+        <strong>{{ previewLabel }}</strong>
+        <small *ngIf="lookForm.value.shoe?.name as shoeName">+ {{ shoeName }}</small>
+        <small *ngIf="lookForm.value.tag?.name as tagName">· {{ tagName }}</small>
+      </div>
+    </ng-container>
   </form>
 
-  <div class="p-dialog-footer">
+  <div class="p-dialog-footer look-wizard__footer">
     <p-button
       label="Cancelar"
       styleClass="p-button-text p-button-plain"
       (onClick)="onClose()"
     ></p-button>
 
-    <p-button
-      pFocusTrap
-      label="Salvar"
-      [disabled]="lookForm.invalid"
-      (onClick)="onClose(true)"
-    ></p-button>
+    <div class="look-wizard__footer-actions">
+      <p-button
+        *ngIf="activeStep > 0"
+        label="Voltar"
+        icon="pi pi-arrow-left"
+        styleClass="p-button-outlined"
+        (onClick)="prevStep()"
+      ></p-button>
+
+      <p-button
+        *ngIf="activeStep < steps.length - 1"
+        label="Próximo"
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        [disabled]="!canAdvance()"
+        (onClick)="nextStep()"
+      ></p-button>
+
+      <p-button
+        *ngIf="activeStep === steps.length - 1"
+        pFocusTrap
+        label="Salvar look"
+        [disabled]="lookForm.invalid"
+        (onClick)="onClose(true)"
+      ></p-button>
+    </div>
   </div>
 </div>

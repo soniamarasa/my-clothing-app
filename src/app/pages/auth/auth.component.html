@@ -1,101 +1,95 @@
 <p-toast key="notification" position="top-right" styleClass="default"></p-toast>
 
-<div class="container-auth">
-  <h1>Meu Closet</h1>
-  <p class="subtitulo">Combine peças de roupas, monte e organize seus looks!</p>
+<div class="auth-page">
+  <header class="auth-page__header">
+    <h1>Meu Closet</h1>
+    <p class="auth-page__subtitle">
+      Combine peças de roupas, monte e organize seus looks!
+    </p>
+  </header>
 
-  <div class="grid">
-    <div class="col-12 sm:col-12 md:col-6 lg:col-8 container-img">
-      <div class="img">
-        <img src="../../../assets/undraw_web_shopping_re_owap.svg" alt="" />
-      </div>
+  <div class="auth-page__layout">
+    <div class="auth-page__illustration">
+      <img src="assets/undraw_web_shopping_re_owap.svg" alt="" />
     </div>
 
-    <div class="col-12 sm:col-12 md:col-6 lg:col-4 container-login">
-      <p-card>
-        <div class="card-body">
-          <h2>Login</h2>
+    <p-card styleClass="auth-card">
+      <div class="auth-card__body">
+        <h2>Login</h2>
 
-          <form [formGroup]="form">
-            <div class="field">
-              <label for="email" class="block">E-mail</label>
-              <input
-                type="email"
-                pInputText
-                required
-                class="p-inputtext p-inputtext-md"
-                formControlName="email"
-                placeholder="Digite seu e-mail"
-              />
-              <small
-                class="p-error"
-                *ngIf="
-                  formControl['email'].touched &&
-                  formControl['email'].errors?.['required']
-                "
-              >
-                E-mail é obrigatório!
-              </small>
+        <form [formGroup]="form" (ngSubmit)="login()">
+          <div class="field">
+            <label for="email">E-mail</label>
+            <input
+              id="email"
+              type="email"
+              pInputText
+              formControlName="email"
+              placeholder="Digite seu e-mail"
+            />
+            <small
+              class="p-error"
+              *ngIf="
+                formControl['email'].touched &&
+                formControl['email'].errors?.['required']
+              "
+            >
+              E-mail é obrigatório!
+            </small>
+            <small
+              class="p-error"
+              *ngIf="
+                formControl['email'].touched &&
+                formControl['email'].errors?.['email']
+              "
+            >
+              Digite um e-mail válido!
+            </small>
+          </div>
 
-              <small
-                class="p-error"
-                *ngIf="
-                  formControl['email'].touched &&
-                  formControl['email'].errors?.['email']
-                "
-              >
-                Digite um e-mail válido!
-              </small>
-            </div>
+          <div class="field">
+            <label for="password">Senha</label>
+            <p-password
+              inputId="password"
+              formControlName="password"
+              placeholder="Digite a sua senha"
+              [feedback]="false"
+              [toggleMask]="true"
+              styleClass="w-full"
+            ></p-password>
+            <small
+              class="p-error"
+              *ngIf="
+                formControl['password'].touched &&
+                formControl['password'].errors?.['required']
+              "
+            >
+              Senha é obrigatória!
+            </small>
+          </div>
 
-            <div class="field">
-              <label for="password" class="block">Senha</label>
-
-              <p-password
-                required
-                formControlName="password"
-                placeholder="Digite a sua senha"
-                [feedback]="false"
-                [toggleMask]="true"
-                styleClass="p-password p-component p-inputwrapper p-input-icon-right"
-              ></p-password>
-              <small
-                class="p-error"
-                *ngIf="
-                  formControl['password'].touched &&
-                  formControl['password'].errors?.['required']
-                "
-              >
-                Senha é obrigatória!
-              </small>
-            </div>
-
-            <div class="button-container">
-              <p-button
-                [disabled]="form.invalid"
-                type="submit"
-                (keydown.enter)="login()"
-                (onClick)="login()"
-                label="Entrar"
-              ></p-button>
-            </div>
-          </form>
-
-          <span (click)="openDialogRecover()">Esqueceu sua senha?</span>
-        </div>
-
-        <div class="footer">
-          <p>Ainda não tem uma conta?</p>
           <p-button
-            routerLink="/signup"
-            size="small"
-            [text]="true"
-            styleClass=" p-button-sm"
-            >Cadastre-se</p-button
-          >
+            type="submit"
+            label="Entrar"
+            [disabled]="form.invalid || isSubmitting"
+            [loading]="isSubmitting"
+            styleClass="auth-card__submit"
+          ></p-button>
+        </form>
+
+        <button type="button" class="auth-card__link" (click)="openDialogRecover()">
+          Esqueceu sua senha?
+        </button>
+      </div>
+
+      <ng-template pTemplate="footer">
+        <div class="auth-card__footer">
+          <span>Ainda não tem uma conta?</span>
+          <a routerLink="/signup">Cadastre-se</a>
         </div>
-      </p-card>
-    </div>
+      </ng-template>
+    </p-card>
   </div>
 </div>
+
 <app-footer></app-footer>

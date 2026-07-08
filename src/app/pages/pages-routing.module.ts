@@ -19,6 +19,7 @@ import { HandbagsComponent } from './handbags/handbags.component';
 import { LooksComponent } from './looks/looks.component';
 import { PlannedLooksComponent } from './planned-looks/planned-looks.component';
 import { UnusedLooksComponent } from './unused-looks/unused-looks.component';
+import { WardrobeComponent } from './wardrobe/wardrobe.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,11 @@ const routes: Routes = [
         path: '',
         pathMatch: 'full',
         component: HomeComponent,
+      },
+      {
+        path: 'wardrobe',
+        title: 'Meu Armário',
+        component: WardrobeComponent,
       },
       {
         path: 'accessories',
@@ -101,6 +107,11 @@ const routes: Routes = [
         path: 'specials',
         title: 'Especiais',
         component: PlannedLooksComponent,
+      },
+      {
+        path: 'account',
+        title: 'Minha Conta',
+        component: AccountComponent,
       },
     ],
   },

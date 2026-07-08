@@ -15,6 +15,10 @@ export interface IRefreshTokenBody {
   refreshToken: string;
 }
 
+export interface ILoginResponse {
+  user: IUser;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -23,7 +27,7 @@ export class UsersService {
 
   // --- POST endpoints ---
   login(body: ILoginBody) {
-    return this._http.post<IUser>(`${environment.url}/login`, body);
+    return this._http.post<ILoginResponse>(`${environment.url}/login`, body);
   }
 
   retrievePassword(email: IUser['email'], host: string) {

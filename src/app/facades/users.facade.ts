@@ -30,7 +30,7 @@ export class UsersFacade {
   login({ email, password }: ILoginBody) {
     return this.usersService
       .login({ email, password })
-      .pipe(tap((user) => this.authStore.login({ user })));
+      .pipe(tap((response) => this.authStore.login(response)));
   }
 
   retrievePassword(email: IUser['email'], host: string) {

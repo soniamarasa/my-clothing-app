@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 
 import { UsersFacade } from '@facades/users.facade';
 import { LocalStorageService } from '@services/local-storage.service';
+import { IUser } from '@interfaces/user';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -45,7 +46,13 @@ export class TokenInterceptor implements HttpInterceptor {
 
   private getToken(): string | null {
     const auth = this.localStorageService.get('auth');
-    return auth?.user?.token ?? auth?.token ?? null;
+    const user = auth?.user as IUser & { user?: IUser } | undefined;
+
+    if (!user) {
+      return auth?.token ?? null;
+    }
+
+    return user.token ?? user.user?.token ?? auth?.token ?? null;
   }
 
   private addTokenToHeader(request: HttpRequest<unknown>, token: string) {

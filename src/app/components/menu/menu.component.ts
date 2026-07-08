@@ -20,6 +20,11 @@ export class MenuComponent implements OnInit {
         icon: 'fa-solid fa-grip',
         items: [
           {
+            label: 'Meu Armário',
+            icon: 'fa-solid fa-box-open',
+            routerLink: '/wardrobe',
+          },
+          {
             label: 'Acessórios',
             icon: 'fa-solid fa-glasses',
             routerLink: '/accessories',

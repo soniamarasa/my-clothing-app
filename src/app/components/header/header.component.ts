@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UsersFacade } from '@facades/users.facade';
 import { IUser } from '../../interfaces/user';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { FilterFacade } from '../../facades/filter.facade';
+import { SubSink } from 'subsink';
 
 @Component({
   standalone: false,
@@ -11,25 +12,32 @@ import { FilterFacade } from '../../facades/filter.facade';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
+  private subs = new SubSink();
+
   todayIs = new Date();
-  isHome = window.location.pathname === '/' ? true : false;
-  $user = this.userFacade.authState$;
-  user!: IUser | any;
+  isHome = window.location.pathname === '/';
+  user: IUser | null = null;
+  displayName = 'Visitante';
   items: MenuItem[] | undefined;
 
   constructor(
     private userFacade: UsersFacade,
     public filterFacade: FilterFacade,
-    private _router: Router,
-  ) {
-    this.$user.subscribe((user) => {
-      this.user = user.user;
-      this.user.userName = this.user?.name?.split(' ');
-    });
-  }
+    private router: Router
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.subs.add(
+      this.userFacade.authState$.subscribe((auth) => {
+        this.user = auth.user ?? null;
+        this.displayName =
+          this.user?.name?.trim().split(/\s+/)[0] ??
+          this.user?.username ??
+          'Visitante';
+      })
+    );
+
     this.items = [
       {
         label: 'Conta',
@@ -42,13 +50,17 @@ export class HeaderComponent implements OnInit {
         command: () => {
           this.userFacade
             .logout()
-            .subscribe(() => this._router.navigate(['/auth']));
+            .subscribe(() => this.router.navigate(['/auth']));
         },
       },
     ];
   }
 
-  setYear(event: any) {
+  setYear(event: Date): void {
     this.filterFacade.setFilter(event.getFullYear().toString());
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }
