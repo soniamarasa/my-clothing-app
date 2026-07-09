@@ -48,8 +48,8 @@
         icon="pi pi-filter-slash"
         (click)="clearFilters()"
       ></button>
-      <span class="p-input-icon-left">
-        <i class="pi pi-search"></i>
+      <p-iconfield iconPosition="left">
+        <p-inputicon class="pi pi-search" />
         <input
           pInputText
           type="text"
@@ -57,7 +57,7 @@
           (input)="onSearchChange()"
           placeholder="Pesquisar looks..."
         />
-      </span>
+      </p-iconfield>
     </div>
   </div>
 
@@ -221,7 +221,9 @@
             <td colspan="6">Nenhum resultado encontrado.</td>
           </tr>
         </ng-template>
-        <ng-template pTemplate="summary"> Total: {{ total }} </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="closet-table-summary">Total: {{ total }}</div>
+        </ng-template>
       </p-table>
     </div>
   </ng-template>

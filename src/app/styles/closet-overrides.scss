@@ -74,6 +74,23 @@
     }
   }
 
+  .app-header .p-menubar {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+
+    &:hover {
+      border: none !important;
+      box-shadow: none !important;
+    }
+  }
+
   .p-menubar-root-list > .p-menubar-item > .p-menubar-item-content,
   .p-menubar-item-link,
   .p-menubar-item-content {
@@ -150,11 +167,53 @@
     border-radius: var(--closet-radius-lg) !important;
     overflow: hidden;
 
+    > .p-datatable-header,
     .p-datatable-header {
       background: rgba(255, 255, 255, 0.02) !important;
       border: none !important;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
       color: var(--closet-text) !important;
+      padding: 0 !important;
+      box-sizing: border-box;
+    }
+
+    > .p-datatable-footer,
+    .p-datatable-footer {
+      background: rgba(255, 255, 255, 0.02) !important;
+      border: none !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+      color: var(--closet-text) !important;
+      padding: 0 !important;
+      box-sizing: border-box;
+      font-weight: 600;
+    }
+
+    .closet-table-toolbar,
+    .closet-table-summary {
+      display: block;
+      padding: 1rem !important;
+      box-sizing: border-box;
+    }
+
+    .closet-table-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .closet-table-summary {
+      font-weight: 600;
+    }
+
+    .p-datatable-header .p-iconfield {
+      min-width: min(100%, 14rem);
+      margin-left: auto;
+    }
+
+    .p-datatable-header .p-iconfield .p-inputtext {
+      width: 100%;
+      min-width: 12rem;
     }
 
     .p-datatable-table-container,
@@ -649,6 +708,23 @@ body {
     background: var(--closet-overlay-bg) !important;
   }
 
+  .app-header-profile-menu .p-menu-list {
+    background: transparent !important;
+  }
+
+  .app-header-profile-menu.p-menu,
+  .app-header-profile-menu.p-menu-overlay {
+    overflow: hidden !important;
+    padding: 0.35rem !important;
+  }
+
+  .app-header-profile-menu {
+    .p-menu-item-content,
+    .p-menu-item-link {
+      border-radius: 8px !important;
+    }
+  }
+
   .p-select-option,
   .p-multiselect-option {
     color: var(--closet-text) !important;
@@ -662,6 +738,82 @@ body {
     &.p-focus,
     &:not(.p-disabled):hover {
       background: rgba(255, 255, 255, 0.06) !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .header-year-panel.p-datepicker-panel {
+      width: min(16rem, calc(100vw - (var(--closet-gutter, 0.75rem) * 2))) !important;
+      max-width: calc(100vw - (var(--closet-gutter, 0.75rem) * 2)) !important;
+      box-sizing: border-box;
+    }
+
+    .p-datepicker-mask.p-overlay-mask {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: var(--closet-gutter, 0.75rem) !important;
+    }
+
+    body:has(.p-datepicker-mask) .header-year-panel.p-datepicker-panel {
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      right: auto !important;
+      bottom: auto !important;
+      transform: translate(-50%, -50%) !important;
+      margin: 0 !important;
+      min-width: unset !important;
+    }
+
+    body.header-profile-menu-open .app-header-profile-menu.p-menu,
+    body.header-profile-menu-open .app-header-profile-menu.p-menu-overlay {
+      position: fixed !important;
+      top: var(--header-overlay-top, 3.75rem) !important;
+      right: var(--closet-gutter, 0.75rem) !important;
+      left: auto !important;
+      bottom: auto !important;
+      transform: none !important;
+      margin: 0 !important;
+      width: max-content !important;
+      min-width: 10.75rem !important;
+      max-width: calc(100vw - (var(--closet-gutter, 0.75rem) * 2)) !important;
+      box-sizing: border-box;
+      overflow: hidden !important;
+      padding: 0.35rem !important;
+    }
+
+    .app-header-profile-menu.p-menu,
+    .app-header-profile-menu.p-menu-overlay {
+      width: max-content !important;
+      min-width: 10.75rem !important;
+      max-width: calc(100vw - (var(--closet-gutter, 0.75rem) * 2)) !important;
+      box-sizing: border-box;
+      overflow: hidden !important;
+      padding: 0.35rem !important;
+    }
+
+    .app-header-profile-menu {
+      .p-menu-list {
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .p-menu-item-content,
+      .p-menu-item-link {
+        border-radius: 8px !important;
+      }
+    }
+  }
+
+  @media (max-width: 1100px) and (min-width: 769px) {
+    .header-year-panel.p-datepicker-panel,
+    .app-header-profile-menu.p-menu,
+    .app-header-profile-menu.p-menu-overlay {
+      max-width: calc(100vw - (var(--closet-gutter, 0.75rem) * 2)) !important;
     }
   }
 }

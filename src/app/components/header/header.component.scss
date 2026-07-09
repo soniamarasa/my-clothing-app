@@ -16,15 +16,15 @@
         display: grid;
         grid-template-columns: auto minmax(0, 1fr) auto;
         align-items: center;
-        gap: 0.65rem 0.85rem;
-        padding-block: 0.55rem;
+        gap: 0.65rem 1rem;
+        padding-block: 0.6rem;
       }
 
       &__brand {
         min-width: 0;
         flex-shrink: 1;
         font-family: "Poiret One", cursive !important;
-        font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+        font-size: clamp(1.25rem, 2.2vw, 1.65rem);
         font-weight: 700;
         color: var(--closet-secondary) !important;
         text-decoration: none;
@@ -32,6 +32,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        line-height: 1.15;
         transition: opacity 0.2s ease;
 
         &:hover {
@@ -43,6 +44,7 @@
         min-width: 0;
         display: flex;
         justify-content: center;
+        align-self: center;
       }
 
       &__actions {
@@ -50,36 +52,46 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        gap: 0.45rem;
+        gap: 0.5rem;
+        min-height: 2.25rem;
       }
 
       &__year {
         flex-shrink: 0;
-        position: relative;
-        isolation: isolate;
+        display: flex;
+        align-items: center;
       }
 
       &__profile {
         flex-shrink: 0;
         cursor: pointer;
         margin: 0;
-        display: flex;
+        display: inline-flex;
         gap: 0.55rem;
         align-items: center;
+        max-width: min(14rem, 28vw);
         font-weight: normal;
         font-family: "DM Mono", monospace !important;
         color: var(--closet-text) !important;
         font-size: 0.88rem;
+        line-height: 1.2;
         border: none;
         background: transparent;
 
         img {
-          width: 2rem !important;
-          height: 2rem !important;
-          min-width: 2rem !important;
+          width: 2.25rem !important;
+          height: 2.25rem !important;
+          min-width: 2.25rem !important;
           border-radius: 50%;
           border: 1px solid var(--closet-surface-border);
         }
+      }
+
+      &__profile .closet-header__greeting {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       &__nav .p-menubar {
@@ -104,21 +116,56 @@
         .p-datepicker.p-inputwrapper {
           width: auto !important;
           max-width: 100%;
+          min-height: 2.25rem;
+          background: rgba(41, 40, 40, 0.55) !important;
+          border: 1px solid var(--closet-surface-border) !important;
+          border-radius: 999px !important;
+          box-shadow: none !important;
+          overflow: hidden;
         }
 
         .p-datepicker-input,
         .p-datepicker-input.p-inputtext {
-          width: 3.25rem !important;
+          width: 2.75rem !important;
           min-width: 0;
-          padding-inline: 0.35rem !important;
+          padding-inline: 0.45rem 0.15rem !important;
+          padding-block: 0.35rem !important;
           text-align: center;
+          font-size: 0.82rem !important;
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+          color: var(--closet-text) !important;
         }
 
-        .p-button-icon-only,
         .p-datepicker-dropdown {
+          width: 2.25rem !important;
+          min-width: 2.25rem !important;
+          height: 2.25rem !important;
+          margin: 0 !important;
+          padding: 0 !important;
           color: var(--closet-text-muted) !important;
-          flex-shrink: 0;
+          background: transparent !important;
+          border: none !important;
+          border-inline-start: 1px solid var(--closet-surface-border) !important;
+          border-radius: 0 !important;
+
+          svg,
+          [data-p-icon] {
+            width: 0.95rem;
+            height: 0.95rem;
+          }
         }
+      }
+    }
+
+    @media (min-width: 1101px) {
+      .app-header__inner {
+        gap: 0.75rem 1.25rem;
+      }
+
+      .app-header__nav {
+        padding-inline: 0.5rem;
       }
     }
 
@@ -148,48 +195,105 @@
         grid-row: 2;
         justify-content: stretch;
         width: 100%;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .app-header__inner {
-        gap: 0.4rem 0.55rem;
-        padding-block: 0.5rem;
+        padding-top: 0.15rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
       }
 
-      .app-header__brand {
-        font-size: 1.2rem;
+      .app-header__nav .p-menubar,
+      .app-header__nav .p-menubar.p-menubar-mobile {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
       }
 
-      .app-header__actions {
-        gap: 0.25rem;
-      }
+      .app-header__nav .p-menubar-button {
+        color: var(--closet-text-muted) !important;
+        background: transparent !important;
 
-      .app-header .year_select {
-        .p-datepicker-input,
-        .p-datepicker-input.p-inputtext {
-          display: none !important;
-        }
-
-        .p-datepicker.p-inputwrapper {
-          width: auto !important;
-        }
-
-        .p-datepicker-dropdown,
-        .p-button-icon-only {
-          margin: 0 !important;
+        &:hover {
+          color: var(--closet-primary) !important;
+          background: rgba(255, 255, 255, 0.05) !important;
         }
       }
 
-      .app-header__profile.closet-header__user {
-        padding: 0.2rem !important;
-        gap: 0 !important;
+      .app-header__nav .p-menubar-mobile .p-menubar-root-list {
+        background: var(--closet-overlay-bg) !important;
+        border: 1px solid var(--closet-surface-border) !important;
+        border-radius: var(--closet-radius-md) !important;
+        box-shadow: var(--closet-shadow-lift) !important;
+        overflow: hidden;
       }
     }
 
     @media (max-width: 768px) {
       .app-header__profile .closet-header__greeting {
         display: none;
+      }
+
+      .app-header__profile.closet-header__user {
+        max-width: none;
+        padding: 0 !important;
+        gap: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 50% !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app-header__inner {
+        gap: 0.35rem 0.5rem;
+        padding-block: 0.45rem;
+      }
+
+      .app-header__brand {
+        font-size: 1.15rem;
+      }
+
+      .app-header__actions {
+        gap: 0.35rem;
+      }
+
+      .app-header .year_select {
+        .p-datepicker.p-inputwrapper {
+          min-height: 2.25rem;
+          width: 2.25rem !important;
+          min-width: 2.25rem !important;
+          border-radius: 50% !important;
+          justify-content: center;
+        }
+
+        .p-datepicker-input,
+        .p-datepicker-input.p-inputtext {
+          display: none !important;
+        }
+
+        .p-datepicker-dropdown {
+          width: 2.25rem !important;
+          min-width: 2.25rem !important;
+          height: 2.25rem !important;
+          border-inline-start: none !important;
+          border-radius: 50% !important;
+        }
+      }
+
+      .app-header__profile img {
+        width: 2.25rem !important;
+        height: 2.25rem !important;
+        min-width: 2.25rem !important;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .app-header__brand {
+        font-size: 1.05rem;
+      }
+
+      .app-header__actions {
+        gap: 0.25rem;
       }
     }
   }

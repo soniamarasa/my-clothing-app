@@ -9,7 +9,7 @@ import {
 import { SubSink } from 'subsink';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { openClosetDialog } from '../../utils/closet-dialog';
-import { getTopItemName } from '../../utils/chart-data';
+import { getTopItemName, sumUsageCounts } from '../../utils/chart-data';
 import { ListDialog } from '../dialogs/list-dialog/list-dialog.component';
 
 @Component({
@@ -61,7 +61,7 @@ export class ChartComponent implements OnDestroy, OnChanges {
       return '';
     }
 
-    const total = this.data.total ?? 0;
+    const total = sumUsageCounts(this.data.result);
     const topItem = getTopItemName(this.data.result);
     const totalLabel = `${total} ${total === 1 ? 'uso' : 'usos'}`;
 

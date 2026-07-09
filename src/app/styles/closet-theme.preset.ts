@@ -159,6 +159,13 @@ export const ClosetTheme = definePreset(Aura, {
         background: '#312f2e',
         borderColor: '#4a4746',
         color: '#b8a993',
+        padding: '1rem',
+      },
+      footer: {
+        background: '#312f2e',
+        borderColor: '#4a4746',
+        color: '#b8a993',
+        padding: '1rem',
       },
       headerCell: {
         background: '#312f2e',

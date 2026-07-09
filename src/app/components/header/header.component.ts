@@ -14,10 +14,15 @@ import { SubSink } from 'subsink';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
+  private readonly compactQuery =
+    typeof window !== 'undefined'
+      ? window.matchMedia('(max-width: 768px)')
+      : null;
 
   user: IUser | null = null;
   displayName = 'Visitante';
   items: MenuItem[] | undefined;
+  compactViewport = false;
 
   constructor(
     private userFacade: UsersFacade,
@@ -35,6 +40,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
           'Visitante';
       })
     );
+
+    if (this.compactQuery) {
+      this.compactViewport = this.compactQuery.matches;
+      const onViewportChange = (event: MediaQueryListEvent) => {
+        this.compactViewport = event.matches;
+      };
+      this.compactQuery.addEventListener('change', onViewportChange);
+      this.subs.add({
+        unsubscribe: () =>
+          this.compactQuery?.removeEventListener('change', onViewportChange),
+      });
+    }
 
     this.items = [
       {
@@ -58,7 +75,59 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.filterFacade.setFilter(event.getFullYear().toString());
   }
 
+  onProfileMenuShow(): void {
+    this.openHeaderOverlay('profile');
+  }
+
+  onProfileMenuHide(): void {
+    this.closeHeaderOverlay('profile');
+  }
+
+  onYearPanelShow(): void {
+    if (!this.compactViewport) {
+      return;
+    }
+
+    document.documentElement.style.setProperty(
+      '--header-overlay-top',
+      `${this.getHeaderOverlayTop()}px`
+    );
+  }
+
+  onYearPanelHide(): void {
+    this.closeHeaderOverlay('year');
+  }
+
+  private openHeaderOverlay(kind: 'profile' | 'year'): void {
+    if (!this.compactQuery?.matches) {
+      return;
+    }
+
+    document.documentElement.style.setProperty(
+      '--header-overlay-top',
+      `${this.getHeaderOverlayTop()}px`
+    );
+    document.body.classList.add(this.getHeaderOverlayClass(kind));
+  }
+
+  private closeHeaderOverlay(kind: 'profile' | 'year'): void {
+    document.body.classList.remove(this.getHeaderOverlayClass(kind));
+  }
+
+  private getHeaderOverlayClass(kind: 'profile' | 'year'): string {
+    return kind === 'profile'
+      ? 'header-profile-menu-open'
+      : 'header-year-panel-open';
+  }
+
+  private getHeaderOverlayTop(): number {
+    const header = document.querySelector('.app-header') as HTMLElement | null;
+    return (header?.getBoundingClientRect().bottom ?? 56) + 8;
+  }
+
   ngOnDestroy(): void {
+    this.closeHeaderOverlay('profile');
+    this.closeHeaderOverlay('year');
     this.subs.unsubscribe();
   }
 }

@@ -12,8 +12,10 @@
 
   <ul *ngIf="useLegend" class="pie-chart-layout__legend">
     <li
-      *ngFor="let item of legendItems"
+      *ngFor="let item of legendItems; let i = index"
       class="pie-chart-layout__legend-item"
+      (mouseenter)="highlightLegendItem(i)"
+      (mouseleave)="clearLegendHighlight()"
     >
       <span
         class="pie-chart-layout__legend-dot"

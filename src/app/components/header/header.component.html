@@ -12,13 +12,18 @@
       <div class="app-header__year">
         <p-datepicker
           (ngModelChange)="setYear($event)"
+          (onShow)="onYearPanelShow()"
+          (onClose)="onYearPanelHide()"
           styleClass="year_select"
+          panelStyleClass="header-year-panel"
           [(ngModel)]="this.filterFacade.year"
           [readonlyInput]="true"
           view="year"
           dateFormat="yy"
           [showIcon]="true"
+          [touchUI]="compactViewport"
           inputId="icondisplay"
+          appendTo="body"
           [attr.aria-label]="'Filtrar por ano'"
         />
       </div>
@@ -32,7 +37,15 @@
         <app-user-img [email]="user?.email ?? ''"></app-user-img>
         <span class="closet-header__greeting">{{ displayName }}</span>
       </button>
-      <p-menu #menu [model]="items" [popup]="true"></p-menu>
+      <p-menu
+        #menu
+        [model]="items"
+        [popup]="true"
+        appendTo="body"
+        styleClass="app-header-profile-menu"
+        (onShow)="onProfileMenuShow()"
+        (onHide)="onProfileMenuHide()"
+      ></p-menu>
     </div>
   </div>
 </header>

@@ -6,6 +6,10 @@ export function sortByCountDesc(items: IDashboardItem[]): IDashboardItem[] {
   return [...items].sort((a, b) => b.count - a.count);
 }
 
+export function sumUsageCounts(items: IDashboardItem[]): number {
+  return items.reduce((sum, item) => sum + (item.count > 0 ? item.count : 0), 0);
+}
+
 export function getTopItemName(items: IDashboardItem[]): string | null {
   const sorted = sortByCountDesc(items);
   return sorted[0]?.count ? sorted[0].name : null;

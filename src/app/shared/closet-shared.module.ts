@@ -12,6 +12,8 @@ import { DialogModule } from 'primeng/dialog';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { PasswordModule } from 'primeng/password';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -52,6 +54,8 @@ const PRIME_MODULES = [
   DynamicDialogModule,
   SelectModule,
   InputTextModule,
+  IconFieldModule,
+  InputIconModule,
   PasswordModule,
   MultiSelectModule,
   CheckboxModule,

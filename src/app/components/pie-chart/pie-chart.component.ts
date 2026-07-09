@@ -18,7 +18,7 @@ import {
   CHART_VIEW_HEIGHT,
   CHART_ACCESSIBILITY_OPTIONS,
 } from '../../utils/chart-theme';
-import { sortByCountDesc } from '../../utils/chart-data';
+import { sortByCountDesc, sumUsageCounts } from '../../utils/chart-data';
 import { loadHighcharts } from '../../utils/load-highcharts';
 
 interface PieLegendItem {
@@ -71,8 +71,7 @@ export class PieChartComponent implements OnDestroy, AfterViewInit, OnChanges {
 
     const chartItems = sortByCountDesc(data.result).filter((item) => item.count > 0);
     const palette = buildSeriesColors(chartItems.length, this.accent);
-    this.centerTotal =
-      data.total ?? chartItems.reduce((sum, item) => sum + item.count, 0);
+    this.centerTotal = sumUsageCounts(chartItems);
     this.useLegend = chartItems.length > 6;
     this.legendItems = chartItems.map((item, index) => ({
       name: item.name,
@@ -157,6 +156,18 @@ export class PieChartComponent implements OnDestroy, AfterViewInit, OnChanges {
     );
 
     this.cdr.detectChanges();
+  }
+
+  highlightLegendItem(index: number): void {
+    this.chart?.series[0]?.points.forEach((point, pointIndex) => {
+      point.setState(pointIndex === index ? 'hover' : 'normal');
+    });
+  }
+
+  clearLegendHighlight(): void {
+    this.chart?.series[0]?.points.forEach((point) => {
+      point.setState('normal');
+    });
   }
 
   ngOnDestroy(): void {
