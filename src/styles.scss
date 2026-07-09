@@ -112,10 +112,10 @@ a {
   font-family: "DM Mono", monospace !important;
   color: var(--closet-text);
   border: 1px solid var(--closet-surface-border);
-  background: var(--closet-surface-strong);
-  backdrop-filter: blur(var(--closet-blur));
+  background: var(--closet-overlay-bg, var(--closet-surface-solid));
   width: 395px !important;
   border-radius: var(--closet-radius-md);
+  box-shadow: var(--closet-shadow-lift);
 }
 
 .emoji-mart-anchor {

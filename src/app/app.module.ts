@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { providePrimeNG } from 'primeng/config';
 import { ClosetTheme } from './styles/closet-theme.preset';
+import { PRIMENG_PT_BR_TRANSLATION } from './config/primeng-pt-br.translation';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,9 +33,7 @@ registerLocaleData(localePT);
           darkModeSelector: '.theme-butterfly',
         },
       },
-      translation: {
-        firstDayOfWeek: 0,
-      },
+      translation: PRIMENG_PT_BR_TRANSLATION,
     }),
     DialogService,
     {

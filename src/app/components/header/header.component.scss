@@ -101,13 +101,13 @@
         flex-shrink: 0;
         width: auto;
 
-        .p-datepicker {
+        .p-datepicker.p-inputwrapper {
           width: auto !important;
           max-width: 100%;
         }
 
         .p-datepicker-input,
-        input.p-inputtext {
+        .p-datepicker-input.p-inputtext {
           width: 3.25rem !important;
           min-width: 0;
           padding-inline: 0.35rem !important;
@@ -167,11 +167,11 @@
 
       .app-header .year_select {
         .p-datepicker-input,
-        input.p-inputtext {
+        .p-datepicker-input.p-inputtext {
           display: none !important;
         }
 
-        .p-datepicker {
+        .p-datepicker.p-inputwrapper {
           width: auto !important;
         }
 

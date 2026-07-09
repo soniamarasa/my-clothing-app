@@ -12,6 +12,15 @@
   box-shadow: var(--closet-shadow-soft);
 }
 
+@mixin closet-overlay-surface() {
+  background: var(--closet-overlay-bg) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--closet-surface-border) !important;
+  box-shadow: var(--closet-shadow-lift) !important;
+  opacity: 1 !important;
+}
+
 .theme-butterfly {
   color-scheme: dark;
   min-height: 100vh;
@@ -82,9 +91,32 @@
   }
 
   .p-menubar-submenu {
-    @include closet-glass-surface(true);
+    @include closet-overlay-surface();
     border-radius: var(--closet-radius-md) !important;
     overflow: hidden;
+  }
+
+  .p-menu,
+  .p-menu.p-menu-overlay,
+  .p-tieredmenu,
+  .p-contextmenu,
+  .p-select-overlay,
+  .p-multiselect-overlay,
+  .p-autocomplete-overlay,
+  .p-cascadeselect-panel,
+  .p-datepicker-panel,
+  .p-popover,
+  .p-colorpicker-overlay-panel,
+  .p-listbox-list-container {
+    @include closet-overlay-surface();
+    border-radius: var(--closet-radius-md) !important;
+    color: var(--closet-text) !important;
+  }
+
+  .p-menu-list,
+  .p-tieredmenu-root-list,
+  .p-contextmenu-root-list {
+    background: var(--closet-surface-solid) !important;
   }
 
   .p-card {
@@ -312,11 +344,10 @@
     border-top: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  .p-inputtext,
+  .p-inputtext:not(.p-datepicker-input),
   .p-select,
   .p-multiselect,
   .p-multiselect-label,
-  .p-datepicker-input,
   .p-password input {
     background: rgba(41, 40, 40, 0.72) !important;
     border: 1px solid var(--closet-surface-border) !important;
@@ -332,13 +363,125 @@
     }
   }
 
-  .p-select-overlay,
-  .p-multiselect-overlay,
-  .p-datepicker-panel,
-  .p-popover {
-    @include closet-glass-surface(true);
-    border-radius: var(--closet-radius-md) !important;
-    color: var(--closet-text) !important;
+  // Campo de data (wrapper — distinto do popup .p-datepicker-panel)
+  .p-datepicker.p-inputwrapper {
+    display: inline-flex !important;
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible;
+
+    .p-datepicker-input,
+    .p-datepicker-input.p-inputtext {
+      flex: 1 1 auto;
+      min-width: 0;
+      width: 1%;
+      background: rgba(41, 40, 40, 0.72) !important;
+      border: 1px solid var(--closet-surface-border) !important;
+      border-radius: var(--closet-radius-md) !important;
+      color: var(--closet-text) !important;
+      box-shadow: none !important;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:enabled:focus,
+      &:enabled:focus-visible {
+        border-color: color-mix(in srgb, var(--closet-primary) 55%, transparent) !important;
+        box-shadow: 0 0 0 3px rgba(222, 163, 123, 0.14) !important;
+        outline: none;
+      }
+    }
+
+    &:has(.p-datepicker-dropdown) .p-datepicker-input,
+    &:has(.p-datepicker-dropdown) .p-datepicker-input.p-inputtext {
+      border-start-end-radius: 0 !important;
+      border-end-end-radius: 0 !important;
+      border-inline-end: none !important;
+    }
+
+    .p-datepicker-dropdown,
+    .p-datepicker .p-button.p-datepicker-dropdown {
+      flex-shrink: 0;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 2.75rem !important;
+      min-width: 2.75rem;
+      margin: 0 !important;
+      padding: 0 !important;
+      cursor: pointer;
+      background: rgba(41, 40, 40, 0.72) !important;
+      border: 1px solid var(--closet-surface-border) !important;
+      border-inline-start: none !important;
+      border-start-end-radius: var(--closet-radius-md) !important;
+      border-end-end-radius: var(--closet-radius-md) !important;
+      border-end-start-radius: 0 !important;
+      border-start-start-radius: 0 !important;
+      box-shadow: none !important;
+      color: var(--closet-text-muted) !important;
+      outline: none;
+      transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+
+      &:enabled:hover,
+      &:not(:disabled):hover {
+        background: rgba(255, 255, 255, 0.06) !important;
+        color: var(--closet-primary) !important;
+        border-color: var(--closet-surface-border) !important;
+        box-shadow: none !important;
+      }
+
+      &:enabled:focus,
+      &:enabled:focus-visible {
+        box-shadow: none !important;
+        outline: none;
+      }
+
+      svg,
+      .p-button-icon,
+      [data-p-icon] {
+        width: 1rem;
+        height: 1rem;
+        color: inherit !important;
+      }
+    }
+
+    &:focus-within:has(.p-datepicker-dropdown) {
+      .p-datepicker-input,
+      .p-datepicker-input.p-inputtext,
+      .p-datepicker-dropdown {
+        border-color: color-mix(in srgb, var(--closet-primary) 55%, transparent) !important;
+      }
+    }
+
+    &:has(.p-datepicker-input-icon-container) .p-datepicker-input {
+      padding-inline-end: calc(0.75rem * 2 + 1rem) !important;
+    }
+
+    .p-datepicker-input-icon-container {
+      color: var(--closet-text-muted) !important;
+      cursor: pointer;
+
+      .p-datepicker-input-icon,
+      svg,
+      [data-p-icon] {
+        width: 1rem;
+        height: 1rem;
+        color: inherit !important;
+      }
+
+      &:hover {
+        color: var(--closet-primary) !important;
+      }
+    }
   }
 
   .p-select-option,
@@ -400,12 +543,31 @@
   }
 
   .year_select {
+    .p-datepicker.p-inputwrapper {
+      width: auto !important;
+    }
+
     .p-datepicker-input,
+    .p-datepicker-input.p-inputtext,
     .p-datepicker-dropdown {
       background: transparent !important;
       border: none !important;
       box-shadow: none !important;
       color: var(--closet-text-muted) !important;
+      width: auto !important;
+      min-width: 0;
+    }
+
+    .p-datepicker-input,
+    .p-datepicker-input.p-inputtext {
+      width: 3.25rem !important;
+      padding-inline: 0.35rem !important;
+      text-align: center;
+    }
+
+    .p-datepicker-dropdown {
+      width: auto !important;
+      min-width: 0;
     }
   }
 
@@ -455,6 +617,51 @@
 
     .p-menubar {
       width: 100%;
+    }
+  }
+}
+
+// Overlays anexados ao body ficam fora de .theme-butterfly
+body {
+  .p-menu,
+  .p-menu.p-menu-overlay,
+  .p-tieredmenu,
+  .p-contextmenu,
+  .p-select-overlay,
+  .p-multiselect-overlay,
+  .p-autocomplete-overlay,
+  .p-cascadeselect-panel,
+  .p-datepicker-panel,
+  .p-popover,
+  .p-colorpicker-overlay-panel,
+  .p-listbox-list-container,
+  .p-menubar-submenu {
+    @include closet-overlay-surface();
+    border-radius: var(--closet-radius-md) !important;
+    color: var(--closet-text) !important;
+  }
+
+  .p-menu-list,
+  .p-tieredmenu-root-list,
+  .p-contextmenu-root-list,
+  .p-select-list,
+  .p-multiselect-list {
+    background: var(--closet-overlay-bg) !important;
+  }
+
+  .p-select-option,
+  .p-multiselect-option {
+    color: var(--closet-text) !important;
+
+    &.p-select-option-selected,
+    &.p-multiselect-option-selected {
+      background: rgba(222, 163, 123, 0.16) !important;
+      color: var(--closet-primary) !important;
+    }
+
+    &.p-focus,
+    &:not(.p-disabled):hover {
+      background: rgba(255, 255, 255, 0.06) !important;
     }
   }
 }
