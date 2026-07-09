@@ -18,6 +18,14 @@ interface StatCard {
   accent: string;
 }
 
+interface ChartCard {
+  header: string;
+  chartType: 'pie' | 'bar';
+  icon: string;
+  accent: string;
+  data: IDashboard['totalLooks'];
+}
+
 @Component({
   standalone: false,
   selector: 'app-home',
@@ -34,6 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       loading: false,
       data: dashboard,
       stats: this.buildStats(dashboard),
+      chartCards: this.buildChartCards(dashboard),
       wardrobeTotal: this.getWardrobeTotal(dashboard),
       insight: this.buildInsight(dashboard),
     })),
@@ -41,6 +50,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       loading: true,
       data: null as IDashboard | null,
       stats: [] as StatCard[],
+      chartCards: [] as ChartCard[],
       wardrobeTotal: 0,
       insight: '',
     })
@@ -139,6 +149,53 @@ export class HomeComponent implements OnInit, OnDestroy {
         value: dashboard.shoes.total,
         icon: 'mdi:shoe-sneaker',
         accent: '#dea37b',
+      },
+    ];
+  }
+
+  private buildChartCards(dashboard: IDashboard): ChartCard[] {
+    return [
+      {
+        header: 'Combinações mais usadas',
+        chartType: 'pie',
+        icon: 'mdi:calendar-check',
+        accent: '#de615d',
+        data: dashboard.totalLooks,
+      },
+      {
+        header: 'Vestidos',
+        chartType: 'bar',
+        icon: 'game-icons:dress',
+        accent: '#708a81',
+        data: dashboard.garbs,
+      },
+      {
+        header: 'Tops',
+        chartType: 'bar',
+        icon: 'mdi:tshirt-crew',
+        accent: '#cda64e',
+        data: dashboard.tops,
+      },
+      {
+        header: 'Partes de baixo',
+        chartType: 'bar',
+        icon: 'game-icons:trousers',
+        accent: '#77835c',
+        data: dashboard.bottoms,
+      },
+      {
+        header: 'Bolsas',
+        chartType: 'pie',
+        icon: 'game-icons:hand-bag',
+        accent: '#866d9b',
+        data: dashboard.handbags,
+      },
+      {
+        header: 'Sapatos',
+        chartType: 'pie',
+        icon: 'mdi:shoe-sneaker',
+        accent: '#dea37b',
+        data: dashboard.shoes,
       },
     ];
   }

@@ -1,5 +1,5 @@
 <ul class="list-indicator">
-  <li *ngFor="let item of data.result; let i = index">
+  <li *ngFor="let item of items; let i = index">
     <div>
       <p>
         <span [ngStyle]="{ color: getColor(i) }">{{ i + 1 + "." }}</span>

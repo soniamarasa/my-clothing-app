@@ -2,6 +2,11 @@
   display: block;
   min-width: 0;
 
+  .bar-chart {
+    width: 100%;
+    min-height: 220px;
+  }
+
   ::ng-deep {
     .highcharts-container,
     .highcharts-root {

@@ -1,45 +1,71 @@
-<p-card [header]="header">
-  <div *ngIf="!loading && showChart" class="open-list">
-    <p-button
-      icon="pi pi-list"
-      (onClick)="openDialog()"
-      [rounded]="true"
-      [text]="true"
-    />
-  </div>
+<p-card styleClass="chart-card">
+  <ng-template pTemplate="header">
+    <div class="chart-card__header">
+      <div class="chart-card__heading">
+        <div
+          *ngIf="icon"
+          class="chart-card__icon"
+          [style.background]="(accent || 'var(--closet-accent)') + '22'"
+          [style.color]="accent || 'var(--closet-accent)'"
+        >
+          <iconify-icon
+            [attr.icon]="icon"
+            [style.fontSize.px]="16"
+            aria-hidden="true"
+          ></iconify-icon>
+        </div>
+        <div class="chart-card__titles">
+          <h3 class="chart-card__title">{{ header }}</h3>
+          <p *ngIf="subtitle" class="chart-card__subtitle">{{ subtitle }}</p>
+        </div>
+      </div>
 
-  <div
-    [class.chart-container]="chartType === 'pie'"
-    [class.card-content-empty]="!showChart"
-  >
-    <div *ngIf="loading; else canvas" class="spinner-container">
-      <p-progressSpinner
-        styleClass="w-8rem h-8rem"
-        strokeWidth="5"
-        animationDuration=".9s"
+      <p-button
+        *ngIf="!loading && showChart"
+        icon="pi pi-list"
+        [rounded]="true"
+        [text]="true"
+        severity="secondary"
+        pTooltip="Ver lista completa"
+        tooltipPosition="left"
+        (onClick)="openDialog()"
+        aria-label="Ver lista completa"
       />
     </div>
+  </ng-template>
 
-    <ng-template #canvas>
+  <div
+    class="chart-card__body"
+    [class.chart-card__body--empty]="!loading && !showChart"
+    [class.chart-card__body--scroll]="!loading && showChart && chartType === 'bar'"
+  >
+    <div *ngIf="loading" class="chart-card__spinner">
+      <p-progressSpinner strokeWidth="5" animationDuration=".9s" />
+    </div>
+
+    <ng-container *ngIf="!loading">
       <app-bar-chart
         *ngIf="showChart && chartType === 'bar'"
         [data]="data"
         [type]="header"
+        [accent]="accent"
       ></app-bar-chart>
       <app-pie-chart
         *ngIf="showChart && chartType === 'pie'"
         [data]="data"
         [type]="header"
+        [accent]="accent"
       ></app-pie-chart>
       <app-list-indicator
         *ngIf="showChart && chartType === 'list'"
         [data]="data"
+        [accent]="accent"
       ></app-list-indicator>
 
-      <p *ngIf="!showChart" class="empty-data">
-        <i class="fa-solid fa-magnifying-glass-chart"></i>
-        <span> Sem dados no período selecionado. </span>
-      </p>
-    </ng-template>
+      <div *ngIf="!showChart" class="chart-card__empty">
+        <i class="fa-solid fa-chart-simple"></i>
+        <p>Sem dados no período selecionado.</p>
+      </div>
+    </ng-container>
   </div>
 </p-card>

@@ -191,15 +191,19 @@ a {
   gap: 0.75rem;
   width: 100%;
   margin-top: 0.75rem;
+  align-items: stretch;
 }
 
 .theme-butterfly .home .charts-grid__cell {
   min-width: 0;
+  display: flex;
 }
 
 .theme-butterfly .home .charts-grid app-chart {
-  display: block;
+  display: flex;
+  flex: 1;
   width: 100%;
+  min-height: 0;
 }
 
 .theme-butterfly .p-paginator .p-select,

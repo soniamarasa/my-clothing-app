@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   OnDestroy,
   ElementRef,
   ViewChild,
@@ -11,8 +10,14 @@ import {
 } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { IDashboardItem } from '../../interfaces/dashboard';
-import { SubSink } from 'subsink';
-import { colors } from '../../utils/colors';
+import {
+  buildSeriesColors,
+  chartFontStyle,
+  CHART_GRID,
+  CHART_TEXT_MUTED,
+  CHART_TOOLTIP_BG,
+} from '../../utils/chart-theme';
+import { sortByCountDesc } from '../../utils/chart-data';
 
 @Component({
   standalone: false,
@@ -20,30 +25,25 @@ import { colors } from '../../utils/colors';
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.scss'],
 })
-export class BarChartComponent
-  implements OnInit, OnDestroy, OnChanges, AfterViewInit
-{
-  private subsink = new SubSink();
-  @Input() data!: any;
+export class BarChartComponent implements OnDestroy, OnChanges, AfterViewInit {
+  @Input() data!: { total: number; result: IDashboardItem[] };
   @Input() type!: string;
-  @ViewChild('chartCanvas', { static: false }) chartCanvas:
+  @Input() accent?: string;
+
+  @ViewChild('chartCanvas', { static: false }) chartCanvas?:
     | ElementRef<HTMLDivElement>
     | undefined;
 
   chart: Highcharts.Chart | undefined;
 
-  constructor() {}
-
-  ngOnInit() {}
-
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     if (this.data) {
       this.createChart(this.data.result);
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes?.['data'] && this.data) {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data'] && this.data) {
       this.createChart(this.data.result);
     }
   }
@@ -53,83 +53,80 @@ export class BarChartComponent
       return;
     }
 
-    const labels = result.map((item) => item.name);
-    const dataSerieValues = result.map((item, index) => ({
-      y: item.count === 0 ? null : item.count,
-      color: colors[index % colors.length],
+    const chartItems = sortByCountDesc(result);
+    const labels = chartItems.map((item) => item.name);
+    const palette = buildSeriesColors(chartItems.length, this.accent);
+    const chartHeight = Math.max(220, chartItems.length * 34 + 48);
+
+    const dataSerieValues = chartItems.map((item, index) => ({
+      y: item.count,
+      color: palette[index],
     }));
+
+    this.chart?.destroy();
 
     this.chart = Highcharts.chart(this.chartCanvas.nativeElement, {
       chart: {
-        type: 'column',
+        type: 'bar',
         backgroundColor: 'transparent',
+        height: chartHeight,
+        spacing: [4, 8, 4, 4],
       },
-      title: {
-        text: '',
-        style: {
-          fontSize: '1px',
-        },
-      },
+      title: { text: undefined },
       xAxis: {
         categories: labels,
-        title: {
-          text: '',
-        },
+        lineWidth: 0,
+        tickLength: 0,
         labels: {
           style: {
-            fontFamily: 'DM Mono',
-            color: '#D4BE98',
+            ...chartFontStyle(),
+            fontSize: '11px',
           },
         },
-        gridLineColor: '#9f9f9f6b',
       },
       yAxis: {
         min: 0,
+        allowDecimals: false,
         tickInterval: 1,
-        title: {
-          text: '',
-        },
+        title: { text: undefined },
+        gridLineColor: CHART_GRID,
         labels: {
-          style: {
-            fontFamily: 'DM Mono',
-            color: '#D4BE98',
-          },
+          style: chartFontStyle(CHART_TEXT_MUTED),
         },
-        gridLineColor: '#9f9f9f6b',
       },
       tooltip: {
-        style: {
-          fontFamily: 'DM Mono',
-          color: '#D4BE98',
-        },
-        backgroundColor: '#312F2E',
+        style: chartFontStyle(),
+        backgroundColor: CHART_TOOLTIP_BG,
+        borderColor: 'rgba(255,255,255,0.08)',
+        pointFormat: '<b>{point.y}</b> usos',
       },
       series: [
         {
-          type: 'column',
+          type: 'bar',
           name: this.type,
           data: dataSerieValues,
+          borderRadius: 6,
+          pointPadding: 0.12,
+          groupPadding: 0.08,
           dataLabels: {
             enabled: true,
+            align: 'right',
+            inside: true,
             style: {
+              ...chartFontStyle('#1a1918'),
+              fontSize: '10px',
               textOutline: 'none',
-              fontFamily: 'DM Mono',
-              color: '#D4BE98',
+              fontWeight: '700',
             },
           },
-        } as Highcharts.SeriesColumnOptions,
+        } as Highcharts.SeriesBarOptions,
       ],
-      legend: {
-        enabled: false,
-      },
+      legend: { enabled: false },
       credits: { enabled: false },
     });
   }
 
-  ngOnDestroy() {
-    this.subsink.unsubscribe();
-    if (this.chart) {
-      this.chart.destroy();
-    }
+  ngOnDestroy(): void {
+    this.chart?.destroy();
   }
 }

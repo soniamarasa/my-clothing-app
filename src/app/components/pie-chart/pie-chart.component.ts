@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   OnDestroy,
   Input,
   OnChanges,
@@ -12,7 +11,19 @@ import {
 } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { IDashboardItem } from '../../interfaces/dashboard';
-import { colors } from '../../utils/colors';
+import {
+  buildSeriesColors,
+  chartFontStyle,
+  CHART_TOOLTIP_BG,
+  CHART_VIEW_HEIGHT,
+} from '../../utils/chart-theme';
+import { sortByCountDesc } from '../../utils/chart-data';
+
+interface PieLegendItem {
+  name: string;
+  count: number;
+  color: string;
+}
 
 @Component({
   standalone: false,
@@ -20,16 +31,20 @@ import { colors } from '../../utils/colors';
   templateUrl: './pie-chart.component.html',
   styleUrls: ['./pie-chart.component.scss'],
 })
-export class PieChartComponent implements OnDestroy, AfterViewInit {
-  @Input() data!: any;
-  @Input() id!: string;
+export class PieChartComponent implements OnDestroy, AfterViewInit, OnChanges {
+  @Input() data!: { total: number; result: IDashboardItem[] };
   @Input() type!: string;
-  @ViewChild('chartContainer', { static: false }) chartContainer:
-    | ElementRef
+  @Input() accent?: string;
+
+  @ViewChild('chartContainer', { static: false }) chartContainer?:
+    | ElementRef<HTMLDivElement>
     | undefined;
 
-  chartOptions: Highcharts.Options = {};
   chart: Highcharts.Chart | undefined;
+
+  centerTotal = 0;
+  useLegend = false;
+  legendItems: PieLegendItem[] = [];
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -47,114 +62,100 @@ export class PieChartComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  createChart(data: any) {
+  createChart(data: { total: number; result: IDashboardItem[] }): void {
     if (!this.chartContainer) {
       return;
     }
 
-    const sortedResult: IDashboardItem[] = data.result.sort(
-      (a: IDashboardItem, b: IDashboardItem) => b.count - a.count,
-    );
-
-    const largeSegments = sortedResult.filter((item) => item.count > 3);
-    const mediumSegments = sortedResult.filter((item) => item.count === 3);
-    const smallSegments = sortedResult.filter((item) => item.count <= 2);
-
-    mediumSegments.sort((a, b) => a.count - b.count);
-
-    const intercalatedResult: IDashboardItem[] = [];
-    let largeIndex = 0,
-      mediumIndex = 0,
-      smallIndex = 0;
-
-    while (
-      largeIndex < largeSegments.length ||
-      mediumIndex < mediumSegments.length ||
-      smallIndex < smallSegments.length
-    ) {
-      if (smallIndex < smallSegments.length)
-        intercalatedResult.push(smallSegments[smallIndex++]);
-      if (largeIndex < largeSegments.length)
-        intercalatedResult.push(largeSegments[largeIndex++]);
-      if (mediumIndex < mediumSegments.length)
-        intercalatedResult.push(mediumSegments[mediumIndex++]);
-    }
-
-    const seriesData = sortedResult.map((item, index) => ({
+    const chartItems = sortByCountDesc(data.result).filter((item) => item.count > 0);
+    const palette = buildSeriesColors(chartItems.length, this.accent);
+    this.centerTotal =
+      data.total ?? chartItems.reduce((sum, item) => sum + item.count, 0);
+    this.useLegend = chartItems.length > 6;
+    this.legendItems = chartItems.map((item, index) => ({
       name: item.name,
-      y: item.count,
-      color: colors[index % colors.length],
+      count: item.count,
+      color: palette[index],
     }));
 
-    this.chartOptions = {
+    const seriesData = chartItems.map((item, index) => ({
+      name: item.name,
+      y: item.count,
+      color: palette[index],
+    }));
+
+    const chartHeight =
+      this.chartContainer.nativeElement.parentElement?.clientHeight ||
+      CHART_VIEW_HEIGHT;
+
+    const chartOptions: Highcharts.Options = {
       chart: {
         type: 'pie',
         backgroundColor: 'transparent',
-        renderTo: this.chartContainer?.nativeElement,
-        events: {
-          load: () => {},
-        },
-        width: null,
+        height: chartHeight,
+        spacing: [0, 0, 0, 0],
       },
-      title: {
-        text: '',
-        style: {
-          fontSize: '1px',
-        },
-      },
+      title: { text: undefined },
       series: [
         {
           type: 'pie',
-          name: 'Total de Uso',
+          name: 'Usos',
           data: seriesData,
+          innerSize: '58%',
+          borderWidth: 0,
+          showInLegend: false,
           dataLabels: {
-            enabled: true,
-            format: '{point.name}: {point.y}',
+            enabled: !this.useLegend,
+            distance: 12,
+            connectorWidth: 1,
+            connectorColor: 'rgba(212, 190, 152, 0.35)',
+            format: '{point.name}',
             style: {
+              ...chartFontStyle(),
               fontSize: '10px',
               textOutline: 'none',
-              fontFamily: 'DM Mono',
-              color: '#D4BE98',
-              width: 130,
-              wordWrap: 'break-word',
+              fontWeight: '400',
             },
           },
         },
       ],
-      legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle',
-      },
+      legend: { enabled: false },
       tooltip: {
-        style: {
-          useHTML: true,
-          fontFamily: 'DM Mono',
-          color: '#D4BE98',
-        },
-        backgroundColor: '#312F2E',
+        useHTML: true,
+        pointFormat: '<b>{point.y}</b> usos',
+        style: chartFontStyle(),
+        backgroundColor: CHART_TOOLTIP_BG,
+        borderColor: 'rgba(255, 255, 255, 0.08)',
       },
       plotOptions: {
         pie: {
-          size: '72%',
+          size: '92%',
+          center: ['50%', '50%'],
+          allowPointSelect: false,
+          cursor: 'default',
+          states: {
+            hover: {
+              halo: {
+                size: 6,
+              },
+            },
+          },
         },
       },
       credits: { enabled: false },
     };
 
-    if (this.chart) {
-      this.chart.destroy();
-    }
+    this.chart?.destroy();
 
     this.chart = Highcharts.chart(
       this.chartContainer.nativeElement,
-      this.chartOptions,
+      chartOptions
     );
+
+    this.cdr.detectChanges();
   }
 
-  ngOnDestroy() {
-    if (this.chart) {
-      this.chart.destroy();
-    }
+  ngOnDestroy(): void {
+    this.chart?.destroy();
   }
 }

@@ -118,52 +118,14 @@
     </ng-container>
 
     <section class="charts-grid">
-      <div class="charts-grid__cell">
+      <div *ngFor="let chart of view.chartCards" class="charts-grid__cell">
         <app-chart
-          [data]="dashboard.totalLooks"
-          header="Combinações mais usadas"
+          [data]="chart.data"
+          [header]="chart.header"
           [loading]="view.loading"
-          chartType="pie"
-        ></app-chart>
-      </div>
-      <div class="charts-grid__cell">
-        <app-chart
-          [data]="dashboard.garbs"
-          header="Vestidos"
-          [loading]="view.loading"
-          chartType="bar"
-        ></app-chart>
-      </div>
-      <div class="charts-grid__cell">
-        <app-chart
-          [data]="dashboard.tops"
-          header="Tops"
-          [loading]="view.loading"
-          chartType="bar"
-        ></app-chart>
-      </div>
-      <div class="charts-grid__cell">
-        <app-chart
-          [data]="dashboard.bottoms"
-          header="Partes de baixo"
-          [loading]="view.loading"
-          chartType="bar"
-        ></app-chart>
-      </div>
-      <div class="charts-grid__cell">
-        <app-chart
-          [data]="dashboard.handbags"
-          header="Bolsas"
-          [loading]="view.loading"
-          chartType="pie"
-        ></app-chart>
-      </div>
-      <div class="charts-grid__cell">
-        <app-chart
-          [data]="dashboard.shoes"
-          header="Sapatos"
-          [loading]="view.loading"
-          chartType="pie"
+          [chartType]="chart.chartType"
+          [accent]="chart.accent"
+          [icon]="chart.icon"
         ></app-chart>
       </div>
     </section>

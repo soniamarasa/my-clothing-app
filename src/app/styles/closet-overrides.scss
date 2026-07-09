@@ -427,14 +427,18 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 0.75rem;
     width: 100%;
+    align-items: stretch;
 
     &__cell {
       min-width: 0;
+      display: flex;
     }
 
     app-chart {
-      display: block;
+      display: flex;
+      flex: 1;
       width: 100%;
+      min-height: 0;
     }
   }
 

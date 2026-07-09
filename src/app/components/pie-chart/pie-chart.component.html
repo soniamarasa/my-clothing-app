@@ -1,5 +1,28 @@
 <div
-  #chartContainer
-  id="chart-container"
-  style="width: 100%; height: 400px"
-></div>
+  class="pie-chart-layout"
+  [class.pie-chart-layout--with-legend]="useLegend"
+>
+  <div class="pie-chart-layout__chart">
+    <div #chartContainer class="pie-chart"></div>
+    <div class="pie-chart-layout__center" aria-hidden="true">
+      <span class="pie-chart-layout__center-value">{{ centerTotal }}</span>
+      <span class="pie-chart-layout__center-label">usos</span>
+    </div>
+  </div>
+
+  <ul *ngIf="useLegend" class="pie-chart-layout__legend">
+    <li
+      *ngFor="let item of legendItems"
+      class="pie-chart-layout__legend-item"
+    >
+      <span
+        class="pie-chart-layout__legend-dot"
+        [style.background]="item.color"
+      ></span>
+      <span class="pie-chart-layout__legend-name" [title]="item.name">{{
+        item.name
+      }}</span>
+      <span class="pie-chart-layout__legend-count">{{ item.count }}</span>
+    </li>
+  </ul>
+</div>
