@@ -40,14 +40,14 @@ export class ClothesService {
 
   activate(id: IClothing['_id']) {
     return this._http.put<IClothing>(
-      `${environment.url}clothes/active/${id}`,
+      `${environment.url}/clothes/active/${id}`,
       {},
     );
   }
 
   inactivate(id: IClothing['_id']) {
     return this._http.put<IClothing>(
-      `${environment.url}clothes/inactive${id}`,
+      `${environment.url}/clothes/inactive/${id}`,
       {},
     );
   }

@@ -42,7 +42,7 @@
         <span
           *ngFor="let look of day.looks | slice : 0 : 3"
           class="planned-calendar__dot"
-          [style.background]="look.place?.color || 'var(--closet-accent)'"
+          [style.background]="look.place.color || 'var(--closet-accent)'"
         ></span>
       </span>
     </button>
@@ -67,9 +67,9 @@
     <div class="planned-calendar-side__item-main">
       <span
         class="planned-calendar-side__place"
-        [style.background]="(plannedLook.place?.color || '#708a81') + '55'"
+        [style.background]="(plannedLook.place.color || '#708a81') + '55'"
       >
-        {{ plannedLook.place?.icon }} {{ plannedLook.place?.name }}
+        {{ plannedLook.place.icon }} {{ plannedLook.place.name }}
       </span>
       <p>{{ summary(plannedLook) }}</p>
       <small>{{ isUsed(plannedLook) ? 'Usado' : 'Planejado' }}</small>

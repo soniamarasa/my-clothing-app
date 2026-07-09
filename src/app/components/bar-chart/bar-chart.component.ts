@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   AfterViewInit,
 } from '@angular/core';
-import * as Highcharts from 'highcharts';
+import type Highcharts from 'highcharts';
 import { IDashboardItem } from '../../interfaces/dashboard';
 import {
   buildSeriesColors,
@@ -16,8 +16,10 @@ import {
   CHART_GRID,
   CHART_TEXT_MUTED,
   CHART_TOOLTIP_BG,
+  CHART_ACCESSIBILITY_OPTIONS,
 } from '../../utils/chart-theme';
 import { sortByCountDesc } from '../../utils/chart-data';
+import { loadHighcharts } from '../../utils/load-highcharts';
 
 @Component({
   standalone: false,
@@ -38,17 +40,17 @@ export class BarChartComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.data) {
-      this.createChart(this.data.result);
+      void this.createChart(this.data.result);
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && this.data) {
-      this.createChart(this.data.result);
+      void this.createChart(this.data.result);
     }
   }
 
-  createChart(result: IDashboardItem[]): void {
+  async createChart(result: IDashboardItem[]): Promise<void> {
     if (!this.chartCanvas) {
       return;
     }
@@ -65,7 +67,10 @@ export class BarChartComponent implements OnDestroy, OnChanges, AfterViewInit {
 
     this.chart?.destroy();
 
+    const Highcharts = await loadHighcharts();
+
     this.chart = Highcharts.chart(this.chartCanvas.nativeElement, {
+      ...CHART_ACCESSIBILITY_OPTIONS,
       chart: {
         type: 'bar',
         backgroundColor: 'transparent',

@@ -7,6 +7,12 @@ export const CHART_TOOLTIP_BG = '#312F2E';
 export const CHART_BODY_HEIGHT = '22rem';
 export const CHART_VIEW_HEIGHT = 300;
 
+export const CHART_ACCESSIBILITY_OPTIONS = {
+  accessibility: {
+    enabled: false,
+  },
+} as const;
+
 export function chartFontStyle(color = CHART_TEXT) {
   return {
     fontFamily: 'DM Mono, monospace',

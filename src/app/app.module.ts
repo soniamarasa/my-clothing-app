@@ -11,7 +11,6 @@ import { ClosetTheme } from './styles/closet-theme.preset';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PagesModule } from '@pages/pages.module';
 import { TokenInterceptor } from '@interceptors/token.interceptor';
 
 registerLocaleData(localePT);
@@ -23,7 +22,6 @@ registerLocaleData(localePT);
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
-    PagesModule,
   ],
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),

@@ -9,15 +9,17 @@ import {
   ChangeDetectorRef,
   AfterViewInit,
 } from '@angular/core';
-import * as Highcharts from 'highcharts';
+import type Highcharts from 'highcharts';
 import { IDashboardItem } from '../../interfaces/dashboard';
 import {
   buildSeriesColors,
   chartFontStyle,
   CHART_TOOLTIP_BG,
   CHART_VIEW_HEIGHT,
+  CHART_ACCESSIBILITY_OPTIONS,
 } from '../../utils/chart-theme';
 import { sortByCountDesc } from '../../utils/chart-data';
+import { loadHighcharts } from '../../utils/load-highcharts';
 
 interface PieLegendItem {
   name: string;
@@ -50,7 +52,7 @@ export class PieChartComponent implements OnDestroy, AfterViewInit, OnChanges {
 
   ngAfterViewInit(): void {
     if (this.data) {
-      this.createChart(this.data);
+      void this.createChart(this.data);
     } else {
       this.cdr.detectChanges();
     }
@@ -58,11 +60,11 @@ export class PieChartComponent implements OnDestroy, AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && this.data) {
-      this.createChart(this.data);
+      void this.createChart(this.data);
     }
   }
 
-  createChart(data: { total: number; result: IDashboardItem[] }): void {
+  async createChart(data: { total: number; result: IDashboardItem[] }): Promise<void> {
     if (!this.chartContainer) {
       return;
     }
@@ -89,6 +91,7 @@ export class PieChartComponent implements OnDestroy, AfterViewInit, OnChanges {
       CHART_VIEW_HEIGHT;
 
     const chartOptions: Highcharts.Options = {
+      ...CHART_ACCESSIBILITY_OPTIONS,
       chart: {
         type: 'pie',
         backgroundColor: 'transparent',
@@ -147,6 +150,7 @@ export class PieChartComponent implements OnDestroy, AfterViewInit, OnChanges {
 
     this.chart?.destroy();
 
+    const Highcharts = await loadHighcharts();
     this.chart = Highcharts.chart(
       this.chartContainer.nativeElement,
       chartOptions

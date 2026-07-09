@@ -6,8 +6,4 @@ import { Component } from '@angular/core';
   templateUrl: './pages.component.html',
   styleUrls: ['./pages.component.scss'],
 })
-export class PagesComponent {
-  title = 'planner-angular';
-
-  constructor() {}
-}
+export class PagesComponent {}
