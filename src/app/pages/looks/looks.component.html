@@ -93,6 +93,7 @@
 
     <p-paginator
       *ngIf="!loading && filteredLooks.length > gridRows"
+      appendTo="body"
       [rows]="gridRows"
       [totalRecords]="total"
       [rowsPerPageOptions]="[12, 24, 48]"
@@ -109,6 +110,7 @@
         #dt1
         [value]="looks"
         dataKey="id"
+        paginatorDropdownAppendTo="body"
         [rows]="20"
         [rowsPerPageOptions]="[20, 35, 50]"
         [totalRecords]="total"

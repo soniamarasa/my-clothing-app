@@ -27,6 +27,7 @@ registerLocaleData(localePT);
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     providePrimeNG({
+      overlayAppendTo: 'body',
       theme: {
         preset: ClosetTheme,
         options: {

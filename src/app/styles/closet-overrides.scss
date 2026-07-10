@@ -165,7 +165,20 @@
   .p-datatable {
     @include closet-glass-surface(true);
     border-radius: var(--closet-radius-lg) !important;
-    overflow: hidden;
+    overflow: visible;
+
+    .p-datatable-table-container,
+    .p-datatable-wrapper {
+      border: none !important;
+      overflow: auto;
+      border-radius: 0;
+    }
+
+    > .p-datatable-paginator-top,
+    > .p-datatable-paginator-bottom,
+    > .p-paginator {
+      overflow: visible;
+    }
 
     > .p-datatable-header,
     .p-datatable-header {
@@ -214,11 +227,6 @@
     .p-datatable-header .p-iconfield .p-inputtext {
       width: 100%;
       min-width: 12rem;
-    }
-
-    .p-datatable-table-container,
-    .p-datatable-wrapper {
-      border: none !important;
     }
 
     .p-datatable-thead > tr > th {

@@ -13,6 +13,8 @@
 
   <div class="wardrobe-page__tabs card">
     <p-selectButton
+      [fluid]="true"
+      styleClass="wardrobe-page__tab-switch"
       [options]="tabs"
       [(ngModel)]="activeTab"
       optionLabel="label"

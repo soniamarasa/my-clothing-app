@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { map } from 'rxjs';
 import { SubSink } from 'subsink';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
+import { PaginatorState } from 'primeng/paginator';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { openClosetDialog } from '../../utils/closet-dialog';
 import { Table } from 'primeng/table';
@@ -15,36 +16,49 @@ import { ILook } from '@interfaces/look';
 import { IClothing } from '@interfaces/clothing';
 import { IShoe } from '@interfaces/shoe';
 import { ITag } from '@interfaces/tag';
-
 import { LookDialog } from '../../components/dialogs/look-dialog/look-dialog.component';
+import { getContrastTextColor } from '../../utils/color-contrast';
+
+type LooksViewMode = 'grid' | 'list';
 
 @Component({
   standalone: false,
   selector: 'app-unused-looks',
   templateUrl: './unused-looks.component.html',
   styleUrls: ['./unused-looks.component.scss'],
-  providers: [DialogService, ConfirmationService],
+  providers: [DialogService],
 })
 export class UnusedLooksComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   ref?: DynamicDialogRef;
-  loading: boolean = true;
-  total: number = 0;
+  loading = true;
+  total = 0;
   looksOriginal: ILook[] = [];
   looks: ILook[] = [];
-  clothes: IClothing[] = [];
+  filteredLooks: ILook[] = [];
+  paginatedLooks: ILook[] = [];
   tops: IClothing[] = [];
   bottoms: IClothing[] = [];
   garbs: IClothing[] = [];
   shoes: IShoe[] = [];
   tags: ITag[] = [];
+  searchQuery = '';
+  viewMode: LooksViewMode = 'grid';
+  gridFirst = 0;
+  gridRows = 12;
+
+  readonly viewOptions = [
+    { label: 'Cards', value: 'grid' as LooksViewMode, icon: 'pi pi-th-large' },
+    { label: 'Lista', value: 'list' as LooksViewMode, icon: 'pi pi-list' },
+  ];
+
+  readonly pageReportTemplate =
+    'Mostrando {first} a {last} de {totalRecords} looks';
 
   @ViewChild('dt1') tableLooks!: Table;
 
   readonly looks$ = this.looksFacade.unusedLooksState$.pipe(
-    map((looks: ILook[]) => {
-      return looks;
-    })
+    map((looks: ILook[]) => looks)
   );
 
   constructor(
@@ -64,6 +78,7 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
         this.looks = looks;
         this.loading = false;
         this.total = looks.length;
+        this.applyFilters();
       }),
 
       this.clothesFacade.getClothes().subscribe((clothes: IClothing[]) => {
@@ -88,37 +103,54 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
     );
   }
 
-  getSeverity(status: boolean) {
-    if (status) return 'danger';
-    else return 'success';
-  }
-
-  clear(table: Table) {
-    table.clear();
-
-    this.tableLooks.value = this.looksOriginal;
+  get yearLabel(): string {
+    const year = this.filterFacade.year;
+    return year instanceof Date
+      ? year.getFullYear().toString()
+      : String(year ?? new Date().getFullYear());
   }
 
   getTextColor(bgColor: string): string {
-    const rgb = parseInt(bgColor.replace('#', ''), 16);
-    const r = (rgb >> 16) & 0xff;
-    const g = (rgb >> 8) & 0xff;
-    const b = (rgb >> 0) & 0xff;
-
-    const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-    return brightness > 128 ? 'black' : '#D4BE98';
+    return getContrastTextColor(bgColor);
   }
 
-  filterGlobal(event: any) {
-    const inputElement = event.target as HTMLInputElement;
-    const filterValue = inputElement.value || '';
-    this.tableLooks.filterGlobal(filterValue, 'contains');
+  onViewModeChange(): void {
+    if (this.viewMode === 'grid') {
+      this.applyFilters();
+    }
   }
 
-  openDialog(look?: ILook) {
+  onSearchChange(): void {
+    if (this.viewMode === 'grid') {
+      this.applyFilters();
+      return;
+    }
+
+    this.tableLooks?.filterGlobal(this.searchQuery, 'contains');
+  }
+
+  clearFilters(): void {
+    this.searchQuery = '';
+
+    if (this.viewMode === 'list' && this.tableLooks) {
+      this.tableLooks.clear();
+      this.tableLooks.value = this.looksOriginal;
+      return;
+    }
+
+    this.applyFilters();
+  }
+
+  onGridPageChange(event: PaginatorState): void {
+    this.gridFirst = event.first ?? 0;
+    this.gridRows = event.rows ?? this.gridRows;
+    this.updatePaginatedLooks();
+  }
+
+  openDialog(look?: ILook): void {
     const ref = openClosetDialog(this._dialogService, LookDialog, {
-      header: look ? ' Editar' : 'Novo ' + 'Look',
-      width: '450px',
+      header: look ? 'Editar Look' : 'Novo Look',
+      width: '520px',
       data: {
         item: look,
         clothes: [this.tops, this.bottoms, this.garbs],
@@ -130,18 +162,18 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       (ref as DynamicDialogRef).onClose.subscribe((lookObj) => {
-        if (lookObj) {
-          lookObj._id ? this.updateLook(lookObj) : null;
+        if (lookObj?._id) {
+          this.updateLook(lookObj);
         }
       })
     );
   }
 
-  updateLook(look: ILook) {
+  updateLook(look: ILook): void {
     this.subs.add(
       this.looksFacade.updateLook(look).subscribe({
-        next: (look) => {
-           this.setTableFilters();
+        next: () => {
+          this.setTableFilters();
           this._messageService.add({
             key: 'notification',
             severity: 'success',
@@ -161,8 +193,38 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
     );
   }
 
-  setTableFilters() {
+  setTableFilters(): void {
     this.looks = [...this.looks];
+    this.applyFilters();
+  }
+
+  private applyFilters(): void {
+    const query = this.searchQuery.trim().toLowerCase();
+
+    this.filteredLooks = !query
+      ? [...this.looks]
+      : this.looks.filter((look) => this.matchesSearch(look, query));
+
+    this.total = this.filteredLooks.length;
+    this.gridFirst = 0;
+    this.updatePaginatedLooks();
+  }
+
+  private updatePaginatedLooks(): void {
+    const end = this.gridFirst + this.gridRows;
+    this.paginatedLooks = this.filteredLooks.slice(this.gridFirst, end);
+  }
+
+  private matchesSearch(look: ILook, query: string): boolean {
+    const parts = [
+      look.top?.name,
+      look.bottom?.name,
+      look.garb?.name,
+      look.shoe?.name,
+      look.tag?.name,
+    ];
+
+    return parts.some((part) => part?.toLowerCase().includes(query));
   }
 
   ngOnDestroy(): void {

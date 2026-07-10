@@ -9,6 +9,7 @@
       {{ look.tag.name }}
     </span>
     <p-button
+      *ngIf="showRemove"
       icon="pi pi-trash"
       [rounded]="true"
       [text]="true"

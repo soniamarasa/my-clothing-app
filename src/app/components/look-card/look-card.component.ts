@@ -10,6 +10,7 @@ import { getContrastTextColor } from '../../utils/color-contrast';
 })
 export class LookCardComponent {
   @Input({ required: true }) look!: ILook;
+  @Input() showRemove = true;
   @Output() edit = new EventEmitter<ILook>();
   @Output() remove = new EventEmitter<ILook>();
 
