@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { map } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, map } from 'rxjs';
 import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -15,6 +15,7 @@ import { ClothesFacade } from '@facades/clothes.facade';
 import { LooksFacade } from '@facades/looks.facade';
 import { AccessoriesFacade } from '@facades/accessories.facade';
 import { BandanasFacade } from '@facades/bandanas.facade';
+import { FilterFacade } from '@facades/filter.facade';
 
 import { statusLook } from '../../utils/valueTypes';
 import { PlannedLookDialog } from '@components/dialogs/planned-look-dialog/planned-look-dialog.component';
@@ -41,7 +42,7 @@ type PlannedViewMode = 'calendar' | 'list';
   selector: 'app-planned-looks',
   templateUrl: './planned-looks.component.html',
   styleUrls: ['./planned-looks.component.scss'],
-  providers: [DialogService, ConfirmationService],
+  providers: [ConfirmationService],
 })
 export class PlannedLooksComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
@@ -99,20 +100,20 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
     private placesFacade: PlacesFacade,
     private accessoriesFacade: AccessoriesFacade,
     private bandanasFacade: BandanasFacade,
-    private handbagsFacade: HandbagsFacade
+    private handbagsFacade: HandbagsFacade,
+    private filterFacade: FilterFacade
   ) {}
 
   ngOnInit(): void {
-    const currentRoute = this._router.url;
-    if (currentRoute.includes('/used-looks')) {
-      this.statusId = 2;
-    } else {
-      this.statusId = 1;
-    }
-
-    this.plannedLooksFacade.filterPlannedLooks({ status: this.statusId });
+    this.syncRouteState();
 
     this.subs.add(
+      this._router.events
+        .pipe(
+          filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+        )
+        .subscribe(() => this.syncRouteState()),
+
       this.plannedLooks$.subscribe((plannedLooks: IPlannedLook[]) => {
         this.plannedLooksOriginal = plannedLooks;
         this.plannedLooks = plannedLooks;
@@ -165,8 +166,15 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
   }
 
   openDialog(plannedLook?: IPlannedLook, presetDate?: Date): void {
+    const isUsedLook = this.statusId === 2;
     const ref = openClosetDialog(this._dialogService, PlannedLookDialog, {
-      header: plannedLook ? 'Editar look planejado' : 'Novo look planejado',
+      header: plannedLook
+        ? isUsedLook
+          ? 'Editar look usado'
+          : 'Editar look planejado'
+        : isUsedLook
+          ? 'Novo look usado'
+          : 'Novo look planejado',
       width: '500px',
       data: {
         item: plannedLook,
@@ -181,8 +189,12 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
       appendTo: 'body',
     });
 
+    if (!ref) {
+      return;
+    }
+
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((lookObj) => {
+      ref.onClose.subscribe((lookObj) => {
         if (lookObj) {
           lookObj._id ? this.updateLook(lookObj) : this.newLook(lookObj);
         }
@@ -337,6 +349,23 @@ export class PlannedLooksComponent implements OnInit, OnDestroy {
   setTableFilters(): void {
     this.plannedLooks = [...this.plannedLooks];
     this.refreshCalendar();
+  }
+
+  private syncRouteState(): void {
+    const nextStatusId = this._router.url.includes('/used-looks') ? 2 : 1;
+
+    if (this.statusId !== nextStatusId) {
+      this.statusId = nextStatusId;
+      this.loading = true;
+      this.plannedLooks = [];
+      this.plannedLooksOriginal = [];
+      this.total = 0;
+    }
+
+    this.plannedLooksFacade.filterPlannedLooks({
+      status: this.statusId,
+      year: this.filterFacade.getYearString(),
+    });
   }
 
   private refreshCalendar(): void {

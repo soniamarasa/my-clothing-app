@@ -28,7 +28,7 @@ import { ITag } from '@interfaces/tag';
   selector: 'app-clothes',
   templateUrl: './clothes.component.html',
   styleUrls: ['./clothes.component.scss'],
-  providers: [DialogService, ConfirmationService],
+  providers: [ConfirmationService],
 })
 export class ClothesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
@@ -129,8 +129,12 @@ export class ClothesComponent implements OnInit, OnDestroy {
       appendTo: 'body',
     });
 
+    if (!ref) {
+      return;
+    }
+
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((clothingObj) => {
+      ref.onClose.subscribe((clothingObj) => {
         if (clothingObj) {
           clothingObj._id
             ? this.updateClothing(clothingObj)

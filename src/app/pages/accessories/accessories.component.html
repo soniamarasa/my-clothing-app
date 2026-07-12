@@ -46,13 +46,13 @@
               <span
                 class="badge"
                 [style.color]="getTextColor(accessory.color)"
-                [style.background]="accessory.color + '70'"
+                [style.background]="(accessory.color || '') + '70'"
               >
-                {{ accessory.category.icon }}
+                {{ accessory.category?.icon }}
                 {{ accessory.name }}
               </span>
             </td>
-            <td>{{ accessory.category.name }}</td>
+            <td>{{ accessory.category?.name || '—' }}</td>
             <td class="table__actions">
               <p-button
                 icon="fa-solid fa-pen-to-square"

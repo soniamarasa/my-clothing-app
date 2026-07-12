@@ -15,7 +15,7 @@ import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.com
   selector: 'app-handbags',
   templateUrl: './handbags.component.html',
   styleUrls: ['./handbags.component.scss'],
-  providers: [DialogService, ConfirmationService],
+  providers: [ConfirmationService],
 })
 export class HandbagsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
@@ -55,8 +55,12 @@ export class HandbagsComponent implements OnInit, OnDestroy {
       appendTo: 'body',
     });
 
+    if (!ref) {
+      return;
+    }
+
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((handbagsObj) => {
+      ref.onClose.subscribe((handbagsObj) => {
         if (handbagsObj) {
           handbagsObj._id
             ? this.updateHandbag(handbagsObj)

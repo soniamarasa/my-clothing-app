@@ -15,7 +15,7 @@ import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.com
   selector: 'app-shoes',
   templateUrl: './shoes.component.html',
   styleUrls: ['./shoes.component.scss'],
-  providers: [DialogService, ConfirmationService],
+  providers: [ConfirmationService],
 })
 export class ShoesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
@@ -55,8 +55,12 @@ export class ShoesComponent implements OnInit, OnDestroy {
       appendTo: 'body',
     });
 
+    if (!ref) {
+      return;
+    }
+
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((shoeObj) => {
+      ref.onClose.subscribe((shoeObj) => {
         if (shoeObj) {
           shoeObj._id ? this.updateShoe(shoeObj) : this.newShoe(shoeObj);
         }

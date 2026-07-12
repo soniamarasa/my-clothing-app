@@ -16,7 +16,7 @@ import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.com
   selector: 'app-categories',
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss'],
-  providers: [DialogService, ConfirmationService],
+  providers: [ConfirmationService],
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
@@ -56,8 +56,12 @@ export class CategoriesComponent implements OnInit, OnDestroy {
       appendTo: 'body',
     });
 
+    if (!ref) {
+      return;
+    }
+
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((categoryObj) => {
+      ref.onClose.subscribe((categoryObj) => {
         if (categoryObj) {
           categoryObj._id
             ? this.updateCategory(categoryObj)

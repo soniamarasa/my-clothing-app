@@ -58,8 +58,12 @@ export class AuthComponent implements OnInit {
       header: 'Esqueceu a sua senha?',
     });
 
+    if (!ref) {
+      return;
+    }
+
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((email) => {
+      ref.onClose.subscribe((email) => {
         if (email) {
           this.retrievePassword(email);
         }

@@ -4,6 +4,7 @@ import { SubSink } from 'subsink';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { openClosetDialog } from '../../utils/closet-dialog';
+import { getContrastTextColor } from '../../utils/color-contrast';
 
 import { AccessoriesFacade } from '@facades/accessories.facade';
 import { IAccessory } from '@interfaces/accessory';
@@ -15,7 +16,7 @@ import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.com
   selector: 'app-accessories',
   templateUrl: './accessories.component.html',
   styleUrls: ['./accessories.component.scss'],
-  providers: [DialogService, ConfirmationService],
+  providers: [ConfirmationService],
 })
 export class AccessoriesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
@@ -49,14 +50,18 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
 
   openDialog(accessory?: IAccessory) {
     const ref = openClosetDialog(this._dialogService, ItemDialog, {
-      header: accessory ? ' Editar' : 'Novo' + ' acessório',
+      header: accessory ? 'Editar acessório' : 'Novo acessório',
       width: '450px',
       data: { type: 'accessory', item: accessory, category: 'Acessório' },
       appendTo: 'body',
     });
 
+    if (!ref) {
+      return;
+    }
+
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((accessoryObj) => {
+      ref.onClose.subscribe((accessoryObj) => {
         if (accessoryObj) {
           accessoryObj._id
             ? this.updateAccessory(accessoryObj)
@@ -145,14 +150,8 @@ export class AccessoriesComponent implements OnInit, OnDestroy {
     });
   }
 
-  getTextColor(bgColor: string): string {
-    const rgb = parseInt(bgColor.replace('#', ''), 16);
-    const r = (rgb >> 16) & 0xff;
-    const g = (rgb >> 8) & 0xff;
-    const b = (rgb >> 0) & 0xff;
-
-    const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-    return brightness > 128 ? 'black' : '#D4BE98';
+  getTextColor(bgColor: string | undefined): string {
+    return getContrastTextColor(bgColor);
   }
 
   setTableFilters() {

@@ -53,6 +53,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
     }
 
+    this.filterFacade.setFilter(this.filterFacade.year);
+
     this.items = [
       {
         label: 'Conta',

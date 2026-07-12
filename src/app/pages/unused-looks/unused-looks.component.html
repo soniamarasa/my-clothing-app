@@ -174,7 +174,7 @@
             <td (click)="openDialog(look)">
               <small
                 class="badge"
-                [style.color]="getTextColor(look.shoe.color)"
+                [style.color]="getTextColor(look.shoe?.color || '')"
                 [style.background]="look.shoe?.color + '70'"
               >
                 {{ look.shoe?.category.icon }}

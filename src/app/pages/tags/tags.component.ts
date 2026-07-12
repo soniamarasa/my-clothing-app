@@ -22,7 +22,7 @@ import { Table } from 'primeng/table';
   selector: 'app-tags',
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.scss'],
-  providers: [DialogService, ConfirmationService],
+  providers: [ConfirmationService],
 })
 export class TagsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
@@ -65,8 +65,12 @@ export class TagsComponent implements OnInit, OnDestroy {
       appendTo: 'body',
     });
 
+    if (!ref) {
+      return;
+    }
+
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((tagObj) => {
+      ref.onClose.subscribe((tagObj) => {
         if (tagObj) {
           this.loading = true;
           tagObj._id ? this.updateTag(tagObj) : this.newTag(tagObj);

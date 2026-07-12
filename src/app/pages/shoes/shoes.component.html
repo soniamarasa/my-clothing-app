@@ -48,11 +48,11 @@
                 [style.color]="getTextColor(shoe.color)"
                 [style.background]="shoe.color + '80'"
               >
-                {{ shoe.category.icon }}
+                {{ shoe.category?.icon }}
                 {{ shoe.name }}
               </span>
             </td>
-            <td>{{ shoe.category.name }}</td>
+            <td>{{ shoe.category?.name || '—' }}</td>
             <td class="table__actions">
               <p-button
                 icon="fa-solid fa-pen-to-square"

@@ -8,7 +8,7 @@ import { LooksFacade } from './looks.facade';
 })
 export class FilterFacade {
   todayIs = new Date();
-  year: any = this.todayIs;
+  year: Date = new Date(this.todayIs.getFullYear(), 0, 1);
   loading = false;
 
   constructor(
@@ -17,10 +17,23 @@ export class FilterFacade {
     private looksFacade: LooksFacade,
   ) {}
 
-  setFilter(year: string) {
-    this.year = year;
-    this.plannedLooksFacade.filterPlannedLooks({ year: this.year });
-    this.looksFacade.filterUnusedLooks({ year: this.year });
-    this.dashboardFacade.filter({ year: this.year });
+  getYearString(): string {
+    if (this.year instanceof Date) {
+      return this.year.getFullYear().toString();
+    }
+
+    return String(this.year ?? new Date().getFullYear());
+  }
+
+  setFilter(year: string | number | Date) {
+    const yearStr =
+      year instanceof Date
+        ? year.getFullYear().toString()
+        : String(year ?? new Date().getFullYear());
+
+    this.year = new Date(parseInt(yearStr, 10), 0, 1);
+    this.plannedLooksFacade.filterPlannedLooks({ year: yearStr });
+    this.looksFacade.filterUnusedLooks({ year: yearStr });
+    this.dashboardFacade.filter({ year: yearStr });
   }
 }

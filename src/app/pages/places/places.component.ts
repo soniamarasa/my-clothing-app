@@ -15,7 +15,7 @@ import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.com
   selector: 'app-places',
   templateUrl: './places.component.html',
   styleUrls: ['./places.component.scss'],
-  providers: [DialogService, ConfirmationService],
+  providers: [ConfirmationService],
 })
 export class PlacesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
@@ -55,8 +55,12 @@ export class PlacesComponent implements OnInit, OnDestroy {
       appendTo: 'body',
     });
 
+    if (!ref) {
+      return;
+    }
+
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((placeObj) => {
+      ref.onClose.subscribe((placeObj) => {
         if (placeObj) {
           placeObj._id ? this.updatePlace(placeObj) : this.newPlace(placeObj);
         }

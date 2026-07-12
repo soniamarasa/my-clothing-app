@@ -26,7 +26,6 @@ type LooksViewMode = 'grid' | 'list';
   selector: 'app-unused-looks',
   templateUrl: './unused-looks.component.html',
   styleUrls: ['./unused-looks.component.scss'],
-  providers: [DialogService],
 })
 export class UnusedLooksComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
@@ -72,13 +71,33 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.looksFacade.filterUnusedLooks({
+      year: this.filterFacade.getYearString(),
+    });
+
     this.subs.add(
-      this.looks$.subscribe((looks: ILook[]) => {
-        this.looksOriginal = looks;
-        this.looks = looks;
-        this.loading = false;
-        this.total = looks.length;
-        this.applyFilters();
+      this.looks$.subscribe({
+        next: (looks: ILook[]) => {
+          this.looksOriginal = looks;
+          this.looks = looks;
+          this.loading = false;
+          this.total = looks.length;
+          this.applyFilters();
+        },
+        error: () => {
+          this.loading = false;
+          this.looks = [];
+          this.looksOriginal = [];
+          this.filteredLooks = [];
+          this.paginatedLooks = [];
+          this.total = 0;
+          this._messageService.add({
+            key: 'notification',
+            severity: 'danger',
+            summary: 'Não foi possível carregar os looks não usados.',
+            detail: 'Tente novamente mais tarde.',
+          });
+        },
       }),
 
       this.clothesFacade.getClothes().subscribe((clothes: IClothing[]) => {
@@ -104,10 +123,7 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
   }
 
   get yearLabel(): string {
-    const year = this.filterFacade.year;
-    return year instanceof Date
-      ? year.getFullYear().toString()
-      : String(year ?? new Date().getFullYear());
+    return this.filterFacade.getYearString();
   }
 
   getTextColor(bgColor: string): string {
@@ -160,8 +176,12 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
       appendTo: 'body',
     });
 
+    if (!ref) {
+      return;
+    }
+
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((lookObj) => {
+      ref.onClose.subscribe((lookObj) => {
         if (lookObj?._id) {
           this.updateLook(lookObj);
         }

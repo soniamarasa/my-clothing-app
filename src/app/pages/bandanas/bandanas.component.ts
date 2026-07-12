@@ -15,7 +15,7 @@ import { ItemDialog } from '../../components/dialogs/item-dialog/item-dialog.com
   selector: 'app-bandanas',
   templateUrl: './bandanas.component.html',
   styleUrls: ['./bandanas.component.scss'],
-  providers: [DialogService, ConfirmationService],
+  providers: [ConfirmationService],
 })
 export class BandanasComponent implements OnInit, OnDestroy {
   total: number = 0;
@@ -55,8 +55,12 @@ export class BandanasComponent implements OnInit, OnDestroy {
       appendTo: 'body',
     });
 
+    if (!ref) {
+      return;
+    }
+
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((bandanaObj) => {
+      ref.onClose.subscribe((bandanaObj) => {
         if (bandanaObj) {
           bandanaObj._id
             ? this.updateBandana(bandanaObj)

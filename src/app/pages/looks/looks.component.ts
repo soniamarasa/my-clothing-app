@@ -25,7 +25,7 @@ type LooksViewMode = 'grid' | 'list';
   selector: 'app-looks',
   templateUrl: './looks.component.html',
   styleUrls: ['./looks.component.scss'],
-  providers: [DialogService, ConfirmationService],
+  providers: [ConfirmationService],
 })
 export class LooksComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
@@ -151,8 +151,12 @@ export class LooksComponent implements OnInit, OnDestroy {
       appendTo: 'body',
     });
 
+    if (!ref) {
+      return;
+    }
+
     this.subs.add(
-      (ref as DynamicDialogRef).onClose.subscribe((lookObj) => {
+      ref.onClose.subscribe((lookObj) => {
         if (lookObj) {
           lookObj._id ? this.updateLook(lookObj) : this.newLook(lookObj);
         }
