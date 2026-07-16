@@ -96,22 +96,12 @@ src/app/
 
 ## Screenshots
 
-> Adicione capturas em `docs/screenshots/` e referencie aqui antes de publicar no portfolio.
-
 | Tela | Descrição |
 |------|-----------|
 | Home | Dashboard com stats, próximo look e gráficos |
 | Looks | Grid de cards com combinações coloridas |
 | Planejados | Agenda de looks por data |
 
-## Próximos passos (roadmap)
-
-- [ ] Deploy demo (Vercel + Render)
-- [x] Calendário mensal para looks planejados
-- [x] Wizard de montagem de look (3 passos)
-- [x] Ação "Usar hoje" + página Meu Armário unificada
-- [ ] Modo vitrine pública para portfolio
-- [ ] Ícones Iconify unificados (`feature/closet-iconify`)
 
 ## Licença
 
