@@ -136,6 +136,46 @@
     background: var(--closet-surface-solid) !important;
   }
 
+  // SelectButton (Cards/Lista, Calendário/Lista, abas) — contraste no dark theme
+  .looks-page__toolbar .p-selectbutton,
+  .planned-page__toolbar .p-selectbutton {
+    gap: 0.35rem;
+
+    .p-togglebutton {
+      min-height: 2.5rem;
+      border-width: 1px !important;
+      border-radius: var(--closet-radius-md, 0.65rem) !important;
+      background: rgba(255, 255, 255, 0.06) !important;
+      border-color: var(--closet-surface-border, rgba(255, 255, 255, 0.14)) !important;
+      color: rgba(255, 255, 255, 0.78) !important;
+      font-weight: 500;
+
+      .p-togglebutton-content {
+        gap: 0.4rem;
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+
+      .p-togglebutton-icon,
+      .p-togglebutton-label {
+        color: inherit !important;
+      }
+
+      &:not(:disabled):not(.p-togglebutton-checked):hover {
+        background: rgba(255, 255, 255, 0.12) !important;
+        border-color: rgba(255, 255, 255, 0.24) !important;
+        color: #f5f5f5 !important;
+      }
+
+      &.p-togglebutton-checked {
+        background: rgba(222, 163, 123, 0.18) !important;
+        border-color: rgba(222, 163, 123, 0.55) !important;
+        color: var(--closet-primary, #dea37b) !important;
+        box-shadow: 0 0 0 1px rgba(222, 163, 123, 0.12);
+      }
+    }
+  }
+
   .p-card {
     @include closet-glass-surface();
     border-radius: var(--closet-radius-lg) !important;

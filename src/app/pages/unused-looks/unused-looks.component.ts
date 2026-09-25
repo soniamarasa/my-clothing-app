@@ -132,13 +132,18 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
 
   onViewModeChange(): void {
     if (this.viewMode === 'grid') {
-      this.applyFilters();
+      this.applyFilters(true);
+      return;
     }
+
+    setTimeout(() => {
+      this.tableLooks?.filterGlobal(this.searchQuery, 'contains');
+    });
   }
 
   onSearchChange(): void {
     if (this.viewMode === 'grid') {
-      this.applyFilters();
+      this.applyFilters(true);
       return;
     }
 
@@ -150,11 +155,15 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
 
     if (this.viewMode === 'list' && this.tableLooks) {
       this.tableLooks.clear();
-      this.tableLooks.value = this.looksOriginal;
+      this.looks = [...this.looksOriginal];
+      this.tableLooks.value = this.looks;
+      this.total = this.looks.length;
       return;
     }
 
-    this.applyFilters();
+    this.looks = [...this.looksOriginal];
+    this.total = this.looks.length;
+    this.applyFilters(true);
   }
 
   onGridPageChange(event: PaginatorState): void {
@@ -218,15 +227,18 @@ export class UnusedLooksComponent implements OnInit, OnDestroy {
     this.applyFilters();
   }
 
-  private applyFilters(): void {
+  private applyFilters(resetPage = false): void {
     const query = this.searchQuery.trim().toLowerCase();
 
     this.filteredLooks = !query
       ? [...this.looks]
       : this.looks.filter((look) => this.matchesSearch(look, query));
 
-    this.total = this.filteredLooks.length;
-    this.gridFirst = 0;
+    const maxFirst = Math.max(0, this.filteredLooks.length - this.gridRows);
+    if (resetPage || this.gridFirst > maxFirst) {
+      this.gridFirst = 0;
+    }
+
     this.updatePaginatedLooks();
   }
 

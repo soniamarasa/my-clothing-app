@@ -72,9 +72,14 @@ export class ItemDialog implements OnInit, OnDestroy {
 
           this.subs.add(
             this.tagsFacade.getTags().subscribe((tags: ITag[]) => {
-              this.tags = tags.filter(
-                (obj) => obj.type === this.dialogData.category
-              );
+              const expectedType = this.dialogData.category;
+              this.tags = tags.filter((obj) => {
+                const tagType =
+                  typeof obj.type === 'string'
+                    ? obj.type
+                    : (obj.type as { name?: string } | undefined)?.name;
+                return tagType === expectedType;
+              });
             })
           );
 
@@ -117,13 +122,7 @@ export class ItemDialog implements OnInit, OnDestroy {
             'type',
             this._fb.control(null, [Validators.required])
           );
-
-          if (this.dialogData.type === 'tag') {
-            this.itemForm.addControl(
-              'clothesType',
-              this._fb.control(null, [Validators.required])
-            );
-          }
+          // clothesType só entra quando o tipo for "Roupa" (via isClothing)
         }
 
         if (
@@ -139,13 +138,18 @@ export class ItemDialog implements OnInit, OnDestroy {
         }
 
         if (this.dialogData?.item?._id) {
-          this.isClothing(this.dialogData.item.type);
           this.itemForm.addControl(
             '_id',
             this._fb.control(this.dialogData.item._id, [Validators.required])
           );
 
           this.itemForm.patchValue(this.dialogData.item);
+          this.isClothing(this.dialogData.item.type);
+          if (this.dialogData.item.clothesType != null) {
+            this.itemForm
+              .get('clothesType')
+              ?.setValue(this.dialogData.item.clothesType);
+          }
         }
       }
       resolve();
@@ -153,26 +157,53 @@ export class ItemDialog implements OnInit, OnDestroy {
   }
 
   isClothing(value: any) {
-    if (value === 'Roupa') {
+    const typeName =
+      typeof value === 'string' ? value : value?.name ?? value?.value;
+
+    if (typeName === 'Roupa') {
       this.showClothesType = true;
-      this.itemForm.addControl(
-        'clothesType',
-        this._fb.control(null, [Validators.required])
-      );
+      if (!this.itemForm.contains('clothesType')) {
+        this.itemForm.addControl(
+          'clothesType',
+          this._fb.control(null, [Validators.required])
+        );
+      } else {
+        this.itemForm
+          .get('clothesType')
+          ?.setValidators([Validators.required]);
+        this.itemForm.get('clothesType')?.updateValueAndValidity();
+      }
     } else {
       this.showClothesType = false;
-      this.itemForm.removeControl('clothesType');
+      if (this.itemForm.contains('clothesType')) {
+        this.itemForm.removeControl('clothesType');
+      }
     }
   }
 
   onClose(confirmed?: boolean) {
     if (!confirmed) {
       this._ref.close();
-    } else {
-      let data = this.itemForm.value;
-
-      this._ref.close(data);
+      return;
     }
+
+    this.itemForm.markAllAsTouched();
+    this.itemForm.updateValueAndValidity();
+
+    if (this.itemForm.invalid) {
+      return;
+    }
+
+    const data = this.itemForm.value;
+    if (
+      this.dialogData?.type === 'tag' &&
+      (data.type == null || data.type === '')
+    ) {
+      this.itemForm.get('type')?.setErrors({ required: true });
+      return;
+    }
+
+    this._ref.close(data);
   }
 
   emoji(e: any) {

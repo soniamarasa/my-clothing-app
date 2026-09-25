@@ -57,8 +57,8 @@
           appendTo="body"
         ></p-select>
 
-        <ng-container *ngIf="itemForm.get('type')?.touched">
-          <small class="p-error" *ngIf="itemForm.get('type')?.errors">
+        <ng-container *ngIf="itemForm.get('category')?.touched">
+          <small class="p-error" *ngIf="itemForm.get('category')?.errors">
             Selecione a categoria.
           </small>
         </ng-container>
@@ -67,19 +67,18 @@
 
     <div class="formgrid grid">
       <div *ngIf="showType" class="field col">
-        <ng-container>
-          <p-select
-            formControlName="type"
-            inputId="type"
-            name="type"
-            [options]="types"
-            placeholder="Selecione o tipo"
-            optionValue="name"
-            optionLabel="name"
-            appendTo="body"
-            (onChange)="isClothing($event.value)"
-          ></p-select>
-        </ng-container>
+        <label for="type">Tipo</label>
+        <p-select
+          formControlName="type"
+          inputId="type"
+          name="type"
+          [options]="types"
+          placeholder="Selecione o tipo"
+          optionValue="name"
+          optionLabel="name"
+          appendTo="body"
+          (onChange)="isClothing($event.value)"
+        ></p-select>
         <ng-container *ngIf="itemForm.get('type')?.touched">
           <small class="p-error" *ngIf="itemForm.get('type')?.errors">
             Selecione o tipo.
@@ -88,32 +87,26 @@
       </div>
 
       <div *ngIf="showClothesType" class="field col">
-        <ng-container>
-          <p-select
-            formControlName="clothesType"
-            inputId="clothesType"
-            name="clothesType"
-            [options]="clothesTypes"
-            placeholder="Selecione o tipo"
-            optionValue="value"
-            optionLabel="name"
-            appendTo="body"
-          ></p-select>
-        </ng-container>
+        <label for="clothesType">Tipo de peça</label>
+        <p-select
+          formControlName="clothesType"
+          inputId="clothesType"
+          name="clothesType"
+          [options]="clothesTypes"
+          placeholder="Selecione o tipo de peça"
+          optionValue="value"
+          optionLabel="name"
+          appendTo="body"
+        ></p-select>
         <ng-container *ngIf="itemForm.get('clothesType')?.touched">
           <small class="p-error" *ngIf="itemForm.get('clothesType')?.errors">
-            Selecione o tipo.
+            Selecione o tipo de peça.
           </small>
         </ng-container>
       </div>
 
       <div *ngIf="showIcon" class="field col field__emoji">
-        <!-- <p-button
-          (click)="op.toggle($event)"
-          styleClass="p-button-rounded"
-          icon="fa-solid fa-icons"
-          label="Emoji"
-        ></p-button> -->
+        <label>Ícone</label>
         <span id="current__emoji" (click)="op.toggle($event)">{{
           itemForm.get("icon")?.value || "🏷️"
         }}</span>
@@ -123,7 +116,7 @@
       </div>
     </div>
 
-    <div lass="formgrid grid">
+    <div class="formgrid grid">
       <div
         *ngIf="showC1 && dialogData?.item"
         class="field field-checkbox col-12"

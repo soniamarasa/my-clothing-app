@@ -130,6 +130,8 @@
                 [showMatchModes]="false"
                 [showOperator]="false"
                 [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
               >
                 <ng-template pTemplate="header">
                   <div class="px-3 pt-3 pb-0">
@@ -137,17 +139,17 @@
                   </div>
                 </ng-template>
                 <ng-template
-                  pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
-                >
-                  <p-multiSelect
-                    [ngModel]="value"
-                    [options]="places"
-                    placeholder="Selecione"
-                    (onChange)="filter($event.value)"
-                    optionLabel="name"
+                    pTemplate="filter"
+                    let-filterConstraint="filterConstraint"
                   >
+                    <p-multiSelect
+                      [(ngModel)]="filterConstraint.value"
+                      [options]="places"
+                      placeholder="Selecione"
+                      optionLabel="name"
+                      appendTo="self"
+                      [filter]="true"
+                    >
                     <ng-template let-option pTemplate="item">
                       <div class="inline-block vertical-align-middle">
                         <span class="ml-1 mt-1">{{ option.name }}</span>
@@ -173,6 +175,8 @@
                 [showMatchModes]="false"
                 [showOperator]="false"
                 [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
               >
                 <ng-template pTemplate="header">
                   <div class="px-3 pt-3 pb-0">
@@ -180,17 +184,17 @@
                   </div>
                 </ng-template>
                 <ng-template
-                  pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
-                >
-                  <p-multiSelect
-                    [ngModel]="value"
-                    [options]="handbags"
-                    placeholder="Selecione"
-                    (onChange)="filter($event.value)"
-                    optionLabel="name"
+                    pTemplate="filter"
+                    let-filterConstraint="filterConstraint"
                   >
+                    <p-multiSelect
+                      [(ngModel)]="filterConstraint.value"
+                      [options]="handbags"
+                      placeholder="Selecione"
+                      optionLabel="name"
+                      appendTo="self"
+                      [filter]="true"
+                    >
                     <ng-template let-option pTemplate="item">
                       <div class="inline-block vertical-align-middle">
                         <span class="ml-1 mt-1">{{ option.name }}</span>
@@ -212,6 +216,8 @@
                 [showMatchModes]="false"
                 [showOperator]="false"
                 [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
               >
                 <ng-template pTemplate="header">
                   <div class="px-3 pt-3 pb-0">
@@ -219,17 +225,19 @@
                   </div>
                 </ng-template>
                 <ng-template
-                  pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
-                >
-                  <p-multiSelect
-                    [ngModel]="filterAccessories"
-                    [options]="accessories"
-                    placeholder="Selecione"
-                    (onChange)="filterAccessory($event)"
-                    optionLabel="name"
+                    pTemplate="filter"
+                    let-value
+                    let-filter="filterCallback"
                   >
+                    <p-multiSelect
+                      [ngModel]="filterAccessories"
+                      [options]="accessories"
+                      placeholder="Selecione"
+                      (onChange)="filterAccessory($event)"
+                      optionLabel="name"
+                      appendTo="self"
+                      [filter]="true"
+                    >
                     <ng-template let-option pTemplate="item">
                       <div class="inline-block vertical-align-middle">
                         <span class="ml-1 mt-1">{{ option.name }}</span>
@@ -251,6 +259,8 @@
                 [showMatchModes]="false"
                 [showOperator]="false"
                 [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
               >
                 <ng-template pTemplate="header">
                   <div class="px-3 pt-3 pb-0">
@@ -258,17 +268,17 @@
                   </div>
                 </ng-template>
                 <ng-template
-                  pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
-                >
-                  <p-multiSelect
-                    [ngModel]="value"
-                    [options]="coats"
-                    placeholder="Selecione"
-                    (onChange)="filter($event.value)"
-                    optionLabel="name"
+                    pTemplate="filter"
+                    let-filterConstraint="filterConstraint"
                   >
+                    <p-multiSelect
+                      [(ngModel)]="filterConstraint.value"
+                      [options]="coats"
+                      placeholder="Selecione"
+                      optionLabel="name"
+                      appendTo="self"
+                      [filter]="true"
+                    >
                     <ng-template let-option pTemplate="item">
                       <div class="inline-block vertical-align-middle">
                         <span class="ml-1 mt-1">{{ option.name }}</span>
@@ -290,6 +300,8 @@
                 [showMatchModes]="false"
                 [showOperator]="false"
                 [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
               >
                 <ng-template pTemplate="header">
                   <div class="px-3 pt-3 pb-0">
@@ -297,17 +309,17 @@
                   </div>
                 </ng-template>
                 <ng-template
-                  pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
-                >
-                  <p-multiSelect
-                    [ngModel]="value"
-                    [options]="bandanas"
-                    placeholder="Selecione"
-                    (onChange)="filter($event.value)"
-                    optionLabel="name"
+                    pTemplate="filter"
+                    let-filterConstraint="filterConstraint"
                   >
+                    <p-multiSelect
+                      [(ngModel)]="filterConstraint.value"
+                      [options]="bandanas"
+                      placeholder="Selecione"
+                      optionLabel="name"
+                      appendTo="self"
+                      [filter]="true"
+                    >
                     <ng-template let-option pTemplate="item">
                       <div class="inline-block vertical-align-middle">
                         <span class="ml-1 mt-1">{{ option.name }}</span>

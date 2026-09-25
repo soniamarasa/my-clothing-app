@@ -63,6 +63,8 @@
                 [showMatchModes]="false"
                 [showOperator]="false"
                 [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
               ></p-columnFilter>
             </div>
           </th>
@@ -77,6 +79,8 @@
                 [showMatchModes]="false"
                 [showOperator]="false"
                 [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
               >
                 <ng-template pTemplate="header">
                   <div class="px-3 pt-3 pb-0">
@@ -84,17 +88,17 @@
                   </div>
                 </ng-template>
                 <ng-template
-                  pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
-                >
-                  <p-multiSelect
-                    [ngModel]="value"
-                    [options]="categories"
-                    placeholder="Selecione"
-                    (onChange)="filter($event.value)"
-                    optionLabel="name"
+                    pTemplate="filter"
+                    let-filterConstraint="filterConstraint"
                   >
+                    <p-multiSelect
+                      [(ngModel)]="filterConstraint.value"
+                      [options]="categories"
+                      placeholder="Selecione"
+                      optionLabel="name"
+                      appendTo="self"
+                      [filter]="true"
+                    >
                     <ng-template let-option pTemplate="item">
                       <div class="inline-block vertical-align-middle">
                         <span class="ml-1 mt-1">{{ option.name }}</span>
@@ -116,6 +120,8 @@
                 [showMatchModes]="false"
                 [showOperator]="false"
                 [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
               >
                 <ng-template pTemplate="header">
                   <div class="px-3 pt-3 pb-0">
@@ -123,17 +129,17 @@
                   </div>
                 </ng-template>
                 <ng-template
-                  pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
-                >
-                  <p-multiSelect
-                    [ngModel]="value"
-                    [options]="tags"
-                    placeholder="Selecione"
-                    (onChange)="filter($event.value)"
-                    optionLabel="name"
+                    pTemplate="filter"
+                    let-filterConstraint="filterConstraint"
                   >
+                    <p-multiSelect
+                      [(ngModel)]="filterConstraint.value"
+                      [options]="tags"
+                      placeholder="Selecione"
+                      optionLabel="name"
+                      appendTo="self"
+                      [filter]="true"
+                    >
                     <ng-template let-option pTemplate="item">
                       <div class="inline-block vertical-align-middle">
                         <span class="ml-1 mt-1">{{ option.name }}</span>
@@ -155,6 +161,8 @@
                 [showMatchModes]="false"
                 [showOperator]="false"
                 [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
               >
                 <ng-template pTemplate="header">
                   <div class="px-3 pt-3 pb-0">
@@ -163,17 +171,16 @@
                 </ng-template>
                 <ng-template
                   pTemplate="filter"
-                  let-value
-                  let-filter="filterCallback"
+                  let-filterConstraint="filterConstraint"
                 >
                   <p-multiSelect
                     [showHeader]="false"
                     [filter]="false"
-                    [(ngModel)]="selectedStatus"
+                    [(ngModel)]="filterConstraint.value"
                     [options]="status"
                     placeholder="Selecione"
-                    (onChange)="filter($event.value)"
                     optionLabel=""
+                    appendTo="self"
                   >
                     <ng-template let-option pTemplate="item">
                       <div class="inline-block vertical-align-middle">

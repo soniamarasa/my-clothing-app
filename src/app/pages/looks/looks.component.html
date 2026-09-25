@@ -95,7 +95,7 @@
       *ngIf="!loading && filteredLooks.length > gridRows"
       appendTo="body"
       [rows]="gridRows"
-      [totalRecords]="total"
+      [totalRecords]="filteredLooks.length"
       [rowsPerPageOptions]="[12, 24, 48]"
       [first]="gridFirst"
       [showCurrentPageReport]="true"
@@ -113,7 +113,6 @@
         paginatorDropdownAppendTo="body"
         [rows]="20"
         [rowsPerPageOptions]="[20, 35, 50]"
-        [totalRecords]="total"
         [loading]="loading"
         [paginator]="true"
         [currentPageReportTemplate]="pageReportTemplate"
@@ -127,20 +126,205 @@
       >
         <ng-template pTemplate="header">
           <tr>
-            <th style="min-width: 15rem">
-              <div class="flex align-items-center">Parte de Cima</div>
+            <th pSortableColumn="top.name" style="min-width: 15rem">
+              <div class="flex align-items-center">
+                Parte de Cima
+                <p-sortIcon field="top.name"></p-sortIcon>
+                <p-columnFilter
+                  field="top._id"
+                  matchMode="in"
+                  display="menu"
+                  [showMatchModes]="false"
+                  [showOperator]="false"
+                  [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
+                >
+                  <ng-template pTemplate="header">
+                    <div class="px-3 pt-3 pb-0">
+                      <span class="font-bold">Parte de Cima</span>
+                    </div>
+                  </ng-template>
+                  <ng-template
+                    pTemplate="filter"
+                    let-filterConstraint="filterConstraint"
+                  >
+                    <p-multiSelect
+                      [(ngModel)]="filterConstraint.value"
+                      [options]="tops"
+                      placeholder="Selecione"
+                      optionLabel="name"
+                      optionValue="_id"
+                      appendTo="self"
+                      [filter]="true"
+                    >
+                      <ng-template let-option pTemplate="item">
+                        <span>{{ option.name }}</span>
+                      </ng-template>
+                    </p-multiSelect>
+                  </ng-template>
+                </p-columnFilter>
+              </div>
             </th>
-            <th style="min-width: 15rem">
-              <div class="flex align-items-center">Parte de Baixo</div>
+            <th pSortableColumn="bottom.name" style="min-width: 15rem">
+              <div class="flex align-items-center">
+                Parte de Baixo
+                <p-sortIcon field="bottom.name"></p-sortIcon>
+                <p-columnFilter
+                  field="bottom._id"
+                  matchMode="in"
+                  display="menu"
+                  [showMatchModes]="false"
+                  [showOperator]="false"
+                  [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
+                >
+                  <ng-template pTemplate="header">
+                    <div class="px-3 pt-3 pb-0">
+                      <span class="font-bold">Parte de Baixo</span>
+                    </div>
+                  </ng-template>
+                  <ng-template
+                    pTemplate="filter"
+                    let-filterConstraint="filterConstraint"
+                  >
+                    <p-multiSelect
+                      [(ngModel)]="filterConstraint.value"
+                      [options]="bottoms"
+                      placeholder="Selecione"
+                      optionLabel="name"
+                      optionValue="_id"
+                      appendTo="self"
+                      [filter]="true"
+                    >
+                      <ng-template let-option pTemplate="item">
+                        <span>{{ option.name }}</span>
+                      </ng-template>
+                    </p-multiSelect>
+                  </ng-template>
+                </p-columnFilter>
+              </div>
             </th>
-            <th style="min-width: 20rem">
-              <div class="flex align-items-center">Traje</div>
+            <th pSortableColumn="garb.name" style="min-width: 20rem">
+              <div class="flex align-items-center">
+                Traje
+                <p-sortIcon field="garb.name"></p-sortIcon>
+                <p-columnFilter
+                  field="garb._id"
+                  matchMode="in"
+                  display="menu"
+                  [showMatchModes]="false"
+                  [showOperator]="false"
+                  [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
+                >
+                  <ng-template pTemplate="header">
+                    <div class="px-3 pt-3 pb-0">
+                      <span class="font-bold">Traje</span>
+                    </div>
+                  </ng-template>
+                  <ng-template
+                    pTemplate="filter"
+                    let-filterConstraint="filterConstraint"
+                  >
+                    <p-multiSelect
+                      [(ngModel)]="filterConstraint.value"
+                      [options]="garbs"
+                      placeholder="Selecione"
+                      optionLabel="name"
+                      optionValue="_id"
+                      appendTo="self"
+                      [filter]="true"
+                    >
+                      <ng-template let-option pTemplate="item">
+                        <span>{{ option.name }}</span>
+                      </ng-template>
+                    </p-multiSelect>
+                  </ng-template>
+                </p-columnFilter>
+              </div>
             </th>
-            <th style="min-width: 15rem">
-              <div class="flex align-items-center">Sapato</div>
+            <th pSortableColumn="shoe.name" style="min-width: 15rem">
+              <div class="flex align-items-center">
+                Sapato
+                <p-sortIcon field="shoe.name"></p-sortIcon>
+                <p-columnFilter
+                  field="shoe._id"
+                  matchMode="in"
+                  display="menu"
+                  [showMatchModes]="false"
+                  [showOperator]="false"
+                  [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
+                >
+                  <ng-template pTemplate="header">
+                    <div class="px-3 pt-3 pb-0">
+                      <span class="font-bold">Sapato</span>
+                    </div>
+                  </ng-template>
+                  <ng-template
+                    pTemplate="filter"
+                    let-filterConstraint="filterConstraint"
+                  >
+                    <p-multiSelect
+                      [(ngModel)]="filterConstraint.value"
+                      [options]="shoes"
+                      placeholder="Selecione"
+                      optionLabel="name"
+                      optionValue="_id"
+                      appendTo="self"
+                      [filter]="true"
+                    >
+                      <ng-template let-option pTemplate="item">
+                        <span>{{ option.name }}</span>
+                      </ng-template>
+                    </p-multiSelect>
+                  </ng-template>
+                </p-columnFilter>
+              </div>
             </th>
-            <th style="min-width: 8rem">
-              <div class="flex align-items-center">Tag</div>
+            <th pSortableColumn="tag.name" style="min-width: 8rem">
+              <div class="flex align-items-center">
+                Tag
+                <p-sortIcon field="tag.name"></p-sortIcon>
+                <p-columnFilter
+                  field="tag._id"
+                  matchMode="in"
+                  display="menu"
+                  [showMatchModes]="false"
+                  [showOperator]="false"
+                  [showAddButton]="false"
+                [showApplyButton]="true"
+                [showClearButton]="true"
+                >
+                  <ng-template pTemplate="header">
+                    <div class="px-3 pt-3 pb-0">
+                      <span class="font-bold">Tag</span>
+                    </div>
+                  </ng-template>
+                  <ng-template
+                    pTemplate="filter"
+                    let-filterConstraint="filterConstraint"
+                  >
+                    <p-multiSelect
+                      [(ngModel)]="filterConstraint.value"
+                      [options]="tags"
+                      placeholder="Selecione"
+                      optionLabel="name"
+                      optionValue="_id"
+                      appendTo="self"
+                      [filter]="true"
+                    >
+                      <ng-template let-option pTemplate="item">
+                        <span>{{ option.name }}</span>
+                      </ng-template>
+                    </p-multiSelect>
+                  </ng-template>
+                </p-columnFilter>
+              </div>
             </th>
             <th></th>
           </tr>
